@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>bitHuman SDK Documentation</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="description" content="bitHuman SDK enables you to build interactive agents that respond realistically to audio input.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <link rel="icon" type="image/png" href="bithuman-logo.png">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+  
+  <!-- Custom CSS for modern styling -->
+  <style>
+    :root {
+      --theme-color: #ea5455;
+      --theme-color-dark: #d63384;
+      --sidebar-width: 320px;
+    }
+    
+    .sidebar {
+      background: #fff;
+      border-right: 1px solid #eee;
+    }
+    
+    .sidebar .sidebar-nav {
+      padding: 0;
+    }
+    
+    .sidebar .sidebar-nav li {
+      list-style: none;
+    }
+    
+    .sidebar .sidebar-nav ul {
+      background: none !important;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .sidebar .sidebar-nav > ul > li > p {
+      font-weight: 600;
+      font-size: 13px;
+      color: #666;
+      margin: 16px 0 8px 0;
+      padding: 0 25px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .sidebar .sidebar-nav a {
+      color: #666;
+      font-weight: 400;
+      text-decoration: none;
+      display: block;
+      padding: 8px 25px;
+      border-left: 4px solid transparent;
+    }
+    
+    .sidebar .sidebar-nav a:hover {
+      color: var(--theme-color);
+      text-decoration: none;
+    }
+    
+    .sidebar .sidebar-nav .active {
+      color: var(--theme-color) !important;
+      font-weight: 600;
+      border-left: 4px solid transparent;
+      background: none;
+    }
+    
+    .sidebar img {
+      max-width: 120px;
+      margin: 20px auto;
+      display: block;
+      height: auto;
+    }
+    
+    .content {
+      padding: 40px;
+    }
+    
+    .markdown-section h1 {
+      color: var(--theme-color-dark);
+      margin-bottom: 20px;
+    }
+    
+    .markdown-section h2 {
+      color: var(--theme-color);
+      border-bottom: 2px solid #f1f3f4;
+      padding-bottom: 8px;
+    }
+    
+    .markdown-section code {
+      background: #f8f9fa;
+      border: 1px solid #e9ecef;
+      border-radius: 4px;
+      padding: 2px 6px;
+      color: #e83e8c;
+    }
+    
+    .markdown-section pre {
+      background: #f8f9fa;
+      border: 1px solid #e9ecef;
+      border-radius: 6px;
+      margin: 16px 0;
+    }
+    
+    .markdown-section pre code {
+      background: none;
+      border: none;
+      color: inherit;
+    }
+    
+    .app-nav {
+      margin: 25px 40px 0 0;
+    }
+    
+    .cover-main {
+      padding: 30px 15px 40px 15px;
+    }
+    
+    .cover h1 {
+      margin: 20px 0;
+      font-size: 3rem;
+      font-weight: 300;
+    }
+    
+    .cover h1 span {
+      color: var(--theme-color);
+    }
+    
+    @media screen and (max-width: 768px) {
+      .sidebar img {
+        max-width: 100px;
+        margin: 10px auto;
+      }
+      
+      .content {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script>
+    window.$docsify = {
+      name: 'bitHuman SDK',
+      repo: 'https://github.com/bithuman-ai/sdk-examples-python',
+      loadSidebar: true,
+      loadNavbar: false,
+      subMaxLevel: 2,
+      auto2top: true,
+      homepage: 'README.md',
+      search: {
+        maxAge: 86400000,
+        paths: 'auto',
+        placeholder: 'Search documentation...',
+        noData: 'No results found.',
+        depth: 3
+      },
+      copyCode: {
+        buttonText: 'Copy',
+        errorText: 'Error',
+        successText: 'Copied'
+      },
+      pagination: {
+        previousText: 'Previous',
+        nextText: 'Next',
+        crossChapter: true,
+        crossChapterText: true,
+      },
+      themeColor: '#ea5455',
+      logo: 'bithuman-logo.png',
+      executeScript: true,
+      mergeNavbar: true,
+      formatUpdated: '{MM}/{DD} {HH}:{mm}',
+      mermaid: {
+        theme: 'default'
+      }
+    }
+  </script>
+  
+  <!-- Docsify v4 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+  <!-- Search plugin -->
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+  <!-- Copy code plugin -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-copy-code@2"></script>
+  <!-- Pagination plugin -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-pagination@2/dist/docsify-pagination.min.js"></script>
+  <!-- Mermaid diagrams -->
+  <script src="//cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-mermaid@2/dist/docsify-mermaid.js"></script>
+  <script>
+    mermaid.initialize({ startOnLoad: true });
+  </script>
+  <!-- Syntax highlighting -->
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-json.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-mermaid.min.js"></script>
+</body>
+</html>
