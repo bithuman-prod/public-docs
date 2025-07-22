@@ -22,7 +22,7 @@ BITHUMAN_API_SECRET=your_api_secret
 BITHUMAN_AVATAR_MODEL=/path/to/model.imx
 ```
 
-Get your API secret at [console.bithuman.io](https://console.bithuman.io) and download avatar models from the [Community page](https://console.bithuman.io/#community).
+Get your API secret at <a href="https://console.bithuman.io" target="_blank">console.bithuman.io</a> and download avatar models from the <a href="https://console.bithuman.io/#community" target="_blank">Community page</a>.
 
 ## Examples
 
@@ -40,11 +40,11 @@ python examples/avatar-with-microphone.py --model /path/to/model.imx
 
 ### LiveKit Agents (Web UI)
 
-For examples 3-4, use [LiveKit's Agents Playground](https://github.com/livekit/agents-playground/) for the best experience.
+For examples 3-4, use <a href="https://github.com/livekit/agents-playground/" target="_blank">LiveKit's Agents Playground</a> for the best experience.
 
 **Setup LiveKit Playground:**
 
-1. **Register free LiveKit account** at [livekit.io](https://livekit.io)
+1. **Register free LiveKit account** at <a href="https://livekit.io" target="_blank">livekit.io</a>
 
 2. **Add LiveKit credentials to `.env`:**
    ```bash
@@ -91,7 +91,7 @@ For examples 3-4, use [LiveKit's Agents Playground](https://github.com/livekit/a
 - LiveKit account (for web UI examples)
 
 ## Support
-- [bitHuman Documentation](https://docs.bithuman.io)
-- [bitHuman Discord](https://discord.gg/yM7wRRqu)
-- [LiveKit Agents Docs](https://docs.livekit.io/agents)
-- [Community](https://console.bithuman.io/#community)
+- <a href="https://docs.bithuman.io" target="_blank">bitHuman Documentation</a>
+- <a href="https://discord.gg/yM7wRRqu" target="_blank">bitHuman Discord</a>
+- <a href="https://docs.livekit.io/agents" target="_blank">LiveKit Agents Docs</a>
+- <a href="https://console.bithuman.io/#community" target="_blank">Community</a>
