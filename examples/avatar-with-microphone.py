@@ -81,7 +81,7 @@ async def read_audio_from_microphone(
     while True:
         # wait for audio input
         start_time = asyncio.get_running_loop().time()
-        if audio_io._agent.input.audio is None:
+        if audio_io._session.input.audio is None:
             if asyncio.get_running_loop().time() - start_time > 20:
                 raise RuntimeError("No audio input connected after 20 seconds")
             await asyncio.sleep(0.1)
@@ -90,7 +90,7 @@ async def read_audio_from_microphone(
         logger.info("Audio input ready")
 
         read_audio_atask = asyncio.create_task(
-            _read_audio(audio_io._agent.input.audio, audio_buffer)
+            _read_audio(audio_io._session.input.audio, audio_buffer)
         )
         push_audio_atask = asyncio.create_task(_push_audio(audio_buffer))
 
@@ -181,7 +181,7 @@ async def main(args: argparse.Namespace) -> None:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--model", type=str, default=os.environ.get("BITHUMAN_AVATAR_MODEL")
+        "--model", type=str, default=os.environ.get("BITHUMAN_MODEL_PATH")
     )
     parser.add_argument(
         "--token",

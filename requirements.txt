@@ -1,16 +1,11 @@
 # Core bitHuman SDK
-bithuman>=0.5.19
+bithuman>=0.5.20
 
 # Environment management
 python-dotenv~=1.1
 
 # LiveKit ecosystem
-livekit-agents[openai,bithuman]>=1.1.0
-livekit>=0.11.0
-livekit-api>=0.5.0
-
-# Audio/Video processing
-numpy>=1.24.0
+livekit-agents[openai,bithuman,silero]~=1.2.1
 
 # Development tools (optional)
 ruff>=0.1.0
