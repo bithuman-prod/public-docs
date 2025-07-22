@@ -1,69 +1,97 @@
 # bitHuman SDK Examples
 
-This repository contains comprehensive examples demonstrating how to build interactive agents using the bitHuman SDK. These examples showcase various use cases, from simple audio playback to real-time conversational AI agents with visual avatars.
+Interactive avatar examples using the bitHuman SDK for real-time conversational AI.
 
-## Quick Start
+## Installation
 
-1. **Get your API credentials** at [console.bithuman.io](https://console.bithuman.io)
-2. **Download an avatar model** from the [Community page](https://console.bithuman.io/#community)
-3. **Install the SDK**: `pip install bithuman`
-4. **Set environment variables**:
+```bash
+# 1. Create conda environment
+conda create -n bithuman python=3.11
+conda activate bithuman
+
+# 2. Install dependencies
+pip install -r requirements.txt
+**pip install bithuman --upgrade**
+```
+
+## Setup Environment
+
+Create `.env` file in the root directory:
+```bash
+BITHUMAN_API_SECRET=your_api_secret
+BITHUMAN_AVATAR_MODEL=/path/to/model.imx
+```
+
+Get your API secret at [console.bithuman.io](https://console.bithuman.io) and download avatar models from the [Community page](https://console.bithuman.io/#community).
+
+## Examples
+
+### Local Display (OpenCV Window)
+
+**1. Audio Clip Playback**
+```bash
+python examples/avatar-with-audio-clip.py --model /path/to/model.imx --audio-file /path/to/audio.wav
+```
+
+**2. Live Microphone Input**
+```bash
+python examples/avatar-with-microphone.py --model /path/to/model.imx
+```
+
+### LiveKit Agents (Web UI)
+
+For examples 3-4, use [LiveKit's Agents Playground](https://github.com/livekit/agents-playground/) for the best experience.
+
+**Setup LiveKit Playground:**
+
+1. **Register free LiveKit account** at [livekit.io](https://livekit.io)
+
+2. **Add LiveKit credentials to `.env`:**
    ```bash
-   export BITHUMAN_API_SECRET='your_api_secret'
-   export BITHUMAN_AVATAR_MODEL='/path/to/model/avatar.imx'
+   LIVEKIT_API_KEY=your_api_key
+   LIVEKIT_API_SECRET=your_api_secret
+   LIVEKIT_URL=wss://your-project.livekit.cloud
    ```
 
-For detailed setup instructions, see [📖 Getting Started Guide](docs/getting-started/overview.md).
+3. **Download & setup playground:**
+   ```bash
+   git clone https://github.com/livekit/agents-playground.git
+   cd agents-playground
+   npm install
+   ```
 
-## Repository Structure
+4. **Configure playground** (create `.env.local`):
+   ```bash
+   LIVEKIT_API_KEY=your_api_key
+   LIVEKIT_API_SECRET=your_api_secret
+   NEXT_PUBLIC_LIVEKIT_URL=wss://your-project.livekit.cloud
+   ```
 
-```
-public-sdk-examples/
-├── 📁 basic_usage/          # Simple keyboard-controlled example
-├── 📁 avatar/               # Real-time microphone input with local display
-├── 📁 livekit_agent/        # AI conversational agents with OpenAI integration
-├── 📁 livekit_webrtc/       # WebRTC streaming to LiveKit rooms
-├── 📁 fastrtc/              # Simplified WebRTC implementation
-└── 📁 docs/                 # 📖 Complete documentation and guides
-    ├── getting-started/     # Installation and first steps
-    ├── examples/            # Detailed example tutorials
-    ├── generate-agent/      # Agent creation guidelines
-    └── integrations/        # Platform integration guides
-```
+5. **Start playground:**
+   ```bash
+   npm run dev
+   ```
 
-## Examples Overview
+6. **Run agents** (in separate terminal):
+   ```bash
+   # OpenAI conversational agent
+   python examples/agent-livekit-openai.py console dev
+   
+   # Apple local agent
+   python examples/agent-livekit-apple-local.py console dev
+   ```
 
-| Example | Description | Use Case |
-|---------|-------------|----------|
-| **basic_usage** | Audio file playback with keyboard controls | Learning SDK basics |
-| **avatar** | Real-time microphone echo with local avatar | Testing audio processing |
-| **livekit_agent** | AI conversational agent with OpenAI | Voice-to-voice AI assistants |
-| **livekit_webrtc** | WebRTC streaming with WebSocket control | Multi-user avatar streaming |
-| **fastrtc** | Alternative WebRTC implementation | Simplified streaming setup |
-
-## Documentation
-
-📖 **[Complete Documentation](docs/README.md)** - Start here for comprehensive guides
-
-**Quick Links:**
-- [Installation Guide](docs/getting-started/installation.md)
-- [Your First Model](docs/getting-started/first-model.md) 
-- [Example Tutorials](docs/examples/overview.md)
-- [Integration Guides](docs/integrations/overview.md)
-- [Agent Creation Guidelines](docs/generate-agent/overview.md)
+7. **Connect:** Open `http://localhost:3000` and join a room to chat with your avatar!
 
 ## Requirements
 
-- **Python**: 3.10 - 3.13
-- **OS**: Linux (x86_64/arm64), macOS (Apple Silicon, macOS ≥ 15)
-- **Hardware**: GPU recommended for optimal performance
+- Python 3.11
+- macOS (Apple Silicon) or Linux
+- OpenAI API key (for OpenAI agent example)
+- LiveKit account (for web UI examples)
 
 ## Support
-
 - [bitHuman Documentation](https://docs.bithuman.io)
-- [bitHuman Console](https://console.bithuman.io)
-- [Community Page](https://console.bithuman.io/#community)
-
----
-
-⚡ **Ready to build?** Choose an example from the folders above or dive into the [📖 documentation](docs/README.md) to get started!
+- [bitHuman Discord](https://discord.gg/yM7wRRqu)
+- [LiveKit Agents Docs](https://docs.livekit.io/agents)
+- [Community](https://console.bithuman.io/#community)
