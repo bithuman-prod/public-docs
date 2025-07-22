@@ -11,21 +11,17 @@ from livekit.agents import (
     WorkerType,
     cli,
 )
-from livekit.plugins import bithuman, openai, silero
+from livekit.plugins import bithuman, openai
 
 logger = logging.getLogger("bitHuman")
 logger.setLevel(logging.INFO)
 
 load_dotenv()
 
-# This is an example to use Apple's local STT and TTS.
-# Both STT and TTS are locally hosted, and written by bitHuman.
-# The service is locally hosted, no need to connect to the internet.
-
-# Instructions:
-# First, install bithuman-voice from `pip install https://github.com/bithuman-prod/public-sdk-examples/releases/download/v0.1/bithuman_voice-1.3.2-py3-none-any.whl`
-# Then, start the service with `bithuman-voice serve --port 8091` from system terminal.
-# This may need an approval in system for it to access the Apple Speech API.
+# If is on a low-power device (like a Raspberry Pi), disable the async loading mode
+# to avoid performance issues when loading the model. This may slow down the model loading.
+# This is not needed for other standard devices.
+os.environ["LOADING_MODE"] = "SYNC"
 
 
 async def entrypoint(ctx: JobContext):
@@ -38,10 +34,10 @@ async def entrypoint(ctx: JobContext):
     )
 
     session = AgentSession(
-        llm=openai.LLM(),
-        tts=openai.TTS(base_url="http://localhost:8091/v1", voice=""),
-        stt=openai.STT(base_url="http://localhost:8091/v1"),
-        vad=silero.VAD.load(),
+        llm=openai.realtime.RealtimeModel(
+            voice="ash",
+            model="gpt-4o-mini-realtime-preview",
+        )
     )
     await bithuman_avatar.start(session, room=ctx.room)
 

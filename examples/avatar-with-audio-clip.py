@@ -8,6 +8,7 @@ from typing import Optional, Tuple
 
 import cv2
 import numpy as np
+from dotenv import load_dotenv
 from loguru import logger
 
 from bithuman import AsyncBithuman, VideoFrame
@@ -292,15 +293,27 @@ async def main(args: argparse.Namespace) -> None:
 
 
 if __name__ == "__main__":
+    load_dotenv()
+    
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model", type=str, required=True)
+    parser.add_argument(
+        "--model", 
+        type=str, 
+        default=os.environ.get("BITHUMAN_MODEL_PATH"),
+        help="Path to bitHuman avatar model file (.imx)"
+    )
     parser.add_argument(
         "--token",
         type=str,
         default=os.environ.get("BITHUMAN_RUNTIME_TOKEN"),
         help="JWT token for authentication (optional if --api-secret is provided)",
     )
-    parser.add_argument("--audio-file", type=str, default=None)
+    parser.add_argument(
+        "--audio-file", 
+        type=str, 
+        default=os.environ.get("BITHUMAN_AUDIO_PATH"),
+        help="Path to audio file to play"
+    )
     parser.add_argument(
         "--api-secret",
         type=str,

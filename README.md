@@ -20,7 +20,8 @@ Create `.env` file in the root directory:
 ```bash
 # bitHuman SDK
 BITHUMAN_API_SECRET=sk_bh_1234567890abcdef...
-BITHUMAN_AVATAR_MODEL=/path/to/model.imx
+BITHUMAN_MODEL_PATH=/path/to/model.imx
+BITHUMAN_AUDIO_PATH=/path/to/audio.wav
 
 # OpenAI (for OpenAI agent example)
 OPENAI_API_KEY=sk-proj-1234567890abcdef...
@@ -39,11 +40,19 @@ Get your API secret at <a href="https://console.bithuman.io" target="_blank">con
 
 **1. Audio Clip Playback**
 ```bash
+# With .env file configured (recommended)
+python examples/avatar-with-audio-clip.py
+
+# Or with command line arguments
 python examples/avatar-with-audio-clip.py --model /path/to/model.imx --audio-file /path/to/audio.wav
 ```
 
 **2. Live Microphone Input**
 ```bash
+# With .env file configured (recommended)
+python examples/avatar-with-microphone.py
+
+# Or with command line arguments
 python examples/avatar-with-microphone.py --model /path/to/model.imx
 ```
 
