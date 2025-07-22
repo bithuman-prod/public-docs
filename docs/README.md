@@ -1,94 +1,104 @@
-# Welcome to bitHuman SDK Documentation
+# 🚀 Welcome to bitHuman SDK
 
-> Build interactive agents that respond realistically to audio input
+> **Create lifelike digital avatars that respond to audio in real-time**
 
-## What is bitHuman SDK?
-
-bitHuman SDK enables developers to create lifelike digital avatars that can respond to audio input with realistic facial movements, expressions, and synchronized speech. Our SDK transforms your applications with engaging, human-like interactions.
-
-## Key Features
-
-- **🎯 Real-time Avatar Animation** - Generate 25 FPS video with synchronized audio
-- **🎤 Audio-driven Expressions** - Realistic facial movements from audio input
-- **🚀 Multiple Deployment Options** - Self-hosted, CPU cloud, or GPU cloud
-- **🔌 Easy Integration** - Works with LiveKit, FastRTC, and custom applications
-- **📱 Cross-platform Support** - Linux, macOS, and cloud deployments
-
-## Quick Start
-
-Get up and running with bitHuman SDK in just a few steps:
-
-1. **[Register for free](https://console.bithuman.io)** and get your API secret
-2. **[Download an avatar model](https://console.bithuman.io/#community)** (.imx file)
-3. **[Install the SDK](getting-started/installation.md)** with pip
-4. **[Run your first model](getting-started/first-model.md)** in minutes
-
-```bash
-# Install the SDK
-pip install bithuman
-
-# Set up your environment
-export BITHUMAN_API_SECRET='your_api_secret'
-export BITHUMAN_AVATAR_MODEL='/path/to/model/avatar.imx'
-
-# Run a basic example
-python basic_example.py
-```
-
-## Supported Platforms
-
-| Platform | Support | Notes |
-|----------|---------|-------|
-| **Linux (x86_64)** | ✅ Full | Recommended for production |
-| **Linux (arm64)** | ✅ Full | Great for edge deployments |
-| **macOS (Apple Silicon)** | ✅ Full | macOS 15+ required |
-| **Windows** | 🔄 Coming Soon | Beta available |
-
-## Use Cases
-
-### 🎬 Interactive Content
-Create engaging educational content, virtual presenters, and entertainment experiences.
-
-### 🛒 E-commerce
-Build virtual shopping assistants and product demonstrations with lifelike avatars.
-
-### 📞 Customer Service
-Deploy AI-powered customer service agents with human-like interactions.
-
-### 🎮 Gaming & Metaverse
-Integrate realistic NPCs and avatars into games and virtual worlds.
-
-## Architecture Overview
-
-```mermaid
-graph LR
-    A[Audio Input] --> B[bitHuman Runtime]
-    B --> C[Avatar Processing]
-    C --> D[Video Frames]
-    C --> E[Audio Chunks]
-    D --> F[Display/Stream]
-    E --> F
-```
-
-The bitHuman SDK processes 16kHz mono audio input and generates synchronized video frames at 25 FPS with corresponding audio chunks.
-
-## Community & Support
-
-- 🌟 **[Community Hub](https://console.bithuman.io/#community)** - Download models and share creations
-- 📖 **[Documentation](/)** - Complete guides and API reference
-- 💬 **[Discord](https://discord.gg/bithuman)** - Join our developer community
-- 🐛 **[GitHub Issues](https://github.com/bithuman-io/sdk-examples-python/issues)** - Report bugs and request features
-
-## What's Next?
-
-Ready to build with bitHuman? Here are some great starting points:
-
-- **New to bitHuman?** Start with our [Getting Started Guide](getting-started/overview.md)
-- **Want to create an agent?** Check out [Generate bitHuman Agent](generate-agent/prompt-guidelines.md)
-- **Ready to deploy?** Explore [Build with bitHuman](build/self-hosted.md)
-- **Need specific integrations?** Browse our [Integrations](integrations/livekit.md)
-- **Want to see examples?** Try our [Code Examples](examples/voice-driven-audio.md)
+Transform your applications with engaging, human-like interactions using our powerful avatar SDK.
 
 ---
 
-*Get started with bitHuman SDK today and bring your applications to life with realistic digital avatars.*
+## ✨ What is bitHuman SDK?
+
+bitHuman SDK lets you build **interactive avatars** that bring your applications to life:
+
+🎯 **Real-time Animation** - 25 FPS video with dynamic movement  
+🎤 **Audio-driven** - Realistic facial movements from any audio input  
+⚡ **Easy Integration** - 3 lines of code to get started  
+🌐 **Web Ready** - Deploy to browsers with LiveKit integration  
+
+---
+
+## 🏃‍♂️ Quick Start
+
+### 1️⃣ Get Your Credentials
+- 🔑 **Free API Secret** → [console.bithuman.io](https://console.bithuman.io)
+- 🤖 **Download Avatar** → [Community Models](https://console.bithuman.io/#community)
+
+### 2️⃣ Install & Setup
+```bash
+# Install SDK
+pip install bithuman
+
+# Set environment
+export BITHUMAN_API_SECRET="your_secret"
+export BITHUMAN_MODEL_PATH="/path/to/model.imx"
+```
+
+### 3️⃣ Your First Avatar (3 lines!)
+```python
+from bithuman import AsyncBithuman
+
+runtime = await AsyncBithuman.create(model_path="model.imx", api_secret="secret")
+async for frame in runtime.run():
+    display_frame(frame)  # Your magic here!
+```
+
+---
+
+## 🎯 What You Can Build
+
+### 🖥️ **Desktop Apps**
+- Voice assistants
+- Interactive kiosks  
+- Custom interfaces
+
+### 🌐 **Web Applications**
+- Video chat avatars
+- Customer service bots
+- Virtual receptionists
+
+### 🔧 **IoT & Edge**
+- Smart home assistants
+- Retail demonstrations
+- Industrial interfaces
+
+---
+
+## 📚 Documentation Structure
+
+### 🚀 **[Getting Started](getting-started/overview.md)**
+Quick setup, prompts, media uploads, and animal mode
+
+### 💡 **[Examples](examples/overview.md)**
+5 simple examples from basic to advanced
+
+---
+
+## 🖥️ Platform Support
+
+| Platform | Status | Notes |
+|----------|---------|-------|
+| 🐧 **Linux (x86_64)** | ✅ **Full Support** | Production ready |
+| 🦾 **Linux (ARM64)** | ✅ **Full Support** | Perfect for edge |
+| 🍎 **macOS (Apple Silicon)** | ✅ **Full Support** | M2+ recommended, M4 ideal |
+| 🪟 **Windows** | 🔄 **Coming Soon** | Beta available |
+
+---
+
+## 🎯 Why Choose bitHuman?
+
+✅ **3-Line Integration** - Get started instantly  
+✅ **Production Ready** - Scales from prototype to millions of users  
+✅ **Privacy Focused** - Local processing options available  
+✅ **Developer Friendly** - Comprehensive docs and examples  
+✅ **Active Community** - Discord support and shared models  
+
+---
+
+## 🚀 Ready to Start?
+
+1. **📖 Read** [Getting Started](getting-started/overview.md)
+2. **🛠️ Try** [Audio Clip Example](examples/avatar-with-audio-clip.md) 
+3. **📦 Browse** [Source Code](https://github.com/bithuman-prod/public-sdk-examples) on GitHub
+4. **💬 Join** [Discord Community](https://discord.gg/yM7wRRqu) for discussions and requests
+
+*Let's build the future of human-computer interaction together!* 🌟

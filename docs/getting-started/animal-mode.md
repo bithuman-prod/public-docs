@@ -1,0 +1,183 @@
+# 🐾 Animal Mode
+
+> **Create amazing animal avatars with automatic face detection**
+
+Transform your favorite animals into interactive avatars with our specialized animal mode.
+
+---
+
+## 🎯 Animal Avatar Creation
+
+Animal Mode uses advanced AI to automatically detect and map animal facial features, enabling you to create engaging animal characters for your applications.
+
+---
+
+## 🐨 Available Animal Characters
+
+Checkout some example animal agents. You can either use prompts to generate or upload your favorite pet photos:
+
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 20px 0;">
+
+<div style="text-align: center;">
+<div style="width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: 8px; border: 2px solid #f1f3f4;">
+<img src="../assets/animals/Capybara Illustration.png" alt="Capybara" style="width: 100%; height: 100%; object-fit: cover;">
+</div>
+<p><strong>Capybara</strong></p>
+</div>
+
+<div style="text-align: center;">
+<div style="width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: 8px; border: 2px solid #f1f3f4;">
+<img src="../assets/animals/Cat in a Hat (1).png" alt="Cat in a Hat" style="width: 100%; height: 100%; object-fit: cover;">
+</div>
+<p><strong>Cat in Hat</strong></p>
+</div>
+
+<div style="text-align: center;">
+<div style="width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: 8px; border: 2px solid #f1f3f4;">
+<img src="../assets/animals/Cute Fluffy Creature with Rainbow Fur.png" alt="Rainbow Creature" style="width: 100%; height: 100%; object-fit: cover;">
+</div>
+<p><strong>Rainbow Creature</strong></p>
+</div>
+
+<div style="text-align: center;">
+<div style="width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: 8px; border: 2px solid #f1f3f4;">
+<img src="../assets/animals/Cute Koala with Beautiful Eyes.png" alt="Koala" style="width: 100%; height: 100%; object-fit: cover;">
+</div>
+<p><strong>Koala</strong></p>
+</div>
+
+<div style="text-align: center;">
+<div style="width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: 8px; border: 2px solid #f1f3f4;">
+<img src="../assets/animals/Cute Pixar Turtle Swimming.png" alt="Pixar Turtle" style="width: 100%; height: 100%; object-fit: cover;">
+</div>
+<p><strong>Pixar Turtle</strong></p>
+</div>
+
+<div style="text-align: center;">
+<div style="width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: 8px; border: 2px solid #f1f3f4;">
+<img src="../assets/animals/Fluffy White Bunny with Glasses (1).png" alt="Bunny with Glasses" style="width: 100%; height: 100%; object-fit: cover;">
+</div>
+<p><strong>Bunny with Glasses</strong></p>
+</div>
+
+<div style="text-align: center;">
+<div style="width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: 8px; border: 2px solid #f1f3f4;">
+<img src="../assets/animals/Fluffy White Bunny with Glasses.png" alt="White Bunny" style="width: 100%; height: 100%; object-fit: cover;">
+</div>
+<p><strong>White Bunny</strong></p>
+</div>
+
+<div style="text-align: center;">
+<div style="width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: 8px; border: 2px solid #f1f3f4;">
+<img src="../assets/animals/Old English Sheepdog Tea Time.png" alt="Sheepdog" style="width: 100%; height: 100%; object-fit: cover;">
+</div>
+<p><strong>English Sheepdog</strong></p>
+</div>
+
+<div style="text-align: center;">
+<div style="width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: 8px; border: 2px solid #f1f3f4;">
+<img src="../assets/animals/Teddy Bear Playland.png" alt="Teddy Bear" style="width: 100%; height: 100%; object-fit: cover;">
+</div>
+<p><strong>Teddy Bear</strong></p>
+</div>
+
+<div style="text-align: center;">
+<div style="width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: 8px; border: 2px solid #f1f3f4;">
+<img src="../assets/animals/d12.png" alt="Character D12" style="width: 100%; height: 100%; object-fit: cover;">
+</div>
+<p><strong>Character D12</strong></p>
+</div>
+
+<div style="text-align: center;">
+<div style="width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: 8px; border: 2px solid #f1f3f4;">
+<img src="../assets/animals/d7.png" alt="Character D7" style="width: 100%; height: 100%; object-fit: cover;">
+</div>
+<p><strong>Character D7</strong></p>
+</div>
+
+<div style="text-align: center;">
+<div style="width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: 8px; border: 2px solid #f1f3f4;">
+<img src="../assets/animals/cute_and_fluffy_and_fat_creature_with_rainbow_fur_facing_the_camera_1wexylrunlbq1xi5jorj_2.png" alt="Fluffy Rainbow Creature" style="width: 100%; height: 100%; object-fit: cover;">
+</div>
+<p><strong>Fluffy Creature</strong></p>
+</div>
+
+</div>
+
+*Choose any animal above to get started with your animal avatar creation!*
+
+---
+
+## 🤖 Automatic Face Detection
+
+Our AI system automatically attempts to locate the character's face and body in animal images. This enables natural movement and expression mapping.
+
+### ✅ **What Works Automatically:**
+- 👁️ **Eye tracking** for natural gaze
+- 👄 **Mouth detection** for speech sync
+- 🎭 **Expression mapping** for emotions
+- 📐 **Facial landmarks** for precise animation
+
+---
+
+## 🛠️ Manual Face Marking
+
+Sometimes automatic detection needs a helping hand! When our AI can't locate facial features automatically, you'll be prompted to manually mark key points.
+
+![Help Needed](../assets/images/example-help-needed.png)
+*When automatic detection needs assistance*
+
+### 📍 **Manual Marking Process:**
+
+When prompted, you'll mark these key facial points:
+
+![Mark Face Points](../assets/images/example-mark-face-points.png)
+*Draw a rectangle to encompass the entire facial area*
+
+**Required Area:**
+The marked rectangle should cover the required facial region including:
+- 👁️ **Eyes** - both left and right eyes
+- 👃 **Nose** - nose area
+- 👄 **Mouth** - complete mouth region
+- 🔹 **Chin** - lower face boundary
+
+Simply draw a rectangle that encompasses the entire face area. There is no need to individually select specific points.
+
+---
+
+## 💡 Best Practices for Animal Avatars
+
+**🎯 For Optimal Results:**
+- ✅ **Clear facial features** - ensure eyes, nose, mouth are visible
+- ✅ **Front-facing pose** - straight-on view works best
+- ✅ **Good contrast** - features should stand out from background
+- ✅ **High resolution** - more detail = better detection
+
+**⚠️ Common Challenges:**
+- Fur covering facial features
+- Side profile poses
+- Complex lighting or shadows
+- Cartoonish or stylized features
+
+**🔧 Pro Tips:**
+- Start with our pre-selected animals for guaranteed compatibility
+- Use well-lit, high-contrast images
+- Be patient with manual marking - precision improves results
+- Test with simple expressions first
+
+---
+
+## 🚀 Getting Started
+
+**Ready to create your animal avatar?**
+
+1. **🎯 Choose** an animal character from the grid above
+2. **⚡ Let AI** attempt automatic face detection
+3. **✋ Help mark** facial points if needed
+4. **🎬 Generate** your interactive animal avatar!
+
+---
+
+*Create your animal avatar at [console.bithuman.io](https://console.bithuman.io)!*
+
+**Love animals?** Join our [Discord community](https://discord.gg/yM7wRRqu) to share your creations and get tips! 🐾 

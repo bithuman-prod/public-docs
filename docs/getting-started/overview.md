@@ -1,136 +1,99 @@
-# Overview
+# Getting Started
 
-Welcome to bitHuman SDK! This guide will help you understand what bitHuman SDK is, what you can build with it, and how to get started.
+Welcome to bitHuman SDK! Create lifelike digital avatars that respond to audio in real-time.
 
-## What is bitHuman SDK?
+![bitHuman Banner](../assets/images/bithuman-banner.jpg)
+*[Transform your applications with engaging, interactive avatars](https://console.bithuman.io/#create)*
 
-bitHuman SDK is a powerful toolkit that enables developers to create **lifelike digital avatars** that respond realistically to audio input. Our SDK transforms static applications into engaging, interactive experiences with human-like digital beings.
+---
 
-## Key Capabilities
+## What is bitHuman?
 
-### 🎯 Real-time Avatar Animation
-- Generate 25 FPS video with synchronized audio
-- Realistic facial movements and expressions
-- Lip-sync accuracy with audio input
-- Emotional expression mapping
+bitHuman SDK lets you build **interactive avatars** that:
+- ✅ Animate realistically from audio input
+- ✅ Show dynamic movement with speech
+- ✅ Work in real-time (25 FPS)
+- ✅ Integrate easily into any app
 
-### 🎤 Audio Processing
-- Support for 16kHz mono audio input
-- Real-time audio analysis and processing
-- Voice-driven facial animation
-- Seamless audio-video synchronization
+## Quick Setup
 
-### 🚀 Flexible Deployment
-- **Self-hosted**: Run on your own infrastructure
-- **CPU Cloud**: Cost-effective cloud processing
-- **GPU Cloud**: High-performance cloud acceleration
-- Edge deployment support
+For complete setup instructions, see our **[README.md](../README.md)** which covers:
 
-### 🔌 Easy Integration
-- Simple Python API
-- Works with popular frameworks (LiveKit, FastRTC)
-- WebRTC streaming capabilities
-- Custom application integration
+### 🚀 Installation
+```bash
+# 1. Create conda environment
+conda create -n bithuman python=3.11
+conda activate bithuman
 
-## How It Works
-
-```mermaid
-graph TB
-    A[Audio Input<br/>16kHz Mono] --> B[bitHuman Runtime]
-    B --> C[Face Analysis]
-    B --> D[Expression Mapping]
-    C --> E[Avatar Animation]
-    D --> E
-    E --> F[Video Frames<br/>25 FPS]
-    E --> G[Audio Chunks<br/>Synchronized]
-    F --> H[Display/Stream]
-    G --> H
+# 2. Install SDK
+pip install bithuman --upgrade
 ```
 
-1. **Audio Input**: Provide 16kHz mono audio (live microphone, audio files, or streaming)
-2. **Processing**: SDK analyzes audio for phonemes, emotions, and timing
-3. **Animation**: Avatar model responds with realistic facial movements
-4. **Output**: Synchronized video frames and audio chunks ready for display/streaming
+### 🔑 API Setup
+1. Get your API secret at [console.bithuman.io](https://console.bithuman.io)
+2. Download an avatar model from the Community page
+3. Set environment variables:
+```bash
+BITHUMAN_API_SECRET=sk_bh_1234567890abcdef...
+BITHUMAN_MODEL_PATH=/path/to/model.imx
+```
 
-## Use Cases
+### ⚡ First Avatar (3 lines of code!)
+```python
+from bithuman import AsyncBithuman
 
-### 🎬 Interactive Content & Education
-- Virtual teachers and trainers
-- Interactive storytelling
-- Educational demonstrations
-- Language learning assistants
+runtime = await AsyncBithuman.create(model_path="model.imx", api_secret="your_secret")
+async for frame in runtime.run():
+    display_frame(frame)  # Your display logic here
+```
 
-### 🛒 E-commerce & Retail
-- Virtual shopping assistants
-- Product demonstrations
-- Personalized recommendations
-- Customer onboarding
+## What You Can Build
 
-### 📞 Customer Service & Support
-- AI-powered customer service agents
+**Desktop Apps** (Standalone SDK):
+- Voice assistants
+- Interactive kiosks  
+- Custom interfaces
+
+**Web Apps** (LiveKit Integration):
+- Video chat avatars
+- Customer service bots
 - Virtual receptionists
-- Technical support avatars
-- Multilingual assistance
 
-### 🎮 Gaming & Entertainment
-- Realistic NPCs in games
-- Virtual influencers
-- Interactive entertainment
-- Metaverse experiences
+## Ready to Build?
 
-### 🏢 Business & Communication
-- Virtual presenters
-- Meeting assistants
-- Training simulations
-- Corporate communications
+**First**: Learn [✨ Prompt Guide](prompts) - Master the award-winning CO-STAR framework
 
-## Platform Support
+**Then**: Explore our guides:
 
-| Platform | Status | Requirements |
-|----------|--------|--------------|
-| **Linux x86_64** | ✅ Full Support | Ubuntu 20.04+ recommended |
-| **Linux ARM64** | ✅ Full Support | Great for edge devices |
-| **macOS Apple Silicon** | ✅ Full Support | macOS 15+ required |
-| **Windows** | 🔄 Coming Soon | Beta available on request |
+- **[🎬 Media Guide](media-guide)** - Upload voice, image, and video
+- **[🐾 Animal Mode](animal-mode)** - Create animal avatars
 
-## Prerequisites
+**Finally**: Try **[Examples](../examples/overview.md)**:
 
-Before getting started, make sure you have:
+1. **[Audio Clip Avatar](../examples/avatar-with-audio-clip.md)** - Start here (5 minutes)
+2. **[Live Microphone Avatar](../examples/avatar-with-microphone.md)** - Real-time interaction
+3. **[OpenAI Agent](../examples/livekit-openai-agent.md)** - Full AI conversation in browser
 
-- **Python 3.10 to 3.13** installed
-- A **bitHuman account** (free registration)
-- An **avatar model file** (.imx format)
-- Basic familiarity with Python programming
+## Next Steps
 
-## What You'll Learn
+1. **Read the [README](../README.md)** for complete setup
+2. **Master [✨ CO-STAR Prompts](prompts)** for effective avatars
+3. **Try the [first example](../examples/avatar-with-audio-clip.md)**
+4. **Browse [Source Code](https://github.com/bithuman-prod/public-sdk-examples)** on GitHub
+5. **Join our [Discord](https://discord.gg/yM7wRRqu)** for discussions and requests
 
-In this Getting Started section, you'll learn how to:
+## System Requirements
 
-1. **[Install the SDK](installation.md)** - Set up bitHuman SDK in your environment
-2. **[Validate your API secret](validate-api.md)** - Confirm your credentials work
-3. **[Run your first model](first-model.md)** - Create your first animated avatar
+**Minimum:**
+- Python 3.11
+- 4+ CPU cores  
+- 8GB RAM
 
-## Architecture Overview
+**Platforms:**
+- ✅ macOS (M2+ recommended, M4 ideal)
+- ✅ Linux (x64, ARM64)
+- ⚠️ Windows (via WSL)
 
-### Core Components
+---
 
-- **AsyncBithuman**: Main runtime class for avatar processing
-- **AudioChunk**: Audio data representation and utilities
-- **VideoFrame**: Avatar output with frame data and metadata
-- **Model Files**: Avatar definitions (.imx format)
-
-### Data Flow
-
-1. Initialize runtime with API secret and model
-2. Send audio data as AudioChunks
-3. Receive VideoFrames with avatar animation
-4. Display frames or stream to viewers
-
-## Getting Help
-
-- 📖 **Documentation**: Complete guides and API reference
-- 🌟 **[Community Hub](https://console.bithuman.io/#community)**: Download models and examples
-- 💬 **Discord**: Join our developer community
-- 🐛 **GitHub Issues**: Report bugs and request features
-
-Ready to get started? Let's [install the SDK](installation.md) and create your first avatar! 
+*For detailed instructions, troubleshooting, and advanced features, see our **[README.md](../README.md)*** 
