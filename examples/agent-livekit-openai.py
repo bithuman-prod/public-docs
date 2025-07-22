@@ -18,19 +18,24 @@ logger.setLevel(logging.INFO)
 
 load_dotenv()
 
+# If is on a low-power device (like a Raspberry Pi), disable the async loading mode to
+# avoid performance issues when loading the model. This may slow down the model loading.
+# os.environ["LOADING_MODE"] = "SYNC"
+
+
 async def entrypoint(ctx: JobContext):
     await ctx.connect()
 
     logger.info("staring bithuman runtime")
     bithuman_avatar = bithuman.AvatarSession(
         model_path=os.getenv("BITHUMAN_MODEL_PATH"),
-        api_secret=os.getenv("BITHUMAN_API_SECRET")
+        api_secret=os.getenv("BITHUMAN_API_SECRET"),
     )
 
     session = AgentSession(
         llm=openai.realtime.RealtimeModel(
-           voice="ash",
-           model="gpt-4o-mini-realtime-preview",
+            voice="ash",
+            model="gpt-4o-mini-realtime-preview",
         )
     )
     await bithuman_avatar.start(session, room=ctx.room)
@@ -44,6 +49,7 @@ async def entrypoint(ctx: JobContext):
         room=ctx.room,
         room_output_options=RoomOutputOptions(audio_enabled=False),
     )
+
 
 if __name__ == "__main__":
     cli.run_app(
