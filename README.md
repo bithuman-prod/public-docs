@@ -18,8 +18,17 @@ pip install bithuman --upgrade [Note: this is important!]
 
 Create `.env` file in the root directory:
 ```bash
-BITHUMAN_API_SECRET=your_api_secret
+# bitHuman SDK
+BITHUMAN_API_SECRET=sk_bh_1234567890abcdef...
 BITHUMAN_AVATAR_MODEL=/path/to/model.imx
+
+# OpenAI (for OpenAI agent example)
+OPENAI_API_KEY=sk-proj-1234567890abcdef...
+
+# LiveKit (for LiveKit agent examples)
+LIVEKIT_API_KEY=APIabcdef123456...
+LIVEKIT_API_SECRET=secretABCDEF123456...
+LIVEKIT_URL=wss://your-project.livekit.cloud
 ```
 
 Get your API secret at <a href="https://console.bithuman.io" target="_blank">console.bithuman.io</a> and download avatar models from the <a href="https://console.bithuman.io/#community" target="_blank">Community page</a>.
