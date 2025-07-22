@@ -21,7 +21,7 @@ load_dotenv()
 # This is an example to use Apple's local STT and TTS.
 # The service is locally hosted, no need to connect to the internet.
 
-# First, install bithuman-voice from `pip install ./bithuman_voice-1.3.2-py3-none-any.whl`
+# First, install bithuman-voice from `pip install https://github.com/bithuman-prod/public-sdk-examples/releases/download/v0.1/bithuman_voice-1.3.2-py3-none-any.whl`
 # Then, start the service with `bithuman-voice serve --port 8091` from system terminal.
 # This may need an approval in system for it to access the Apple Speech API.
 
