@@ -60,7 +60,7 @@ For examples 3-4, use [LiveKit's Agents Playground](https://github.com/livekit/a
    npm install
    ```
 
-4. **Configure playground** (create `.env.local`):
+4. **Configure playground** (create a separate `.env` in the agents-playground repo):
    ```bash
    LIVEKIT_API_KEY=your_api_key
    LIVEKIT_API_SECRET=your_api_secret
