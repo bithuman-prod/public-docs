@@ -11,7 +11,7 @@ conda activate bithuman
 
 # 2. Install dependencies
 pip install -r requirements.txt
-pip install bithuman --upgrade
+pip install bithuman --upgrade [Note: this is important!]
 ```
 
 ## Setup Environment
