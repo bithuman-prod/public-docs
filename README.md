@@ -94,4 +94,5 @@ For examples 3-4, use <a href="https://github.com/livekit/agents-playground/" ta
 - <a href="https://docs.bithuman.io" target="_blank">bitHuman Documentation</a>
 - <a href="https://discord.gg/yM7wRRqu" target="_blank">bitHuman Discord</a>
 - <a href="https://docs.livekit.io/agents" target="_blank">LiveKit Agents Docs</a>
-- <a href="https://console.bithuman.io/#community" target="_blank">Community</a>
+- <a href="https://docs.livekit.io/agents/integrations/avatar/bithuman/" target="_blank">bitHuman's LiveKit plugin</a>
+- <a href="https://console.bithuman.io/#community" target="_blank">bitHuman Community Agents</a>
