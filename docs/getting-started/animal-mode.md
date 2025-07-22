@@ -20,63 +20,63 @@ Checkout some example animal agents. You can either use prompts to generate or u
 
 <div style="text-align: center;">
 <div style="width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: 8px; border: 2px solid #f1f3f4;">
-<img src="../assets/animals/Capybara Illustration.png" alt="Capybara" style="width: 100%; height: 100%; object-fit: cover;">
+<img src="../assets/animals/Capybara%20Illustration.png" alt="Capybara" style="width: 100%; height: 100%; object-fit: cover;">
 </div>
 <p><strong>Capybara</strong></p>
 </div>
 
 <div style="text-align: center;">
 <div style="width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: 8px; border: 2px solid #f1f3f4;">
-<img src="../assets/animals/Cat in a Hat (1).png" alt="Cat in a Hat" style="width: 100%; height: 100%; object-fit: cover;">
+<img src="../assets/animals/Cat%20in%20a%20Hat%20(1).png" alt="Cat in a Hat" style="width: 100%; height: 100%; object-fit: cover;">
 </div>
 <p><strong>Cat in Hat</strong></p>
 </div>
 
 <div style="text-align: center;">
 <div style="width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: 8px; border: 2px solid #f1f3f4;">
-<img src="../assets/animals/Cute Fluffy Creature with Rainbow Fur.png" alt="Rainbow Creature" style="width: 100%; height: 100%; object-fit: cover;">
+<img src="../assets/animals/Cute%20Fluffy%20Creature%20with%20Rainbow%20Fur.png" alt="Rainbow Creature" style="width: 100%; height: 100%; object-fit: cover;">
 </div>
 <p><strong>Rainbow Creature</strong></p>
 </div>
 
 <div style="text-align: center;">
 <div style="width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: 8px; border: 2px solid #f1f3f4;">
-<img src="../assets/animals/Cute Koala with Beautiful Eyes.png" alt="Koala" style="width: 100%; height: 100%; object-fit: cover;">
+<img src="../assets/animals/Cute%20Koala%20with%20Beautiful%20Eyes.png" alt="Koala" style="width: 100%; height: 100%; object-fit: cover;">
 </div>
 <p><strong>Koala</strong></p>
 </div>
 
 <div style="text-align: center;">
 <div style="width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: 8px; border: 2px solid #f1f3f4;">
-<img src="../assets/animals/Cute Pixar Turtle Swimming.png" alt="Pixar Turtle" style="width: 100%; height: 100%; object-fit: cover;">
+<img src="../assets/animals/Cute%20Pixar%20Turtle%20Swimming.png" alt="Pixar Turtle" style="width: 100%; height: 100%; object-fit: cover;">
 </div>
 <p><strong>Pixar Turtle</strong></p>
 </div>
 
 <div style="text-align: center;">
 <div style="width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: 8px; border: 2px solid #f1f3f4;">
-<img src="../assets/animals/Fluffy White Bunny with Glasses (1).png" alt="Bunny with Glasses" style="width: 100%; height: 100%; object-fit: cover;">
+<img src="../assets/animals/Fluffy%20White%20Bunny%20with%20Glasses%20(1).png" alt="Bunny with Glasses" style="width: 100%; height: 100%; object-fit: cover;">
 </div>
 <p><strong>Bunny with Glasses</strong></p>
 </div>
 
 <div style="text-align: center;">
 <div style="width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: 8px; border: 2px solid #f1f3f4;">
-<img src="../assets/animals/Fluffy White Bunny with Glasses.png" alt="White Bunny" style="width: 100%; height: 100%; object-fit: cover;">
+<img src="../assets/animals/Fluffy%20White%20Bunny%20with%20Glasses.png" alt="White Bunny" style="width: 100%; height: 100%; object-fit: cover;">
 </div>
 <p><strong>White Bunny</strong></p>
 </div>
 
 <div style="text-align: center;">
 <div style="width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: 8px; border: 2px solid #f1f3f4;">
-<img src="../assets/animals/Old English Sheepdog Tea Time.png" alt="Sheepdog" style="width: 100%; height: 100%; object-fit: cover;">
+<img src="../assets/animals/Old%20English%20Sheepdog%20Tea%20Time.png" alt="Sheepdog" style="width: 100%; height: 100%; object-fit: cover;">
 </div>
 <p><strong>English Sheepdog</strong></p>
 </div>
 
 <div style="text-align: center;">
 <div style="width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: 8px; border: 2px solid #f1f3f4;">
-<img src="../assets/animals/Teddy Bear Playland.png" alt="Teddy Bear" style="width: 100%; height: 100%; object-fit: cover;">
+<img src="../assets/animals/Teddy%20Bear%20Playland.png" alt="Teddy Bear" style="width: 100%; height: 100%; object-fit: cover;">
 </div>
 <p><strong>Teddy Bear</strong></p>
 </div>
