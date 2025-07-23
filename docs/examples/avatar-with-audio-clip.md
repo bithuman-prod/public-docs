@@ -125,9 +125,9 @@ python examples/avatar-with-audio-clip.py \
 
 ## ➡️ Next Steps
 
-**Want real-time interaction?** → Try [Live Microphone Avatar](#/examples/avatar-with-microphone)
+**Want real-time interaction?** → Try [Live Microphone Avatar](avatar-with-microphone.md)
 
-**Ready for web deployment?** → Try [OpenAI Agent](#/examples/livekit-openai-agent)
+**Ready for web deployment?** → Try [OpenAI Agent](livekit-openai-agent.md)
 
 ---
 

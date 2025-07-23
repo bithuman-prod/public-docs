@@ -143,9 +143,9 @@ llm=openai.LLM(base_url="http://localhost:11434/v1")
 
 ## ➡️ Next Steps
 
-**Want edge deployment?** → Try [Raspberry Pi Agent](#/examples/livekit-raspberry-pi)
+**Want edge deployment?** → Try [Raspberry Pi Agent](livekit-raspberry-pi.md)
 
-**Need simpler setup?** → Try [OpenAI Agent](#/examples/livekit-openai-agent)
+**Need simpler setup?** → Try [OpenAI Agent](livekit-openai-agent.md)
 
 ---
 

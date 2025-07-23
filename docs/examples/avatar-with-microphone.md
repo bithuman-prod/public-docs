@@ -157,9 +157,9 @@ python examples/avatar-with-microphone.py --echo
 
 ## ➡️ Next Steps
 
-**Want AI conversation?** → Try [OpenAI Agent](#/examples/livekit-openai-agent)
+**Want AI conversation?** → Try [OpenAI Agent](livekit-openai-agent.md)
 
-**Need web deployment?** → Try [Apple Local Agent](#/examples/livekit-apple-local)
+**Need web deployment?** → Try [Apple Local Agent](livekit-apple-local.md)
 
 ---
 

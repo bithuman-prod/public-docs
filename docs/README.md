@@ -65,10 +65,10 @@ async for frame in runtime.run():
 
 ## 📚 Documentation Structure
 
-### 🚀 **[Getting Started](#/getting-started/overview)**
+### 🚀 **[Getting Started](getting-started/overview.md)**
 Quick setup, prompts, media uploads, and animal mode
 
-### 💡 **[Examples](#/examples/overview)**
+### 💡 **[Examples](examples/overview.md)**
 5 simple examples from basic to advanced
 
 ---
@@ -96,8 +96,8 @@ Quick setup, prompts, media uploads, and animal mode
 
 ## 🚀 Ready to Start?
 
-1. **📖 Read** [Getting Started](#/getting-started/overview)
-2. **🛠️ Try** [Audio Clip Example](#/examples/avatar-with-audio-clip) 
+1. **📖 Read** [Getting Started](getting-started/overview.md)
+2. **🛠️ Try** [Audio Clip Example](examples/avatar-with-audio-clip.md) 
 3. **📦 Browse** [Source Code](https://github.com/bithuman-prod/public-sdk-examples) on GitHub
 4. **💬 Join** [Discord Community](https://discord.gg/yM7wRRqu) for discussions and requests
 

@@ -131,9 +131,9 @@ agent=Agent(
 
 ## ➡️ Next Steps
 
-**Want privacy?** → Try [Apple Local Agent](#/examples/livekit-apple-local)
+**Want privacy?** → Try [Apple Local Agent](livekit-apple-local.md)
 
-**Using IoT?** → Try [Raspberry Pi Agent](#/examples/livekit-raspberry-pi)
+**Using IoT?** → Try [Raspberry Pi Agent](livekit-raspberry-pi.md)
 
 ---
 
