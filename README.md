@@ -2,6 +2,8 @@
 
 Interactive avatar examples using the bitHuman SDK for real-time conversational AI.
 
+> 📚 **Complete Documentation Available**: For detailed guides, tutorials, and comprehensive documentation, visit **[public-sdk-examples.vercel.app](https://public-sdk-examples.vercel.app/#/)**
+
 ## 🚀 Quick Start
 
 ### Installation
