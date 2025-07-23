@@ -2,9 +2,6 @@
 
 Welcome to bitHuman SDK! Create lifelike digital avatars that respond to audio in real-time.
 
-![bitHuman Banner](../assets/images/bithuman-banner.jpg)
-*[Transform your applications with engaging, interactive avatars](https://console.bithuman.io/#create)*
-
 ---
 
 ## What is bitHuman?
