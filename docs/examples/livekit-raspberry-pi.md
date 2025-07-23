@@ -36,7 +36,7 @@ source bithuman-env/bin/activate
 
 ### 4. Install dependencies
 ```bash
-pip install bithuman livekit-agents openai
+pip install bithuman --upgrade livekit-agents openai
 sudo apt install portaudio19-dev -y
 ```
 

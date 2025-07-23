@@ -27,7 +27,7 @@ bithuman-voice serve --port 8091
 
 ### 4. Install dependencies
 ```bash
-pip install bithuman livekit-agents openai silero
+pip install bithuman --upgrade livekit-agents openai silero
 ```
 
 ### 5. Set environment

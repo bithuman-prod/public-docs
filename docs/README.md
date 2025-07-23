@@ -11,6 +11,8 @@
 
 bitHuman SDK lets you build **interactive avatars** that bring your applications to life:
 
+💻 **🌟 CPU-Only Operation** - Runs entirely on host CPU, **no GPU required!**  
+💰 **10x Lower Costs** - Choose host device or CPU cloud for dramatic cost savings  
 🎯 **Real-time Animation** - 25 FPS video with dynamic movement  
 🎤 **Audio-driven** - Realistic facial movements from any audio input  
 ⚡ **Easy Integration** - 3 lines of code to get started  
@@ -22,12 +24,17 @@ bitHuman SDK lets you build **interactive avatars** that bring your applications
 
 ### 1️⃣ Get Your Credentials
 - 🔑 **Free API Secret** → [console.bithuman.io](https://console.bithuman.io)
+  
+  ![Free API Secret](assets/images/example-api-secret.jpg)
+
 - 🤖 **Download Avatar** → [Community Models](https://console.bithuman.io/#community)
+  
+  ![Download Avatar](assets/images/example-download-button.jpg)
 
 ### 2️⃣ Install & Setup
 ```bash
 # Install SDK
-pip install bithuman
+pip install bithuman --upgrade
 
 # Set environment
 export BITHUMAN_API_SECRET="your_secret"
@@ -87,6 +94,7 @@ Quick setup, prompts, media uploads, and animal mode
 
 ## 🎯 Why Choose bitHuman?
 
+✅ **💻 CPU-Only Runtime** - No expensive GPUs needed, 10x lower costs  
 ✅ **3-Line Integration** - Get started instantly  
 ✅ **Production Ready** - Scales from prototype to millions of users  
 ✅ **Privacy Focused** - Local processing options available  

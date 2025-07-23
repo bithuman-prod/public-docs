@@ -12,7 +12,7 @@ Complete chatbot with avatar that users can talk to on the web.
 
 ### 1. Install
 ```bash
-pip install bithuman livekit-agents openai
+pip install bithuman --upgrade livekit-agents openai
 ```
 
 ### 2. Get accounts

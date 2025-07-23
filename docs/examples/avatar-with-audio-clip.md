@@ -10,7 +10,7 @@ Perfect first example - simple and works every time.
 
 ### 1. Install
 ```bash
-pip install bithuman opencv-python sounddevice
+pip install bithuman --upgrade opencv-python sounddevice
 ```
 
 ### 2. Set environment

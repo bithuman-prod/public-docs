@@ -15,25 +15,6 @@ The ImagineX platform allows you to upload multiple types of media to create you
 
 ---
 
-## 🎤 Voice Upload
-
-**Perfect for**: Voice cloning and personalized speech patterns
-
-### Requirements:
-- ✅ **Duration**: Less than 1 minute
-- ✅ **Quality**: Clear voice without background noise
-- ✅ **Format**: MP3, WAV, or M4A
-- ✅ **Content**: Natural speech in your target language
-
-### Best Practices:
-- 🎙️ **Record in a quiet environment**
-- 📱 **Use a good quality microphone** 
-- 🗣️ **Speak naturally and clearly**
-- 🎵 **Avoid music or sound effects**
-- 📝 **Include varied sentences** for better voice modeling
-
----
-
 ## 📸 Image Upload
 
 **Perfect for**: Facial likeness and character appearance
@@ -72,6 +53,25 @@ The ImagineX platform allows you to upload multiple types of media to create you
 - 🚶‍♀️ **Subtle movements** - gentle head movements, natural blinking
 - 💡 **Good lighting** - consistent throughout video
 - 🔇 **Audio optional** - focus on visual quality
+
+---
+
+## 🎤 Voice Upload
+
+**Perfect for**: Voice cloning and personalized speech patterns
+
+### Requirements:
+- ✅ **Duration**: Less than 1 minute
+- ✅ **Quality**: Clear voice without background noise
+- ✅ **Format**: MP3, WAV, or M4A
+- ✅ **Content**: Natural speech in your target language
+
+### Best Practices:
+- 🎙️ **Record in a quiet environment**
+- 📱 **Use a good quality microphone** 
+- 🗣️ **Speak naturally and clearly**
+- 🎵 **Avoid music or sound effects**
+- 📝 **Include varied sentences** for better voice modeling
 
 ---
 

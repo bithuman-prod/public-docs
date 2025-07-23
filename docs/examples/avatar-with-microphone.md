@@ -10,7 +10,7 @@ Speak and see your avatar respond instantly.
 
 ### 1. Install
 ```bash
-pip install bithuman livekit-rtc livekit-agents
+pip install bithuman --upgrade livekit-rtc livekit-agents
 ```
 
 ### 2. Set environment

@@ -46,7 +46,7 @@ Choose based on what you want to build.
 
 ```bash
 # Install SDK
-pip install bithuman
+pip install bithuman --upgrade
 
 # Set up environment
 export BITHUMAN_API_SECRET="your_secret"
