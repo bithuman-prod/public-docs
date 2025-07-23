@@ -13,29 +13,29 @@ Choose based on what you want to build.
 
 ### **🎵 Desktop Apps**
 
-**[Audio Clip Avatar](avatar-with-audio-clip.md)** ⭐ **Start here!**
+**[Audio Clip Avatar](#/examples/avatar-with-audio-clip)** ⭐ **Start here!**
 - Play audio files with avatar animation
 - **Good for**: Demos, presentations
 - **Time**: 5 minutes
 
-**[Live Microphone Avatar](avatar-with-microphone.md)**
+**[Live Microphone Avatar](#/examples/avatar-with-microphone)**
 - Real-time avatar from microphone
 - **Good for**: Voice assistants, kiosks
 - **Time**: 10 minutes
 
 ### **🌐 Web Apps**
 
-**[OpenAI Agent](livekit-openai-agent.md)**
+**[OpenAI Agent](#/examples/livekit-openai-agent)**
 - Full AI conversation in browser
 - **Good for**: Chatbots, customer service
 - **Time**: 15 minutes
 
-**[Apple Local Agent](livekit-apple-local.md)**
+**[Apple Local Agent](#/examples/livekit-apple-local)**
 - Private AI using Mac's speech
 - **Good for**: Privacy apps, offline use
 - **Time**: 20 minutes
 
-**[Raspberry Pi Agent](livekit-raspberry-pi.md)**
+**[Raspberry Pi Agent](#/examples/livekit-raspberry-pi)**
 - Run on Raspberry Pi
 - **Good for**: IoT, edge devices
 - **Time**: 30 minutes
@@ -64,15 +64,15 @@ export BITHUMAN_MODEL_PATH="/path/to/model.imx"
 
 ## ❓ Which Example?
 
-**👋 New to bitHuman?** → [Audio Clip Avatar](avatar-with-audio-clip.md)
+**👋 New to bitHuman?** → [Audio Clip Avatar](#/examples/avatar-with-audio-clip)
 
-**🎤 Want real-time?** → [Live Microphone Avatar](avatar-with-microphone.md)
+**🎤 Want real-time?** → [Live Microphone Avatar](#/examples/avatar-with-microphone)
 
-**🌐 Building web apps?** → [OpenAI Agent](livekit-openai-agent.md)
+**🌐 Building web apps?** → [OpenAI Agent](#/examples/livekit-openai-agent)
 
-**🔒 Need privacy?** → [Apple Local Agent](livekit-apple-local.md)
+**🔒 Need privacy?** → [Apple Local Agent](#/examples/livekit-apple-local)
 
-**🤖 Using IoT/edge?** → [Raspberry Pi Agent](livekit-raspberry-pi.md)
+**🤖 Using IoT/edge?** → [Raspberry Pi Agent](#/examples/livekit-raspberry-pi)
 
 ---
 

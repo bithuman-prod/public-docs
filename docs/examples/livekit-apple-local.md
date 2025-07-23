@@ -1,5 +1,7 @@
 # 🍎 Apple Local Agent
 
+![Apple](https://img.shields.io/badge/Apple-000000?style=for-the-badge&logo=apple&logoColor=white)
+
 > **Private AI using Mac's built-in speech**
 
 Full privacy - speech never leaves your Mac.
@@ -141,9 +143,9 @@ llm=openai.LLM(base_url="http://localhost:11434/v1")
 
 ## ➡️ Next Steps
 
-**Want edge deployment?** → Try [Raspberry Pi Agent](livekit-raspberry-pi.md)
+**Want edge deployment?** → Try [Raspberry Pi Agent](#/examples/livekit-raspberry-pi)
 
-**Need simpler setup?** → Try [OpenAI Agent](livekit-openai-agent.md)
+**Need simpler setup?** → Try [OpenAI Agent](#/examples/livekit-openai-agent)
 
 ---
 

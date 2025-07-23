@@ -221,7 +221,7 @@ RESPONSE: [What format/structure should responses follow?]
 
 1. **Write your CO-STAR prompt** using the template above
 2. **Test with sample conversations** to refine it
-3. **Try it in our [Examples](../examples/overview.md)** to see it work!
+3. **Try it in our [Examples](#/examples/overview)** to see it work!
 
 ---
 

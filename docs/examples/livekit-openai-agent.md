@@ -1,5 +1,7 @@
 # 🤖 OpenAI Agent
 
+![OpenAI](https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=openai&logoColor=white)
+
 > **Full AI conversation with avatar in browser**
 
 Complete chatbot with avatar that users can talk to on the web.
@@ -129,9 +131,9 @@ agent=Agent(
 
 ## ➡️ Next Steps
 
-**Want privacy?** → Try [Apple Local Agent](livekit-apple-local.md)
+**Want privacy?** → Try [Apple Local Agent](#/examples/livekit-apple-local)
 
-**Using IoT?** → Try [Raspberry Pi Agent](livekit-raspberry-pi.md)
+**Using IoT?** → Try [Raspberry Pi Agent](#/examples/livekit-raspberry-pi)
 
 ---
 
