@@ -61,24 +61,24 @@ async for frame in runtime.run():
 
 ## Ready to Build?
 
-**First**: Learn [✨ Prompt Guide](prompts.md) - Master the award-winning CO-STAR framework
+**First**: Learn [✨ Prompt Guide](getting-started/prompts.md) - Master the award-winning CO-STAR framework
 
 **Then**: Explore our guides:
 
-- **[🎬 Media Guide](media-guide.md)** - Upload voice, image, and video
-- **[🐾 Animal Mode](animal-mode.md)** - Create animal avatars
+- **[🎬 Media Guide](getting-started/media-guide.md)** - Upload voice, image, and video
+- **[🐾 Animal Mode](getting-started/animal-mode.md)** - Create animal avatars
 
-**Finally**: Try **[Examples](../examples/overview.md)**:
+**Finally**: Try **[Examples](examples/overview.md)**:
 
-1. **[Audio Clip Avatar](../examples/avatar-with-audio-clip.md)** - Start here (5 minutes)
-2. **[Live Microphone Avatar](../examples/avatar-with-microphone.md)** - Real-time interaction
-3. **[OpenAI Agent](../examples/livekit-openai-agent.md)** - Full AI conversation in browser
+1. **[Audio Clip Avatar](examples/avatar-with-audio-clip.md)** - Start here (5 minutes)
+2. **[Live Microphone Avatar](examples/avatar-with-microphone.md)** - Real-time interaction
+3. **[OpenAI Agent](examples/livekit-openai-agent.md)** - Full AI conversation in browser
 
 ## Next Steps
 
 1. **Read the [README](https://github.com/bithuman-prod/public-sdk-examples/blob/main/README.md)** for complete setup
-2. **Master [✨ CO-STAR Prompts](prompts.md)** for effective avatars
-3. **Try the [first example](../examples/avatar-with-audio-clip.md)**
+2. **Master [✨ CO-STAR Prompts](getting-started/prompts.md)** for effective avatars
+3. **Try the [first example](examples/avatar-with-audio-clip.md)**
 4. **Browse [Source Code](https://github.com/bithuman-prod/public-sdk-examples)** on GitHub
 5. **Join our [Discord](https://discord.gg/yM7wRRqu)** for discussions and requests
 
