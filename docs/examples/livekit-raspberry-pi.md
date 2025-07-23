@@ -4,7 +4,7 @@
 
 Perfect for IoT, kiosks, and edge devices.
 
-![Raspberry Pi Device](../assets/images/example-raspberry-pi-device.png)
+![Raspberry Pi Device](../assets/images/example-raspberry-pi-device.jpg)
 *Raspberry Pi 4B setup for avatar deployment*
 
 ---
@@ -85,7 +85,7 @@ python examples/agent-livekit-rasp-pi.py console
 3. Connects to web browsers via LiveKit
 4. Perfect for always-on edge applications
 
-![Raspberry Pi UI](../assets/images/example-raspberry-pi-ui.png)
+![Raspberry Pi UI](../assets/images/example-raspberry-pi-ui.jpg)
 *Web interface showing Pi-powered avatar in action*
 
 **Pi-specific optimizations:**

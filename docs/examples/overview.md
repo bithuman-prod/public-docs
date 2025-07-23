@@ -4,7 +4,7 @@
 
 Choose based on what you want to build.
 
-![Example Agent Variety](../assets/images/example-agent-images.png)
+![Example Agent Variety](../assets/images/example-agent-images.jpg)
 *Create diverse agents for different use cases*
 
 ---

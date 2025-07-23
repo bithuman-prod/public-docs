@@ -20,63 +20,63 @@ Checkout some example animal agents. You can either use prompts to generate or u
 
 <div style="text-align: center;">
 <div style="width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: 8px; border: 2px solid #f1f3f4;">
-<img src="../assets/animals/Capybara%20Illustration.png" alt="Capybara" style="width: 100%; height: 100%; object-fit: cover;">
+<img src="../assets/animals/capybara.png" alt="Capybara" style="width: 100%; height: 100%; object-fit: cover;">
 </div>
 <p><strong>Capybara</strong></p>
 </div>
 
 <div style="text-align: center;">
 <div style="width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: 8px; border: 2px solid #f1f3f4;">
-<img src="../assets/animals/Cat%20in%20a%20Hat%20(1).png" alt="Cat in a Hat" style="width: 100%; height: 100%; object-fit: cover;">
+<img src="../assets/animals/cat-hat.png" alt="Cat in a Hat" style="width: 100%; height: 100%; object-fit: cover;">
 </div>
 <p><strong>Cat in Hat</strong></p>
 </div>
 
 <div style="text-align: center;">
 <div style="width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: 8px; border: 2px solid #f1f3f4;">
-<img src="../assets/animals/Cute%20Fluffy%20Creature%20with%20Rainbow%20Fur.png" alt="Rainbow Creature" style="width: 100%; height: 100%; object-fit: cover;">
+<img src="../assets/animals/rainbow-creature.png" alt="Rainbow Creature" style="width: 100%; height: 100%; object-fit: cover;">
 </div>
 <p><strong>Rainbow Creature</strong></p>
 </div>
 
 <div style="text-align: center;">
 <div style="width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: 8px; border: 2px solid #f1f3f4;">
-<img src="../assets/animals/Cute%20Koala%20with%20Beautiful%20Eyes.png" alt="Koala" style="width: 100%; height: 100%; object-fit: cover;">
+<img src="../assets/animals/koala.png" alt="Koala" style="width: 100%; height: 100%; object-fit: cover;">
 </div>
 <p><strong>Koala</strong></p>
 </div>
 
 <div style="text-align: center;">
 <div style="width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: 8px; border: 2px solid #f1f3f4;">
-<img src="../assets/animals/Cute%20Pixar%20Turtle%20Swimming.png" alt="Pixar Turtle" style="width: 100%; height: 100%; object-fit: cover;">
+<img src="../assets/animals/turtle.png" alt="Pixar Turtle" style="width: 100%; height: 100%; object-fit: cover;">
 </div>
 <p><strong>Pixar Turtle</strong></p>
 </div>
 
 <div style="text-align: center;">
 <div style="width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: 8px; border: 2px solid #f1f3f4;">
-<img src="../assets/animals/Fluffy%20White%20Bunny%20with%20Glasses%20(1).png" alt="Bunny with Glasses" style="width: 100%; height: 100%; object-fit: cover;">
+<img src="../assets/animals/bunny-glasses.png" alt="Bunny with Glasses" style="width: 100%; height: 100%; object-fit: cover;">
 </div>
 <p><strong>Bunny with Glasses</strong></p>
 </div>
 
 <div style="text-align: center;">
 <div style="width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: 8px; border: 2px solid #f1f3f4;">
-<img src="../assets/animals/Fluffy%20White%20Bunny%20with%20Glasses.png" alt="White Bunny" style="width: 100%; height: 100%; object-fit: cover;">
+<img src="../assets/animals/bunny-white.png" alt="White Bunny" style="width: 100%; height: 100%; object-fit: cover;">
 </div>
 <p><strong>White Bunny</strong></p>
 </div>
 
 <div style="text-align: center;">
 <div style="width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: 8px; border: 2px solid #f1f3f4;">
-<img src="../assets/animals/Old%20English%20Sheepdog%20Tea%20Time.png" alt="Sheepdog" style="width: 100%; height: 100%; object-fit: cover;">
+<img src="../assets/animals/sheepdog.png" alt="Sheepdog" style="width: 100%; height: 100%; object-fit: cover;">
 </div>
 <p><strong>English Sheepdog</strong></p>
 </div>
 
 <div style="text-align: center;">
 <div style="width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: 8px; border: 2px solid #f1f3f4;">
-<img src="../assets/animals/Teddy%20Bear%20Playland.png" alt="Teddy Bear" style="width: 100%; height: 100%; object-fit: cover;">
+<img src="../assets/animals/teddy-bear.png" alt="Teddy Bear" style="width: 100%; height: 100%; object-fit: cover;">
 </div>
 <p><strong>Teddy Bear</strong></p>
 </div>
@@ -97,7 +97,7 @@ Checkout some example animal agents. You can either use prompts to generate or u
 
 <div style="text-align: center;">
 <div style="width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: 8px; border: 2px solid #f1f3f4;">
-<img src="../assets/animals/cute_and_fluffy_and_fat_creature_with_rainbow_fur_facing_the_camera_1wexylrunlbq1xi5jorj_2.png" alt="Fluffy Rainbow Creature" style="width: 100%; height: 100%; object-fit: cover;">
+<img src="../assets/animals/fluffy-creature.png" alt="Fluffy Rainbow Creature" style="width: 100%; height: 100%; object-fit: cover;">
 </div>
 <p><strong>Fluffy Creature</strong></p>
 </div>
@@ -124,14 +124,14 @@ Our AI system automatically attempts to locate the character's face and body in 
 
 Sometimes automatic detection needs a helping hand! When our AI can't locate facial features automatically, you'll be prompted to manually mark key points.
 
-![Help Needed](../assets/images/example-help-needed.png)
+![Help Needed](../assets/images/example-help-needed.jpg)
 *When automatic detection needs assistance*
 
 ### 📍 **Manual Marking Process:**
 
 When prompted, you'll mark these key facial points:
 
-![Mark Face Points](../assets/images/example-mark-face-points.png)
+![Mark Face Points](../assets/images/example-mark-face-points.jpg)
 *Draw a rectangle to encompass the entire facial area*
 
 **Required Area:**
