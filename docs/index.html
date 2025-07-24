@@ -194,6 +194,45 @@
   <script>
     mermaid.initialize({ startOnLoad: true });
   </script>
+  
+  <!-- Custom script to make logo clickable -->
+  <script>
+    // Wait for docsify to load and add click handler to logo
+    document.addEventListener('DOMContentLoaded', function() {
+      // Function to make logo clickable
+      function makeLogoClickable() {
+        const logo = document.querySelector('.sidebar .app-name img');
+        if (logo && !logo.parentElement.hasAttribute('data-clickable')) {
+          // Mark as processed to avoid duplicate wrapping
+          logo.parentElement.setAttribute('data-clickable', 'true');
+          
+          // Add cursor pointer style
+          logo.style.cursor = 'pointer';
+          
+          // Add click event listener
+          logo.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.open('https://console.bithuman.io/#create', '_blank');
+          });
+        }
+      }
+      
+      // Try immediately
+      makeLogoClickable();
+      
+      // Also try after a short delay to ensure docsify has rendered
+      setTimeout(makeLogoClickable, 500);
+      
+      // Listen for route changes in case docsify re-renders
+      if (window.$docsify) {
+        const originalReady = window.$docsify.plugins || [];
+        window.$docsify.plugins = [...originalReady, function(hook) {
+          hook.doneEach(makeLogoClickable);
+        }];
+      }
+    });
+  </script>
+  
   <!-- Syntax highlighting -->
   <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
