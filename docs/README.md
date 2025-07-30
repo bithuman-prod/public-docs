@@ -3,7 +3,7 @@
 > **Create lifelike digital avatars that respond to audio in real-time**
 
 ![bitHuman Banner](assets/images/bithuman-banner.jpg)
-*[Transform your applications with engaging, interactive avatars](https://console.bithuman.io/#create)*
+*[Transform your applications with engaging, interactive avatars](https://imaginex.bithuman.ai/#create)*
 
 ---
 
@@ -31,11 +31,11 @@ Get a **full end-to-end bitHuman + LiveKit app with web UI** running in minutes!
 📦 **[Full Example Repository →](https://github.com/bithuman-prod/public-docker-example)**
 
 #### 1️⃣ Get Your Credentials
-- 🔑 **Free API Secret** → [console.bithuman.io](https://console.bithuman.io)
+- 🔑 **Free API Secret** → [imaginex.bithuman.ai](https://imaginex.bithuman.ai)
   
   ![Free API Secret](assets/images/example-api-secret.jpg)
 
-- 🤖 **Download Avatar** → [Community Models](https://console.bithuman.io/#community)
+- 🤖 **Download Avatar** → [Community Models](https://imaginex.bithuman.ai/#community)
   
   ![Download Avatar](assets/images/example-download-button.jpg)
 

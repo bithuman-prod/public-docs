@@ -27,7 +27,7 @@ pip install bithuman --upgrade
 ```
 
 ### 🔑 API Setup
-1. Get your API secret at [console.bithuman.io](https://console.bithuman.io)
+1. Get your API secret at [imaginex.bithuman.ai](https://imaginex.bithuman.ai)
 2. Download an avatar model from the Community page
 3. Set environment variables:
 ```bash

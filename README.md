@@ -36,7 +36,7 @@ LIVEKIT_API_SECRET=secretABCDEF123456...
 LIVEKIT_URL=wss://your-project.livekit.cloud
 ```
 
-Get your API secret at [console.bithuman.io](https://console.bithuman.io) and download avatar models from the [Community page](https://console.bithuman.io/#community).
+Get your API secret at [imaginex.bithuman.ai](https://imaginex.bithuman.ai) and download avatar models from the [Community page](https://imaginex.bithuman.ai/#community).
 
 ## 💡 Integration Made Simple
 
@@ -207,7 +207,7 @@ The examples in `/examples` demonstrate different integration patterns:
 
 ### Community & Support
 - 💬 [Join our Discord](https://discord.gg/yM7wRRqu) - Get help and discuss with the community
-- 🌟 [Community Agents](https://console.bithuman.io/#community) - Browse and download avatar models
-- 🏠 [bitHuman Console](https://console.bithuman.io) - Manage your API keys and models
+- 🌟 [Community Agents](https://imaginex.bithuman.ai/#community) - Browse and download avatar models
+- 🏠 [bitHuman Console](https://imaginex.bithuman.ai) - Manage your API keys and models
 
 **Get help, share your creations, and connect with other developers building with bitHuman!** 🚀

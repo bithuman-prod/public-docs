@@ -16,7 +16,7 @@ pip install bithuman --upgrade livekit-agents openai
 ```
 
 ### 2. Get accounts
-- **bitHuman**: [console.bithuman.io](https://console.bithuman.io)
+- **bitHuman**: [imaginex.bithuman.ai](https://imaginex.bithuman.ai)
 - **OpenAI**: [openai.com](https://openai.com)
 - **LiveKit**: [livekit.io](https://livekit.io) (free)
 

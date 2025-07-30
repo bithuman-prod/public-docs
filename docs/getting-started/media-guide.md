@@ -187,6 +187,6 @@ graph TD
 
 ---
 
-*Ready to upload your media? Visit [console.bithuman.io](https://console.bithuman.io) to get started!*
+*Ready to upload your media? Visit [imaginex.bithuman.ai](https://imaginex.bithuman.ai) to get started!*
 
 **Questions?** Join our [Discord community](https://discord.gg/yM7wRRqu) for media upload tips and tricks! ✨ 
