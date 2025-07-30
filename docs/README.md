@@ -22,7 +22,13 @@ bitHuman SDK lets you build **interactive avatars** that bring your applications
 
 ## 🏃‍♂️ Quick Start
 
-### 1️⃣ Get Your Credentials
+### 🐳 **Fastest Way: Complete Docker Demo**
+
+Get a **full end-to-end bitHuman + LiveKit app with web UI** running in minutes!
+
+**What you get:** Complete visual agent with real-time conversation, web interface, and audio support.
+
+#### 1️⃣ Get Your Credentials
 - 🔑 **Free API Secret** → [console.bithuman.io](https://console.bithuman.io)
   
   ![Free API Secret](assets/images/example-api-secret.jpg)
@@ -31,7 +37,43 @@ bitHuman SDK lets you build **interactive avatars** that bring your applications
   
   ![Download Avatar](assets/images/example-download-button.jpg)
 
-### 2️⃣ Install & Setup
+#### 2️⃣ Clone & Setup
+```bash
+# Clone the complete demo
+git clone https://github.com/bithuman-prod/public-docker-example.git
+cd public-docker-example
+
+# Create environment file
+echo "BITHUMAN_API_SECRET=your_api_secret_here" > .env
+echo "OPENAI_API_KEY=your_openai_key_here" >> .env
+
+# Add your .imx model files to models/ directory
+mkdir -p models
+# Copy your downloaded .imx files here
+```
+
+#### 3️⃣ Launch Complete App
+```bash
+# Start all services (LiveKit + Agent + Web UI + Redis)
+docker compose up
+
+# Open your browser to http://localhost:4202
+# 🎉 Interactive avatar ready!
+```
+
+**🌟 That's it!** You now have a complete bitHuman application with:
+- ✅ Real-time avatar animation
+- ✅ Voice conversation capabilities  
+- ✅ Professional web interface
+- ✅ Full LiveKit integration
+
+---
+
+### 🛠️ **Alternative: SDK Integration**
+
+For custom applications, integrate bitHuman directly:
+
+#### Install & Setup
 ```bash
 # Install SDK
 pip install bithuman --upgrade
@@ -41,7 +83,7 @@ export BITHUMAN_API_SECRET="your_secret"
 export BITHUMAN_MODEL_PATH="/path/to/model.imx"
 ```
 
-### 3️⃣ Your First Avatar (3 lines!)
+#### Your First Avatar (3 lines!)
 ```python
 from bithuman import AsyncBithuman
 
