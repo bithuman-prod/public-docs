@@ -111,19 +111,47 @@ python examples/agent-livekit-apple-local.py console
 
 ## 🔒 Make it 100% Private
 
-Replace OpenAI with local AI for complete privacy:
+**🍎 Complete Offline macOS Example**
 
+For **100% local operation with no internet required**, we have a complete Docker setup that runs everything locally on your Mac!
+
+🚀 **[Complete macOS Offline Example →](https://github.com/bithuman-prod/public-macos-offline-example)**
+
+**What you get:**
+- ✅ **Apple Speech Recognition** - Local STT via bitHuman's Apple plugin
+- ✅ **Apple Voices/Siri** - Local TTS with premium voice support  
+- ✅ **Ollama LLM** - Local language models (Llama 3.2:1b/3b)
+- ✅ **bitHuman Avatar** - Real-time facial animation
+- ✅ **LiveKit + Web UI** - Complete conversation interface
+- ✅ **Zero Internet Dependency** - Everything runs on your Mac
+
+**Perfect for:**
+- 🏥 Healthcare applications requiring HIPAA compliance
+- 🏛️ Government/military with strict data policies
+- 💼 Financial services with privacy requirements
+- 🔒 Any scenario requiring complete data isolation
+
+**Quick Setup:**
 ```bash
-# Install Ollama for local LLM
-curl -fsSL https://ollama.ai/install.sh | sh
-ollama run llama2
+# Clone the complete offline example
+git clone https://github.com/bithuman-prod/public-macos-offline-example.git
+cd public-macos-offline-example
+
+# Install bitHuman's Apple voice plugin
+pip install https://github.com/bithuman-prod/public-sdk-examples/releases/download/v0.1/bithuman_voice-1.3.2-py3-none-any.whl
+
+# Start Apple voice services
+bithuman-voice serve --port 8000
+
+# Install and run local LLM
+ollama run llama3.2:1b
+
+# Launch complete stack
+docker compose up
+# Access at http://localhost:4202
 ```
 
-Then modify the agent to use local LLM:
-```python
-# Replace openai.LLM() with local model
-llm=openai.LLM(base_url="http://localhost:11434/v1")
-```
+**🌟 Enterprise Offline Mode:** Contact bitHuman for offline tokens to eliminate all internet requirements for authentication and metering.
 
 ---
 
