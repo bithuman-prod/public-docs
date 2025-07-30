@@ -28,6 +28,8 @@ Get a **full end-to-end bitHuman + LiveKit app with web UI** running in minutes!
 
 **What you get:** Complete visual agent with real-time conversation, web interface, and audio support.
 
+📦 **[Full Example Repository →](https://github.com/bithuman-prod/public-docker-example)**
+
 #### 1️⃣ Get Your Credentials
 - 🔑 **Free API Secret** → [console.bithuman.io](https://console.bithuman.io)
   
