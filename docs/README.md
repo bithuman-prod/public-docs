@@ -1,9 +1,6 @@
-# 🚀 Welcome to bitHuman SDK
+# 🚀 bitHuman SDK
 
 > **Create lifelike digital avatars that respond to audio in real-time**
-
-![bitHuman Banner](assets/images/bithuman-banner.jpg)
-*[Transform your applications with engaging, interactive avatars](https://imaginex.bithuman.ai/#create)*
 
 <style>
 @keyframes pulseGlow {
