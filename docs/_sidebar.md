@@ -5,7 +5,7 @@
   - [🐾 Animal Mode](getting-started/animal-mode.md)
 
 - **🔮 Preview API**
-  - [Cloud API Documentation](README.md#-preview-api)
+  - [Overview](preview/overview.md)
 
 - **Examples**
   - [Overview](examples/overview.md)
