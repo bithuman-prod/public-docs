@@ -4,10 +4,13 @@
   - [🎬 Media Guide](getting-started/media-guide.md)
   - [🐾 Animal Mode](getting-started/animal-mode.md)
 
+- **🔮 Preview API**
+  - [Cloud API Documentation](README.md#-preview-api)
+
 - **Examples**
   - [Overview](examples/overview.md)
   - [Audio Clip Avatar](examples/avatar-with-audio-clip.md)
   - [Live Microphone Avatar](examples/avatar-with-microphone.md)
   - [OpenAI Conversational Agent](examples/livekit-openai-agent.md)
   - [Apple Local Agent](examples/livekit-apple-local.md)
-  - [Raspberry Pi Agent](examples/livekit-raspberry-pi.md) 
+  - [Raspberry Pi Agent](examples/livekit-raspberry-pi.md)
