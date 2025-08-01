@@ -31,10 +31,6 @@ api-secret: YOUR_API_SECRET
 ```json
 {
   "prompt": "string (optional)",
-  "agent_id": "string (optional)",
-  "aspect_ratio": "string (optional)",
-  "video_aspect_ratio": "string (optional)", 
-  "duration": "number (optional)",
   "image": "string (optional)",
   "video": "string (optional)",
   "audio": "string (optional)"
