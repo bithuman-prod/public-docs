@@ -160,7 +160,7 @@ payload = {
 # Generate agent
 response = requests.post(generate_url, headers=headers, json=payload)
 result = response.json()
-agent_id = result["data"]["agent_id"]
+agent_id = result["agent_id"]
 
 print(f"Agent created: {agent_id}")
 
