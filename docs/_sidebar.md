@@ -6,6 +6,7 @@
 
 - **🔮 Preview API**
   - [Overview](preview/overview.md)
+  - [Cloud Integration](preview/cloud-integration.md)
 
 - **Examples**
   - [Overview](examples/overview.md)
