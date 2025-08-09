@@ -1,10 +1,10 @@
-# ☁️ Cloud Integration
+# 🚀 LiveKit Cloud Plugin
 
-![Cloud](https://img.shields.io/badge/Cloud-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white)
+![Cloud](https://img.shields.io/badge/Cloud-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white) ![LiveKit](https://img.shields.io/badge/LiveKit-00D4AA?style=for-the-badge&logo=livekit&logoColor=white)
 
-> **bitHuman Cloud Plugin Integration**
+> **bitHuman LiveKit Cloud Plugin Integration**
 
-Deploy bitHuman avatars using our cloud-hosted plugin for seamless integration without local model management.
+Use existing bitHuman agents in real-time applications with our cloud-hosted LiveKit plugin featuring Essence (CPU) and Expression (GPU) models.
 
 ---
 
@@ -22,7 +22,25 @@ GIT_LFS_SKIP_SMUDGE=1 uv pip install git+https://github.com/livekit/agents@main#
 ### 2. Get API Credentials
 - **API Secret**: [imaginex.bithuman.ai](https://imaginex.bithuman.ai/#api)
 
-### 3. Set Environment
+### 3. Find Your Agent ID
+
+To use an existing avatar with the Expression Model, you'll need to locate your agent ID from the bitHuman platform.
+
+#### Step 1: Locate the Share Button
+Find your desired agent card on the platform and click the **Share** button.
+
+![Find Share Button](../assets/images/examle-share.jpg)
+*Click the Share button on your agent card*
+
+#### Step 2: Copy the Agent ID
+In the share dialog, you'll find your unique **Agent ID**. Copy this ID for use in your code.
+
+![Find Agent ID](../assets/images/example-find-agent-id.jpg)
+*Copy the Agent ID from the share dialog*
+
+> **💡 Tip**: The Agent ID is a unique identifier for your specific avatar. You'll use this as the `avatar_id` parameter in your code.
+
+### 4. Set Environment
 ```bash
 export BITHUMAN_API_SECRET="your_api_secret"
 ```
@@ -48,7 +66,7 @@ response = bithuman_avatar.generate_response("Hello, how are you?")
 ```
 
 ### **Expression Model (GPU) - Agent ID**
-For custom avatars created through the platform:
+For custom avatars created through the platform (see [Find Your Agent ID](#3-find-your-agent-id) above for instructions):
 
 ```python
 import bithuman
@@ -104,13 +122,13 @@ response = bithuman_avatar.generate_response("Describe what you see")
 - Pre-trained personalities and behaviors
 - Optimized for conversational AI
 - Faster response times
-- Built-in emotion recognition
+- Supports full body and animal mode
 
 **Expression Model:**
-- Custom avatar creation
 - Dynamic facial expression mapping
 - Image-based avatar generation
-- Advanced customization options
+- Supports only face and shoulder & above
+- Do not support animal mode at the moment
 
 ---
 
@@ -253,13 +271,11 @@ print(f"Response generated in {response_time:.2f} seconds")
 Visit [imaginex.bithuman.ai](https://imaginex.bithuman.ai/#api) for current pricing and usage limits.
 
 **Free Tier Includes:**
-- 1,000 API calls per month
-- Basic avatar models
+- 199 credits per month
 - Community support
 
 **Pro Features:**
-- Unlimited API calls
-- Premium avatar models
+- Unlimited credits
 - Priority support
 - Custom model training
 
@@ -267,7 +283,7 @@ Visit [imaginex.bithuman.ai](https://imaginex.bithuman.ai/#api) for current pric
 
 ## ➡️ Next Steps
 
-**API Documentation:** [Preview API](overview.md)  
+**API Documentation:** [Agent Generation API](agent-generation-api.md)  
 **Local Examples:** [Examples Overview](../examples/overview.md)  
 **Community Support:** [Discord](https://discord.gg/yM7wRRqu)  
 

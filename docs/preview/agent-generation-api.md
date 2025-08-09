@@ -1,8 +1,8 @@
 
-# 🔮 Preview API
+# 🤖 Agent Generation API
 
-> **Early Access: bitHuman Cloud API**  
-> Experience the power of bitHuman avatars through our cloud-hosted API service.
+> **Early Access: bitHuman Agent Creation Service**  
+> Programmatically create interactive avatar agents through our cloud-hosted REST API.
 
 ## 🔑 Authentication
 

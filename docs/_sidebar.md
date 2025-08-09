@@ -4,9 +4,9 @@
   - [🎬 Media Guide](getting-started/media-guide.md)
   - [🐾 Animal Mode](getting-started/animal-mode.md)
 
-- **🔮 Preview API**
-  - [Overview](preview/overview.md)
-  - [Cloud Integration](preview/cloud-integration.md)
+- **☁️ Cloud Services**
+  - [Agent Generation API](preview/agent-generation-api.md)
+  - [LiveKit Cloud Plugin](preview/livekit-cloud-plugin.md)
 
 - **Examples**
   - [Overview](examples/overview.md)
