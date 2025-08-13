@@ -3,6 +3,7 @@
   - [✨ Prompt Guide](getting-started/prompts.md)
   - [🎬 Media Guide](getting-started/media-guide.md)
   - [🐾 Animal Mode](getting-started/animal-mode.md)
+  - [🔒 Compliance](compliance.md)
 
 - **☁️ Cloud Services**
   - [Agent Generation API](preview/agent-generation-api.md)
