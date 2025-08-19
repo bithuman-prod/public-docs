@@ -285,7 +285,7 @@ Visit [imaginex.bithuman.ai](https://imaginex.bithuman.ai/#api) for current pric
 
 **API Documentation:** [Agent Generation API](agent-generation-api.md)  
 **Local Examples:** [Examples Overview](../examples/overview.md)  
-**Community Support:** [Discord](https://discord.gg/yM7wRRqu)  
+**Community Support:** [Discord](https://discord.gg/ES953n7bPA)  
 
 ---
 

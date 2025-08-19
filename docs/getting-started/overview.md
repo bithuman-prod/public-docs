@@ -77,7 +77,7 @@ async for frame in runtime.run():
 2. **Master [✨ CO-STAR Prompts](getting-started/prompts.md)** for effective avatars
 3. **Try the [first example](examples/avatar-with-audio-clip.md)**
 4. **Browse [Source Code](https://github.com/bithuman-prod/public-sdk-examples)** on GitHub
-5. **Join our [Discord](https://discord.gg/yM7wRRqu)** for discussions and requests
+5. **Join our [Discord](https://discord.gg/ES953n7bPA)** for discussions and requests
 
 ## System Requirements
 

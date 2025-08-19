@@ -222,7 +222,7 @@ humidity = dht.humidity
 **Scale up?** → Deploy multiple Pi devices  
 **Go local?** → Replace OpenAI with local LLM
 
-**Need help?** → Join our [Discord community](https://discord.gg/yM7wRRqu) for Pi-specific discussions!
+**Need help?** → Join our [Discord community](https://discord.gg/ES953n7bPA) for Pi-specific discussions!
 
 ---
 

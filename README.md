@@ -206,7 +206,7 @@ The examples in `/examples` demonstrate different integration patterns:
 - 🎯 [bitHuman's LiveKit Plugin](https://docs.livekit.io/agents/integrations/avatar/bithuman/) - Integration guide
 
 ### Community & Support
-- 💬 [Join our Discord](https://discord.gg/yM7wRRqu) - Get help and discuss with the community
+- 💬 [Join our Discord](https://discord.gg/ES953n7bPA) - Get help and discuss with the community
 - 🌟 [Community Agents](https://imaginex.bithuman.ai/#community) - Browse and download avatar models
 - 🏠 [bitHuman Console](https://imaginex.bithuman.ai) - Manage your API keys and models
 

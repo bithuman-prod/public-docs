@@ -198,6 +198,6 @@ Quick setup, prompts, media uploads, and animal mode
 1. **📖 Read** [Getting Started](getting-started/overview.md)
 2. **🛠️ Try** [Audio Clip Example](examples/avatar-with-audio-clip.md) 
 3. **📦 Browse** [Source Code](https://github.com/bithuman-prod/public-sdk-examples) on GitHub
-4. **💬 Join** [Discord Community](https://discord.gg/yM7wRRqu) for discussions and requests
+4. **💬 Join** [Discord Community](https://discord.gg/ES953n7bPA) for discussions and requests
 
 *Let's build the future of human-computer interaction together!* 🌟

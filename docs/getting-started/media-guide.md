@@ -189,4 +189,4 @@ graph TD
 
 *Ready to upload your media? Visit [imaginex.bithuman.ai](https://imaginex.bithuman.ai) to get started!*
 
-**Questions?** Join our [Discord community](https://discord.gg/yM7wRRqu) for media upload tips and tricks! ✨ 
+**Questions?** Join our [Discord community](https://discord.gg/ES953n7bPA) for media upload tips and tricks! ✨ 

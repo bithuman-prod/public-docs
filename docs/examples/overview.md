@@ -78,4 +78,4 @@ export BITHUMAN_MODEL_PATH="/path/to/model.imx"
 
 *Pick one and follow the guide - you'll have an avatar running in minutes!*
 
-**Questions or requests?** Join our [Discord community](https://discord.gg/yM7wRRqu) for support and discussions! ✨ 
+**Questions or requests?** Join our [Discord community](https://discord.gg/ES953n7bPA) for support and discussions! ✨ 

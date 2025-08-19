@@ -180,4 +180,4 @@ Simply draw a rectangle that encompasses the entire face area. There is no need 
 
 *Create your animal avatar at [imaginex.bithuman.ai](https://imaginex.bithuman.ai)!*
 
-**Love animals?** Join our [Discord community](https://discord.gg/yM7wRRqu) to share your creations and get tips! 🐾 
+**Love animals?** Join our [Discord community](https://discord.gg/ES953n7bPA) to share your creations and get tips! 🐾 
