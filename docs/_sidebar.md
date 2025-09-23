@@ -9,6 +9,10 @@
   - [Agent Generation API](preview/agent-generation-api.md)
   - [LiveKit Cloud Plugin](preview/livekit-cloud-plugin.md)
 
+- **🔔 Integrations**
+  - [Webhook Integration](integrations/webhook-integration.md)
+  - [Real-time Events](integrations/event-handling.md)
+
 - **Examples**
   - [Overview](examples/overview.md)
   - [Audio Clip Avatar](examples/avatar-with-audio-clip.md)
