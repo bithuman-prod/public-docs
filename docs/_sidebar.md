@@ -7,6 +7,7 @@
 
 - **☁️ Cloud Services**
   - [Agent Generation API](preview/agent-generation-api.md)
+  - [Agent Context API](preview/agent-context-api.md)
   - [LiveKit Cloud Plugin](preview/livekit-cloud-plugin.md)
 
 - **🔔 Integrations**
