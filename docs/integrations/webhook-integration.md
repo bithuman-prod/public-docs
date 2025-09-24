@@ -12,8 +12,6 @@ Webhooks let your application **automatically respond** to avatar events:
 
 🎤 **User joins session** → Notify your CRM  
 💬 **Chat message sent** → Log to database  
-📊 **Session ends** → Update analytics  
-🚨 **Agent errors** → Alert your team  
 
 **Perfect for:** Analytics, CRM integration, Slack notifications, database logging, real-time dashboards
 
@@ -23,7 +21,16 @@ Webhooks let your application **automatically respond** to avatar events:
 
 ### 1️⃣ **Configure Your Endpoint**
 
-Set up a webhook endpoint in the [bitHuman dashboard](https://imaginex.bithuman.ai):
+Navigate to the webhook configuration in your bitHuman developer dashboard:
+
+#### **Step 1: Access Developer Dashboard**
+Visit [imaginex.bithuman.ai/#developer](https://imaginex.bithuman.ai/#developer) and navigate to the **Webhooks** section.
+
+![Webhook Configuration](../assets/images/webhook-dashboard.jpg)
+*Configure your webhook settings in the developer dashboard*
+
+#### **Step 2: Configure Endpoint URL**
+Set up your webhook endpoint URL in the configuration panel:
 
 ```http
 POST https://your-app.com/webhook
@@ -34,9 +41,7 @@ Content-Type: application/json
 
 Select which events trigger your webhook:
 - ✅ **room_join** - User connects to avatar
-- ✅ **chat_push** - Messages in conversation  
-- ✅ **session_end** - User disconnects
-- ✅ **agent_error** - Avatar encounters errors
+- ✅ **chat_push** - Messages in conversation
 
 ### 3️⃣ **Add Authentication (Recommended)**
 
@@ -53,38 +58,29 @@ X-API-Key: your-secret-key
 ### **Room Join Event**
 ```json
 {
-  "event": "room_join",
-  "timestamp": "2024-01-15T10:30:00Z",
-  "agentId": "agent_abc123",
-  "sessionId": "session_xyz789",
-  "user": {
-    "id": "user_456",
-    "ip": "192.168.1.100",
-    "userAgent": "Mozilla/5.0..."
+  "agent_id": "agent_abc123",
+  "event_type": "room.join",
+  "data": {
+    "room_name": "customer-support",
+    "participant_count": 1,
+    "session_id": "session_xyz789"
   },
-  "room": {
-    "name": "customer-support",
-    "participants": 1
-  }
+  "timestamp": 1705312200.0
 }
 ```
 
 ### **Chat Message Event**
 ```json
 {
-  "event": "chat_push", 
-  "timestamp": "2024-01-15T10:31:25Z",
-  "agentId": "agent_abc123",
-  "sessionId": "session_xyz789",
-  "message": {
-    "id": "msg_def456",
+  "agent_id": "agent_abc123",
+  "event_type": "chat.push",
+  "data": {
     "role": "user",
-    "content": "Hello, I need help with my order",
-    "type": "text"
+    "message": "Hello, I need help with my order",
+    "session_id": "session_xyz789",
+    "timestamp": 1705312285.0
   },
-  "user": {
-    "id": "user_456"
-  }
+  "timestamp": 1705312285.0
 }
 ```
 
@@ -109,25 +105,34 @@ def handle_webhook():
         return jsonify({'error': 'Invalid signature'}), 401
     
     data = request.json
-    event_type = data.get('event')
+    event_type = data.get('event_type')
     
     # Handle different events
-    if event_type == 'room_join':
+    if event_type == 'room.join':
         handle_user_joined(data)
-    elif event_type == 'chat_push':
+    elif event_type == 'chat.push':
         handle_new_message(data)
-    elif event_type == 'session_end':
-        handle_session_ended(data)
     
     return jsonify({'status': 'success'})
 
 def handle_user_joined(data):
-    print(f"User {data['user']['id']} joined agent {data['agentId']}")
+    agent_id = data.get('agent_id')
+    room_data = data.get('data', {})
+    session_id = room_data.get('session_id')
+    room_name = room_data.get('room_name')
+    participant_count = room_data.get('participant_count')
+    
+    print(f"User joined agent {agent_id} in room {room_name} (session: {session_id})")
     # Add your logic: Update CRM, send notification, etc.
 
 def handle_new_message(data):
-    message = data['message']
-    print(f"New {message['role']} message: {message['content']}")
+    agent_id = data.get('agent_id')
+    message_data = data.get('data', {})
+    role = message_data.get('role')
+    message = message_data.get('message')
+    session_id = message_data.get('session_id')
+    
+    print(f"New {role} message in session {session_id}: {message}")
     # Add your logic: Log to database, analyze sentiment, etc.
 
 def verify_signature(payload, signature):
@@ -159,21 +164,16 @@ app.post('/webhook', (req, res) => {
     return res.status(401).json({ error: 'Invalid signature' });
   }
 
-  const { event, agentId, user, message } = req.body;
+  const { event_type, agent_id, data } = req.body;
 
-  switch (event) {
-    case 'room_join':
-      console.log(`User ${user.id} joined agent ${agentId}`);
+  switch (event_type) {
+    case 'room.join':
+      console.log(`User joined agent ${agent_id} in room ${data.room_name} (session: ${data.session_id})`);
       // Your logic here
       break;
       
-    case 'chat_push':
-      console.log(`New message: ${message.content}`);
-      // Your logic here
-      break;
-      
-    case 'session_end':
-      console.log(`Session ${req.body.sessionId} ended`);
+    case 'chat.push':
+      console.log(`New ${data.role} message in session ${data.session_id}: ${data.message}`);
       // Your logic here
       break;
   }
@@ -238,16 +238,22 @@ def handle_room_join(data):
 ### **🗃️ Database Logging**
 ```python
 # PostgreSQL with SQLAlchemy
-def handle_session_end(data):
-    session = Session.create({
-        'agent_id': data['agentId'],
-        'user_id': data['user']['id'],
-        'started_at': data['startedAt'],
-        'ended_at': data['timestamp'],
-        'duration': calculate_duration(data),
-        'message_count': data.get('messageCount', 0)
+def handle_room_join(data):
+    agent_id = data.get('agent_id')
+    room_data = data.get('data', {})
+    session_id = room_data.get('session_id')
+    room_name = room_data.get('room_name')
+    participant_count = room_data.get('participant_count')
+    timestamp = data.get('timestamp')
+    
+    user_session = UserSession.create({
+        'agent_id': agent_id,
+        'session_id': session_id,
+        'room_name': room_name,
+        'participant_count': participant_count,
+        'started_at': timestamp
     })
-    db.session.add(session)
+    db.session.add(user_session)
     db.session.commit()
 ```
 
@@ -307,14 +313,35 @@ Use the **Test** button in the bitHuman dashboard to send sample events to your 
 
 ### **Manual Testing**
 ```bash
+# Test room.join event
 curl -X POST https://your-app.com/webhook \
   -H "Content-Type: application/json" \
   -H "X-bitHuman-Signature: sha256=..." \
   -d '{
-    "event": "room_join",
-    "timestamp": "2024-01-15T10:30:00Z",
-    "agentId": "test_agent",
-    "user": {"id": "test_user"}
+    "agent_id": "test_agent",
+    "event_type": "room.join",
+    "data": {
+      "room_name": "test-room",
+      "participant_count": 1,
+      "session_id": "session_123"
+    },
+    "timestamp": 1705312200.0
+  }'
+
+# Test chat.push event
+curl -X POST https://your-app.com/webhook \
+  -H "Content-Type: application/json" \
+  -H "X-bitHuman-Signature: sha256=..." \
+  -d '{
+    "agent_id": "test_agent",
+    "event_type": "chat.push",
+    "data": {
+      "role": "user",
+      "message": "Hello!",
+      "session_id": "session_123",
+      "timestamp": 1705312260.0
+    },
+    "timestamp": 1705312260.0
   }'
 ```
 
@@ -348,7 +375,7 @@ bitHuman automatically retries failed webhooks:
 ## 🎉 Ready to Integrate?
 
 1. **🔧 Set up your endpoint** - Create webhook handler in your app
-2. **🔑 Configure in dashboard** - Add URL and auth headers at [imaginex.bithuman.ai](https://imaginex.bithuman.ai)
+2. **🔑 Configure in dashboard** - Add URL and auth headers at [imaginex.bithuman.ai/#developer](https://imaginex.bithuman.ai/#developer)
 3. **🧪 Test integration** - Use the test button to verify
 4. **📊 Monitor events** - Watch real-time notifications flow in
 

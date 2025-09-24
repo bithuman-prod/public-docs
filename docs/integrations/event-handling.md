@@ -15,29 +15,14 @@ Build robust, scalable systems that respond intelligently to every avatar intera
 
 ```json
 {
-  "event": "room_join",
-  "timestamp": "2024-01-15T10:30:00Z",
-  "agentId": "agent_customer_support",
-  "sessionId": "session_xyz789",
-  "user": {
-    "id": "user_456",
-    "name": "John Doe",      // Optional
-    "ip": "192.168.1.100",
-    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-    "location": {            // Optional
-      "country": "US",
-      "city": "New York"
-    }
+  "agent_id": "agent_customer_support",
+  "event_type": "room.join",
+  "data": {
+    "room_name": "customer-support-room",
+    "participant_count": 1,
+    "session_id": "session_xyz789"
   },
-  "room": {
-    "name": "customer-support-room",
-    "participants": 1,
-    "capacity": 50
-  },
-  "metadata": {
-    "referrer": "https://your-website.com/support",
-    "campaign": "winter-sale-2024"
-  }
+  "timestamp": 1705312200.0
 }
 ```
 
@@ -48,97 +33,18 @@ Build robust, scalable systems that respond intelligently to every avatar intera
 
 ```json
 {
-  "event": "chat_push",
-  "timestamp": "2024-01-15T10:31:25Z", 
-  "agentId": "agent_customer_support",
-  "sessionId": "session_xyz789",
-  "message": {
-    "id": "msg_def456",
-    "role": "user",              // "user" or "assistant"
-    "content": "I need help with my order #12345",
-    "type": "text",              // "text", "audio", "image"
-    "language": "en",            // Detected language
-    "confidence": 0.95,          // Language detection confidence
-    "audioData": {              // Only for audio messages
-      "duration": 3.5,          // seconds
-      "format": "wav",
-      "sampleRate": 16000
-    }
+  "agent_id": "agent_customer_support",
+  "event_type": "chat.push",
+  "data": {
+    "role": "user",
+    "message": "I need help with my order #12345",
+    "session_id": "session_xyz789",
+    "timestamp": 1705312285.0
   },
-  "user": {
-    "id": "user_456",
-    "sessionDuration": 125      // seconds since joining
-  },
-  "conversation": {
-    "messageCount": 8,          // Total messages in session
-    "userMessageCount": 4,      // User messages only
-    "averageResponseTime": 1.2  // seconds
-  }
+  "timestamp": 1705312285.0
 }
 ```
 
-### **🏁 session_end**
-**When**: User disconnects or session times out  
-**Frequency**: Once per session  
-**Use for**: Analytics, billing, session summaries
-
-```json
-{
-  "event": "session_end",
-  "timestamp": "2024-01-15T10:45:30Z",
-  "agentId": "agent_customer_support", 
-  "sessionId": "session_xyz789",
-  "user": {
-    "id": "user_456"
-  },
-  "session": {
-    "startedAt": "2024-01-15T10:30:00Z",
-    "duration": 930,            // seconds
-    "messageCount": 24,
-    "userMessageCount": 12,
-    "agentMessageCount": 12,
-    "endReason": "user_disconnect", // "user_disconnect", "timeout", "error"
-    "averageResponseTime": 1.8,
-    "userSatisfaction": 4.5     // Optional rating
-  },
-  "metrics": {
-    "audioMinutes": 8.5,
-    "textMessages": 16,
-    "totalCost": 0.45           // USD
-  }
-}
-```
-
-### **🚨 agent_error**
-**When**: Avatar encounters technical issues  
-**Frequency**: Per error occurrence  
-**Use for**: Monitoring, alerting, debugging
-
-```json
-{
-  "event": "agent_error",
-  "timestamp": "2024-01-15T10:35:15Z",
-  "agentId": "agent_customer_support",
-  "sessionId": "session_xyz789",
-  "error": {
-    "code": "AUDIO_PROCESSING_FAILED",
-    "message": "Failed to process audio input",
-    "severity": "medium",       // "low", "medium", "high", "critical"
-    "category": "audio",        // "audio", "video", "llm", "network"
-    "retryable": true,
-    "details": {
-      "inputFormat": "mp3",
-      "fileSize": 524288,
-      "duration": 5.2
-    }
-  },
-  "context": {
-    "userMessage": "Can you hear me?",
-    "systemLoad": 0.75,
-    "memoryUsage": 0.68
-  }
-}
-```
 
 ---
 
@@ -167,17 +73,17 @@ def webhook_handler():
 @celery.task
 def process_webhook_async(data):
     """Process webhook in background"""
-    event_type = data.get('event')
+    event_type = data.get('event_type')
     
     try:
-        if event_type == 'chat_push':
+        if event_type == 'chat.push':
             analyze_sentiment(data)
             update_conversation_log(data)
             check_keyword_triggers(data)
-        elif event_type == 'session_end':
-            generate_session_summary(data)
-            update_user_analytics(data)
-            trigger_follow_up_email(data)
+        elif event_type == 'room.join':
+            log_user_session(data)
+            update_capacity_metrics(data)
+            trigger_welcome_message(data)
             
     except Exception as e:
         logger.error(f"Webhook processing failed: {e}")
@@ -192,30 +98,20 @@ Route different events to specialized handlers:
 class WebhookRouter:
     def __init__(self):
         self.handlers = {
-            'room_join': [
+            'room.join': [
                 self.log_user_session,
                 self.update_capacity_metrics,
                 self.trigger_welcome_message
             ],
-            'chat_push': [
+            'chat.push': [
                 self.analyze_message_sentiment,
                 self.detect_urgent_keywords,
                 self.update_conversation_state
-            ],
-            'session_end': [
-                self.calculate_session_metrics,
-                self.generate_summary_report,
-                self.schedule_follow_up
-            ],
-            'agent_error': [
-                self.alert_engineering_team,
-                self.log_error_metrics,
-                self.attempt_auto_recovery
             ]
         }
     
     def route_event(self, webhook_data):
-        event_type = webhook_data.get('event')
+        event_type = webhook_data.get('event_type')
         handlers = self.handlers.get(event_type, [])
         
         for handler in handlers:
@@ -248,32 +144,52 @@ class EventAggregator:
         session['events'].append(event_data)
         
         # Update session metadata
-        if event_type == 'room_join':
+        if event_type == 'room.join':
             session['start_time'] = event_data['timestamp']
-            session['user_id'] = event_data['user']['id']
+            session['session_id'] = event_data['data']['session_id']
             
-        elif event_type == 'session_end':
-            # Process complete session
-            self.analyze_complete_session(session)
+        elif event_type == 'chat.push':
+            # Update latest activity timestamp
+            session['last_activity'] = event_data['timestamp']
+    
+    def cleanup_inactive_sessions(self):
+        """Clean up sessions that have been inactive for too long"""
+        from datetime import datetime
+        current_time = datetime.now()
+        inactive_sessions = []
+        
+        for session_id, session_data in self.session_buffer.items():
+            last_activity = session_data.get('last_activity', session_data.get('start_time'))
+            if last_activity:
+                inactive_duration = (current_time - datetime.fromisoformat(last_activity)).seconds
+                if inactive_duration > 1800:  # 30 minutes of inactivity
+                    inactive_sessions.append(session_id)
+        
+        # Process and remove inactive sessions
+        for session_id in inactive_sessions:
+            session_data = self.session_buffer[session_id]
+            self.analyze_session_activity(session_data)
             del self.session_buffer[session_id]
     
-    def analyze_complete_session(self, session_data):
+    def analyze_session_activity(self, session_data):
+        """Analyze session activity based on available events"""
         events = session_data['events']
         
-        # Calculate engagement metrics
-        message_events = [e for e in events if e['event'] == 'chat_push']
-        user_messages = [e for e in message_events if e['message']['role'] == 'user']
+        # Calculate engagement metrics from available events
+        message_events = [e for e in events if e['event_type'] == 'chat.push']
+        user_messages = [e for e in message_events if e['data']['role'] == 'user']
         
         engagement_score = self.calculate_engagement(user_messages)
         session_quality = self.assess_session_quality(events)
         
-        # Store analytics
+        # Store analytics based on current activity
         self.store_session_analytics({
-            'user_id': session_data['user_id'],
-            'duration': self.calculate_duration(events),
+            'session_id': session_data['session_id'],
             'message_count': len(message_events),
+            'user_message_count': len(user_messages),
             'engagement_score': engagement_score,
-            'quality_score': session_quality
+            'quality_score': session_quality,
+            'last_activity': session_data.get('last_activity')
         })
 ```
 

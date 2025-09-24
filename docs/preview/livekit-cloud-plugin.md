@@ -20,25 +20,25 @@ GIT_LFS_SKIP_SMUDGE=1 uv pip install git+https://github.com/livekit/agents@main#
 ```
 
 ### 2. Get API Credentials
-- **API Secret**: [imaginex.bithuman.ai](https://imaginex.bithuman.ai/#api)
+- **API Secret**: [imaginex.bithuman.ai](https://imaginex.bithuman.ai/#developer)
 
 ### 3. Find Your Agent ID
 
 To use an existing avatar with the Expression Model, you'll need to locate your agent ID from the bitHuman platform.
 
-#### Step 1: Locate the Share Button
-Find your desired agent card on the platform and click the **Share** button.
+#### Step 1: Select Your Agent
+Navigate to your [imaginex.bithuman.ai](https://imaginex.bithuman.ai) dashboard and click on the agent card you want to use.
 
-![Find Share Button](../assets/images/examle-share.jpg)
-*Click the Share button on your agent card*
+![Agent Dashboard](../assets/images/agent-dashboard.jpg)
+*Click on the agent card you want to use for integration*
 
-#### Step 2: Copy the Agent ID
-In the share dialog, you'll find your unique **Agent ID**. Copy this ID for use in your code.
+#### Step 2: Access Agent Settings
+Once you click on the agent, the **Agent Settings** dialog will open, displaying your unique **Agent ID** at the top.
 
-![Find Agent ID](../assets/images/example-find-agent-id.jpg)
-*Copy the Agent ID from the share dialog*
+![Agent Settings Dialog](../assets/images/agent-settings-dialog.jpg)
+*Copy the Agent ID from the Agent Settings dialog*
 
-> **💡 Tip**: The Agent ID is a unique identifier for your specific avatar. You'll use this as the `avatar_id` parameter in your code.
+> **💡 Tip**: The Agent ID (e.g., `A78WKV4515`) is a unique identifier for your specific avatar. You'll use this as the `avatar_id` parameter in your code.
 
 ### 4. Set Environment
 ```bash
