@@ -6,7 +6,7 @@
 
 ## 🔑 Authentication
 
-Get your API secret from [imaginex.bithuman.ai](https://imaginex.bithuman.ai/#api)
+Get your API secret from [imaginex.bithuman.ai](https://imaginex.bithuman.ai/#developer)
 
 ## 📡 Base URL
 ```

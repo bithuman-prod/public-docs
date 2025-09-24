@@ -380,7 +380,7 @@ bitHuman automatically retries failed webhooks:
 4. **📊 Monitor events** - Watch real-time notifications flow in
 
 ### **Need Help?**
-- 📚 **Advanced patterns**: [Real-time Events Guide](event-handling.md)
+- 📚 **Advanced patterns**: [Real-time Events Guide](integrations/event-handling.md)
 - 💬 **Community support**: [Discord](https://discord.gg/yM7wRRqu)
 - 🛠️ **Technical issues**: Check our troubleshooting guide
 

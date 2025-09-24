@@ -26,7 +26,7 @@ The Agent Context API allows you to interact with your imaginex platform agents 
 ### **Prerequisites**
 - Agent created and deployed on [imaginex.bithuman.ai](https://imaginex.bithuman.ai) platform
 - Agent code identifier from your imaginex dashboard
-- Valid API secret from [imaginex.bithuman.ai](https://imaginex.bithuman.ai)
+- Valid API secret from [imaginex.bithuman.ai](https://imaginex.bithuman.ai/#developer)
 - Agent actively running in a LiveKit session (not local SDK agents)
 
 ### **Base URL**
@@ -539,16 +539,14 @@ def batch_context_update(agent_codes, context_data):
 
 ## 🎉 Ready to Get Started?
 
-1. **🔑 Get your API secret** - Visit [imaginex.bithuman.ai](https://imaginex.bithuman.ai)
+1. **🔑 Get your API secret** - Visit [imaginex.bithuman.ai](https://imaginex.bithuman.ai/#developer)
 2. **🤖 Create and deploy an agent** - Create your agent on the imaginex platform
 3. **📋 Get your agent code** - Find the agent code (e.g., A12345678) in your imaginex dashboard
 4. **🧪 Test the APIs** - Try the examples above with your imaginex agent
 5. **🚀 Build integrations** - Connect your systems for real-time interaction with platform agents
 
 ### **Need Help?**
-- 📚 **Full API reference**: [Agent Generation API](agent-generation-api.md)
 - 💬 **Community support**: [Discord](https://discord.gg/yM7wRRqu)
-- 🛠️ **Technical docs**: [LiveKit Integration](livekit-cloud-plugin.md)
 
 ---
 

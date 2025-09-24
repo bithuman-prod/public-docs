@@ -36,7 +36,7 @@ LIVEKIT_API_SECRET=secretABCDEF123456...
 LIVEKIT_URL=wss://your-project.livekit.cloud
 ```
 
-Get your API secret at [imaginex.bithuman.ai](https://imaginex.bithuman.ai) and download avatar models from the [Community page](https://imaginex.bithuman.ai/#community).
+Get your API secret at [imaginex.bithuman.ai](https://imaginex.bithuman.ai/#developer) and download avatar models from the [Community page](https://imaginex.bithuman.ai/#community).
 
 ## 💡 Integration Made Simple
 
