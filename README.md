@@ -2,7 +2,7 @@
 
 Interactive avatar examples using the bitHuman SDK for real-time conversational AI.
 
-> 📚 **Complete Documentation Available**: For detailed guides, tutorials, and comprehensive documentation, visit **[public-sdk-examples.vercel.app](https://public-sdk-examples.vercel.app/#/)**
+> 📚 **Complete Documentation Available**: For detailed guides, tutorials, and comprehensive documentation, visit **[here](https://docs.bithuman.ai/#/)**
 
 ## 🚀 Quick Start
 
@@ -201,7 +201,7 @@ The examples in `/examples` demonstrate different integration patterns:
 ## 🆘 Support & Community
 
 ### Documentation & Guides
-- 📖 [Complete Documentation](https://public-sdk-examples.vercel.app) - Comprehensive guides and examples
+- 📖 [Complete Documentation](https://docs.bithuman.ai/#/) - Comprehensive guides and examples
 - 🔧 [LiveKit Agents Docs](https://docs.livekit.io/agents) - Official LiveKit documentation
 - 🎯 [bitHuman's LiveKit Plugin](https://docs.livekit.io/agents/integrations/avatar/bithuman/) - Integration guide
 

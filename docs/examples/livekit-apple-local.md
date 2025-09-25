@@ -16,7 +16,7 @@ Full privacy - speech never leaves your Mac.
 
 ### 2. Install voice service
 ```bash
-pip install https://github.com/bithuman-prod/public-sdk-examples/releases/download/v0.1/bithuman_voice-1.3.2-py3-none-any.whl
+pip install https://github.com/bithuman-prod/public-docs/releases/download/v0.1/bithuman_voice-1.3.2-py3-none-any.whl
 ```
 
 ### 3. Start voice service
@@ -138,7 +138,7 @@ git clone https://github.com/bithuman-prod/public-macos-offline-example.git
 cd public-macos-offline-example
 
 # Install bitHuman's Apple voice plugin
-pip install https://github.com/bithuman-prod/public-sdk-examples/releases/download/v0.1/bithuman_voice-1.3.2-py3-none-any.whl
+pip install https://github.com/bithuman-prod/public-docs/releases/download/v0.1/bithuman_voice-1.3.2-py3-none-any.whl
 
 # Start Apple voice services
 bithuman-voice serve --port 8000

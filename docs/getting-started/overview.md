@@ -14,7 +14,7 @@ bitHuman SDK lets you build **interactive avatars** that:
 
 ## Quick Setup
 
-For complete setup instructions, see our **[README.md](https://github.com/bithuman-prod/public-sdk-examples/blob/main/README.md)** which covers:
+For complete setup instructions, see our **[README.md](https://github.com/bithuman-prod/public-docs/blob/main/README.md)** which covers:
 
 ### 🚀 Installation
 ```bash
@@ -73,10 +73,10 @@ async for frame in runtime.run():
 
 ## Next Steps
 
-1. **Read the [README](https://github.com/bithuman-prod/public-sdk-examples/blob/main/README.md)** for complete setup
+1. **Read the [README](https://github.com/bithuman-prod/public-docs/blob/main/README.md)** for complete setup
 2. **Master [✨ CO-STAR Prompts](getting-started/prompts.md)** for effective avatars
 3. **Try the [first example](examples/avatar-with-audio-clip.md)**
-4. **Browse [Source Code](https://github.com/bithuman-prod/public-sdk-examples)** on GitHub
+4. **Browse [Source Code](https://github.com/bithuman-prod/public-docs)** on GitHub
 5. **Join our [Discord](https://discord.gg/ES953n7bPA)** for discussions and requests
 
 ## System Requirements
@@ -93,4 +93,4 @@ async for frame in runtime.run():
 
 ---
 
-*For detailed instructions, troubleshooting, and advanced features, see our **[README.md](https://github.com/bithuman-prod/public-sdk-examples/blob/main/README.md)*** 
+*For detailed instructions, troubleshooting, and advanced features, see our **[README.md](https://github.com/bithuman-prod/public-docs/blob/main/README.md)*** 
