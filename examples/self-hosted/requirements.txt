@@ -1,0 +1,18 @@
+# Core LiveKit and bitHuman dependencies
+bithuman>=0.5.26
+livekit-agents[openai,bithuman,silero]>=1.2.11
+
+# Environment and configuration
+python-dotenv>=1.1.1
+
+# Audio processing (optional, for advanced audio features)
+numpy>=2.3.3
+scipy>=1.16.2
+
+# Logging and utilities
+loguru>=0.7.3
+
+# Development dependencies (optional)
+# pytest>=8.4.2
+# black>=25.9.0
+# ruff>=0.13.2
