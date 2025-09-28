@@ -72,7 +72,22 @@ To find avatar IDs:
 2. Browse available avatars
 3. Copy the avatar ID from your chosen model
 
-### 5. Run the Agent
+### 5. Test Your Setup (Recommended)
+
+Before running the agent, use the diagnostic tool to check your configuration:
+
+```bash
+# Run diagnostics to verify your setup
+python diagnose.py
+```
+
+This will check:
+- ✅ All required packages are installed
+- ✅ API keys are properly configured
+- ✅ BitHuman API is accessible
+- ✅ Avatar ID is valid
+
+### 6. Run the Agent
 
 ```bash
 # Development mode with web interface
@@ -85,7 +100,7 @@ python agent.py start
 python agent.py console
 ```
 
-### 6. Test Your Avatar
+### 7. Test Your Avatar
 
 #### Option A: LiveKit Playground (Recommended) 🎮
 
@@ -144,12 +159,41 @@ llm=openai.realtime.RealtimeModel(
 
 ## 🔧 Troubleshooting
 
+### Quick Diagnosis
+
+**First, run the diagnostic tool:**
+```bash
+python diagnose.py
+```
+
+This will automatically check for common issues and provide specific guidance.
+
 ### Common Issues
 
-1. **"Module not found" errors**: Make sure all dependencies are installed
-2. **API authentication failures**: Verify your API keys are correct
-3. **Avatar not loading**: Check that your avatar_id exists and is accessible
-4. **No audio/video**: Ensure your browser allows microphone/camera access
+1. **"Avatar session failed" errors**: 
+   - Try a different avatar ID from [community gallery](https://imaginex.bithuman.ai/#community)
+   - Check if your account has access to the avatar
+   - Verify BitHuman service status
+
+2. **"Module not found" errors**: 
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **API authentication failures**: 
+   - Verify your API keys are correct and active
+   - Check `.env` file formatting (no extra spaces/quotes)
+   - Ensure BITHUMAN_API_SECRET starts with `sk_bh_`
+
+4. **Avatar not loading**: 
+   - Run `python diagnose.py` to test avatar ID validity
+   - Try the default avatar ID or browse alternatives
+   - Check network connectivity to BitHuman API
+
+5. **No audio/video**: 
+   - Grant browser microphone/camera permissions
+   - Check LiveKit room connection
+   - Verify VAD (Voice Activity Detection) is working
 
 ### Debug Mode
 
@@ -159,6 +203,15 @@ Enable more detailed logging:
 import logging
 logging.basicConfig(level=logging.DEBUG)
 ```
+
+### Advanced Troubleshooting
+
+If the diagnostic tool shows all checks pass but you still have issues:
+
+1. **Check BitHuman service status**: Visit [status page](https://status.bithuman.ai) (if available)
+2. **Try different avatar**: Use a different avatar ID from the community gallery
+3. **Network issues**: Test from a different network/location
+4. **Resource constraints**: Ensure sufficient CPU/memory for avatar processing
 
 ## 📚 Next Steps
 
