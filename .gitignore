@@ -231,3 +231,6 @@ logs/
 # Temporary files
 *.tmp
 *.temp # GitHub Pages rebuild trigger
+
+# dev
+assets/
