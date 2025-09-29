@@ -33,13 +33,31 @@ async def entrypoint(ctx: JobContext):
     await ctx.wait_for_participant()
 
     logger.info("Starting bitHuman avatar runtime")
+
+    # Validate required environment variables
+    api_secret = os.getenv("BITHUMAN_API_SECRET")
+    if not api_secret:
+        raise ValueError("BITHUMAN_API_SECRET environment variable is required")
+    
+    avatar_id = os.getenv("BITHUMAN_AVATAR_ID", "A33NZN6384")
+    logger.info(f"Using avatar ID: {avatar_id}")
     
     # Initialize bitHuman avatar session with avatar_id
     # The avatar_id references a pre-configured avatar model in the cloud
-    bithuman_avatar = bithuman.AvatarSession(
-        api_secret=os.getenv("BITHUMAN_API_SECRET"),
-        avatar_id="A05XGC2284",  # Replace with your avatar ID from bitHuman platform
-    )
+    try:
+        bithuman_avatar = bithuman.AvatarSession(
+            api_url=os.getenv("BITHUMAN_API_URL", "https://auth.api.bithuman.ai/v1/runtime-tokens/request"),  # Default API URL
+            api_secret=api_secret,
+            avatar_id=avatar_id,  # Make avatar_id configurable
+        )
+        logger.info("BitHuman avatar session initialized successfully")
+    except Exception as e:
+        logger.error(f"Failed to initialize BitHuman avatar session: {str(e)}")
+        logger.error("Please check:")
+        logger.error("1. BITHUMAN_API_SECRET is valid")
+        logger.error(f"2. Avatar ID '{avatar_id}' exists and is accessible")
+        logger.error("3. BitHuman service is available")
+        raise
 
     # Configure the AI agent session with OpenAI Realtime API
     session = AgentSession(
@@ -52,10 +70,30 @@ async def entrypoint(ctx: JobContext):
 
     # Start the bitHuman avatar session
     # This connects the avatar to the LiveKit room and agent session
-    await bithuman_avatar.start(
-        session, 
-        room=ctx.room
-    )
+    try:
+        logger.info("Starting BitHuman avatar session...")
+        await bithuman_avatar.start(
+            session, 
+            room=ctx.room
+        )
+        logger.info("BitHuman avatar session started successfully")
+    except Exception as e:
+        logger.error(f"Failed to start BitHuman avatar session: {str(e)}")
+        logger.error("This could be due to:")
+        logger.error("1. Avatar ID not found or inaccessible")
+        logger.error("2. Insufficient resources in CPU mode")
+        logger.error("3. BitHuman service temporary unavailability")
+        logger.error("4. Network connectivity issues")
+        
+        # Try to provide more specific guidance based on error message
+        error_msg = str(e).lower()
+        if "avatar session failed" in error_msg:
+            logger.error("💡 Suggested fixes:")
+            logger.error("   - Try a different avatar ID from https://imaginex.bithuman.ai/#community")
+            logger.error("   - Check if the avatar supports CPU mode")
+            logger.error("   - Verify your account has access to this avatar")
+        
+        raise
 
     # Start the AI agent session
     await session.start(
