@@ -49,6 +49,8 @@ npm install && npm run dev
 
 ### 7. Run agent
 
+📁 **[View source code on GitHub](https://github.com/bithuman-prod/public-docs/blob/main/examples/agent-livekit-apple-local.py)**
+
 **Choose your mode:**
 
 **For web streaming:**

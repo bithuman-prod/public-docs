@@ -39,6 +39,8 @@ npm install && npm run dev
 
 ### 5. Run agent
 
+📁 **[View source code on GitHub](https://github.com/bithuman-prod/public-docs/blob/main/examples/agent-livekit-openai.py)**
+
 **Choose your mode:**
 
 **For web streaming (recommended):**

@@ -20,6 +20,9 @@ export BITHUMAN_MODEL_PATH="/path/to/model.imx"
 ```
 
 ### 3. Run
+
+📁 **[View source code on GitHub](https://github.com/bithuman-prod/public-docs/blob/main/examples/avatar-with-microphone.py)**
+
 ```bash
 python examples/avatar-with-microphone.py
 ```

@@ -21,6 +21,9 @@ export BITHUMAN_AUDIO_PATH="/path/to/audio.wav"  # optional
 ```
 
 ### 3. Run
+
+📁 **[View source code on GitHub](https://github.com/bithuman-prod/public-docs/blob/main/examples/avatar-with-audio-clip.py)**
+
 ```bash
 python examples/avatar-with-audio-clip.py
 ```
