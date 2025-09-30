@@ -56,6 +56,7 @@ export BITHUMAN_MODEL_PATH="/path/to/model.imx"
 **Get your setup:**
 - 🔑 **API secret**: [imaginex.bithuman.ai](https://imaginex.bithuman.ai)
 - 🤖 **Avatar models**: Download from Community page
+- 📁 **Source code**: [GitHub Examples Repository](https://github.com/bithuman-prod/public-docs/tree/main/examples)
 
 ![Download Models](../assets/images/image-download-model.png)
 *Download .imx models from the Community page*
