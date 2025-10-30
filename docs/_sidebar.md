@@ -8,11 +8,14 @@
 - **☁️ Cloud Services**
   - [Agent Generation API](preview/agent-generation-api.md)
   - [Agent Context API](preview/agent-context-api.md)
+  - [File Upload API](preview/file-upload-api.md)
+  - [Dynamics API](preview/dynamics-api.md)
   - [LiveKit Cloud Plugin](preview/livekit-cloud-plugin.md)
 
 - **🔔 Integrations**
   - [Webhook Integration](integrations/webhook-integration.md)
   - [Real-time Events](integrations/event-handling.md)
+  - [📱 Flutter Integration](integrations/flutter-integration.md)
 
 - **Examples**
   - [Overview](examples/overview.md)

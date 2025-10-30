@@ -40,6 +40,13 @@ Choose based on what you want to build.
 - **Good for**: IoT, edge devices
 - **Time**: 30 minutes
 
+### **📱 Mobile Apps**
+
+**[Flutter Integration](examples/flutter/)**
+- Cross-platform mobile/web app
+- **Good for**: Mobile apps, cross-platform
+- **Time**: 25 minutes
+
 ---
 
 ## 🛠️ Before You Start
@@ -74,6 +81,8 @@ export BITHUMAN_MODEL_PATH="/path/to/model.imx"
 **🔒 Need privacy?** → [Apple Local Agent](examples/livekit-apple-local.md)
 
 **🤖 Using IoT/edge?** → [Raspberry Pi Agent](examples/livekit-raspberry-pi.md)
+
+**📱 Building mobile apps?** → [Flutter Integration](examples/flutter/)
 
 ---
 

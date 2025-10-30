@@ -1,0 +1,44 @@
+name: bithuman_flutter_integration
+description: Flutter frontend for bitHuman AI avatar integration with LiveKit
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: ">=3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # LiveKit components (includes livekit_client) - fixed version
+  livekit_components: 1.2.2+hotfix.1
+  
+  # HTTP requests for token generation
+  http: ^1.1.0
+  
+  # UI components
+  cupertino_icons: ^1.0.6
+  
+  # Logging
+  logging: ^1.2.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  
+  # Code generation
+  json_serializable: ^6.7.1
+  build_runner: ^2.4.7
+  
+  # Linting
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+  
+  # Assets (optional - can be added later)
+  # assets:
+  #   - assets/images/
+  #   - assets/icons/
