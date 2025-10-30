@@ -1,0 +1,21 @@
+# LiveKit Agent (bundled extras for bithuman/openai/silero)
+livekit-agents[openai,bithuman,silero]>=1.2.16
+
+# Environment and Configuration
+python-dotenv>=1.1.1
+
+# Logging and Utilities
+loguru>=0.7.3
+
+# Token Server Dependencies
+flask>=3.0.3
+flask-cors>=4.0.0
+livekit>=0.11.0
+
+# Optional: Additional utilities
+requests>=2.31.0
+aiohttp>=3.8.0
+
+# Optional: Audio processing (advanced use-cases)
+numpy>=2.3.3
+scipy>=1.16.2

@@ -199,21 +199,27 @@ class ModernBithumanAgent:
     - High-performance audio/video processing pipeline
     """
 
-    def __init__(self, model_path: str, api_secret: str):
+    def __init__(self, model_path: str, api_secret: str, api_token: Optional[str] = None):
         """
         Initialize the modern BitHuman agent.
         
         Args:
             model_path: Path to the .imx model file
             api_secret: API secret for authentication
+            api_token: Optional API token for authentication
         """
         self.model_path = model_path
         self.api_secret = api_secret
+        self.api_token = api_token
         self.bithuman_runtime: Optional[AsyncBithuman] = None
         self.video_generator: Optional[BithumanVideoGenerator] = None
         self.avatar_runner: Optional[AvatarRunner] = None
         self.session: Optional[AgentSession] = None
         self.gesture_tasks = {}  # Gesture cooldown tracking
+        
+        # Add missing attributes for compatibility
+        self.use_native_bithuman = NATIVE_BITHUMAN_AVAILABLE
+        self.native_video_source = None  # Will be set to video_generator when available
         
         logger.info("Initialized modern BitHuman agent with native integration")
 
@@ -229,15 +235,23 @@ class ModernBithumanAgent:
             if not NATIVE_BITHUMAN_AVAILABLE:
                 raise RuntimeError("Native BitHuman components not available")
                 
-            self.bithuman_runtime = await AsyncBithuman.create(
-                model_path=self.model_path,
-                api_secret=self.api_secret,
-                insecure=True,  # For development
-            )
+            # Create AsyncBithuman runtime with proper parameters
+            create_params = {
+                "model_path": self.model_path,
+                "api_secret": self.api_secret,
+                "insecure": True,  # For development
+            }
+            
+            # Add token if available
+            if hasattr(self, 'api_token') and self.api_token:
+                create_params["token"] = self.api_token
+                
+            self.bithuman_runtime = await AsyncBithuman.create(**create_params)
             logger.info("✅ BitHuman runtime created successfully")
             
             # Create modern video generator
             self.video_generator = BithumanVideoGenerator(self.bithuman_runtime)
+            self.native_video_source = self.video_generator  # Set for compatibility
             
             # Get video properties for avatar configuration
             video_width, video_height = self.video_generator.video_resolution
@@ -507,6 +521,7 @@ async def entrypoint(ctx: JobContext):
     # Get configuration from environment variables
     model_path = os.getenv("BITHUMAN_MODEL_PATH")
     api_secret = os.getenv("BITHUMAN_API_SECRET")
+    api_token = os.getenv("BITHUMAN_API_TOKEN")  # Optional token
     
     if not model_path:
         raise ValueError("BITHUMAN_MODEL_PATH environment variable is required")
@@ -514,7 +529,7 @@ async def entrypoint(ctx: JobContext):
         raise ValueError("BITHUMAN_API_SECRET environment variable is required")
 
     # Initialize modern BitHuman agent
-    agent = ModernBithumanAgent(model_path, api_secret)
+    agent = ModernBithumanAgent(model_path, api_secret, api_token)
     
     try:
         # Initialize avatar and session
