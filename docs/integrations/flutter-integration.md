@@ -70,12 +70,27 @@ cd backend
 
 # Create requirements.txt
 cat > requirements.txt << EOF
-livekit-agents==0.6.0
-livekit-plugins-openai==0.6.0
-livekit-plugins-silero==0.6.0
-bithuman==0.1.0
-flask==3.0.0
-python-dotenv==1.0.0
+# LiveKit Agent bundle with OpenAI, bitHuman and Silero plugins
+livekit-agents[openai,bithuman,silero]>=1.2.16
+
+# Environment and configuration
+python-dotenv>=1.1.1
+
+# Logging and utilities
+loguru>=0.7.3
+
+# Token server
+flask>=3.0.3
+flask-cors>=4.0.0
+livekit>=0.11.0
+
+# Optional utilities
+requests>=2.31.0
+aiohttp>=3.8.0
+
+# Optional audio processing
+numpy>=2.3.3
+scipy>=1.16.2
 EOF
 
 # Create environment configuration
@@ -233,41 +248,45 @@ The Flutter app uses LiveKit Components for production-ready video calling UI:
 
 #### 1. pubspec.yaml
 ```yaml
-name: flutter_bithuman_avatar
-description: Flutter app with LiveKit and bitHuman AI avatar integration
+name: bithuman_flutter_integration
+description: Flutter frontend for bitHuman AI avatar integration with LiveKit
+publish_to: 'none'
 
 version: 1.0.0+1
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
-  flutter: ">=3.10.0"
+  flutter: ">=3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   
-  # LiveKit Components (production-ready UI)
+  # LiveKit components (includes livekit_client) - fixed version
   livekit_components: 1.2.2+hotfix.1
-  livekit_client: ^2.5.3
   
-  # State management
-  provider: ^6.1.1
-  
-  # HTTP requests
+  # HTTP requests for token generation
   http: ^1.1.0
   
-  # Environment variables
-  flutter_dotenv: ^5.1.0
+  # UI components
+  cupertino_icons: ^1.0.6
+  
+  # Structured logging
+  logging: ^1.2.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.0
+  
+  # Code generation (optional)
+  json_serializable: ^6.7.1
+  build_runner: ^2.4.7
+  
+  # Linting
+  flutter_lints: ^6.0.0
 
 flutter:
   uses-material-design: true
-  assets:
-    - .env
 ```
 
 #### 2. main.dart (Complete Implementation)
