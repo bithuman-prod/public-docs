@@ -99,12 +99,21 @@ api-secret: YOUR_API_SECRET
 {
   "success": true,
   "data": {
-    "dynamics": "https://storage.supabase.co/dynamics-model.bin",
-    "status": "generating",
-    "agent_id": "A91XMB7113"
+    "dynamics": "https://storage.supabase.co/dynamics-model.imx",
+    "status": "ready",
+    "agent_id": "A91XMB7113",
+    "gestures": ["mini_wave_hello", "talk_head_nod_subtle", "blow_kiss_heart", "laugh_react"]
   }
 }
 ```
+
+**Response Fields:**
+| Field | Type | Description |
+|-------|------|-------------|
+| `dynamics` | string \| null | URL to the dynamics model file, or null if not generated |
+| `status` | string | Current status of dynamics generation (see Status Values below) |
+| `agent_id` | string | The agent ID |
+| `gestures` | array | List of available gesture action names that can be triggered via RPC |
 
 **Status Values:**
 - `"generating"` - Dynamics are currently being generated

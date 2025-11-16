@@ -65,6 +65,129 @@ bithuman_avatar = bithuman.AvatarSession(
 response = bithuman_avatar.generate_response("Hello, how are you?")
 ```
 
+### **Essence Model with Dynamics (RPC-based Gesture Triggers)**
+For reactive avatar gestures triggered by user speech keywords:
+
+**Step 1: Get Available Gesture Actions**
+
+Before setting up keyword triggers, you should first retrieve the list of available gesture actions for your agent. The available gestures are user-defined and generated based on your agent's dynamics configuration. See the [Get Dynamics endpoint](./dynamics-api.md#get-dynamics) in the Dynamics API documentation for details.
+
+```python
+import requests
+
+# Get available gestures for your agent
+agent_id = "A04MXD0151"
+url = f"https://public.api.bithuman.ai/v1/dynamics/{agent_id}"
+headers = {"api-secret": "YOUR_API_SECRET"}
+
+response = requests.get(url, headers=headers)
+dynamics_data = response.json()
+
+if dynamics_data.get("success"):
+    available_gestures = dynamics_data["data"].get("gestures", [])
+    print(f"Available gestures: {available_gestures}")
+    # Example output: ["mini_wave_hello", "talk_head_nod_subtle", "blow_kiss_heart", "laugh_react"]
+    # Note: Actual gestures depend on your agent's dynamics configuration
+else:
+    print("Failed to get dynamics or agent has no dynamics configured")
+    available_gestures = []
+```
+
+> **Note:** The gesture actions are user-defined and vary based on your agent's dynamics generation. Always check the `gestures` array from the API response to see what actions are available for your specific agent.
+
+**Step 2: Set Up Keyword-to-Action Mapping**
+
+Once you know the available gestures, create a keyword mapping:
+
+```python
+from livekit.agents import AgentSession, JobContext, UserInputTranscribedEvent
+from livekit import rtc
+import asyncio
+import json
+from datetime import datetime
+
+# Keyword-to-action mapping (use gestures from Step 1)
+# Note: Map keywords to actual gesture names from available_gestures array
+# The gesture names below are examples - use the actual names from your agent's dynamics
+KEYWORD_ACTION_MAP = {
+    "laugh": "laugh_react",
+    "laughing": "laugh_react",
+    "haha": "laugh_react",
+    "funny": "laugh_react",
+    # Add more mappings based on available_gestures from Step 1
+    # Example mappings (adjust based on your agent's actual gestures):
+    # "yes": "talk_head_nod_subtle",
+    # "hello": "mini_wave_hello",
+    # "kiss": "blow_kiss_heart",
+}
+
+async def send_dynamics_trigger(
+    local_participant: rtc.LocalParticipant,
+    destination_identity: str,
+    action: str,
+) -> None:
+    """Send RPC message to trigger dynamics action"""
+    payload = {
+        "action": action,
+        "identity": local_participant.identity,
+        "timestamp": datetime.utcnow().isoformat(),
+    }
+    
+    await local_participant.perform_rpc(
+        destination_identity=destination_identity,
+        method="trigger_dynamics",
+        payload=json.dumps(payload),
+    )
+
+async def entrypoint(ctx: JobContext):
+    """Agent entrypoint with dynamics support"""
+    await ctx.connect()
+    await ctx.wait_for_participant()
+    
+    # ... setup avatar session ...
+    
+    @session.on("user_input_transcribed")
+    def on_user_input_transcribed(event: UserInputTranscribedEvent):
+        """Detect keywords and trigger dynamics"""
+        if not event.is_final:
+            return
+        
+        transcript = event.transcript.lower()
+        
+        # Check for keywords
+        for keyword, action in KEYWORD_ACTION_MAP.items():
+            if keyword in transcript:
+                # Trigger dynamics for all participants
+                for identity in ctx.room.remote_participants.keys():
+                    asyncio.create_task(
+                        send_dynamics_trigger(
+                            ctx.room.local_participant,
+                            identity,
+                            action
+                        )
+                    )
+                break
+```
+
+**How it works:**
+1. **Get available gestures** - Call `GET /v1/dynamics/{agent_id}` to retrieve the list of available gesture actions
+2. **Map keywords to actions** - Create a keyword-to-action mapping using the gestures from step 1
+3. **Listen for user input** - Agent listens to user speech via `user_input_transcribed` events
+4. **Detect keywords** - When keywords like "laugh" are detected, it sends RPC messages to avatar workers
+5. **Trigger gestures** - Avatar workers receive `trigger_dynamics` RPC calls and execute corresponding gestures
+6. **Debounce protection** - Gestures are triggered with debounce protection to prevent spam
+
+**Example Flow:**
+1. Get dynamics status: `GET /v1/dynamics/A04MXD0151` → Returns `["mini_wave_hello", "talk_head_nod_subtle", "blow_kiss_heart", "laugh_react"]` (example - actual gestures depend on your agent)
+2. User says "That's funny!" → Agent detects "funny" keyword
+3. Agent sends RPC with `action: "laugh_react"` → Avatar performs laughing gesture
+
+**Important:** Always verify that the gesture action exists in the `gestures` array before using it in your keyword mapping. Using a non-existent gesture will result in the RPC call being ignored by the avatar worker.
+
+> **⏱️ Performance Note:** When using dynamics with RPC-based gesture triggers, the avatar worker model connection and loading typically takes approximately **20 seconds** on first initialization.
+
+See [agent_with_dynamics.py](https://github.com/bithuman-prod/public-docs/tree/main/examples/cloud/essence/agent_with_dynamics.py) for a complete working example.
+
 ### **Expression Model (GPU) - Agent ID**
 For custom avatars created through the platform (see [Find Your Agent ID](#3-find-your-agent-id) above for instructions):
 
