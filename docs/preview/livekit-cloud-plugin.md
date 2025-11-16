@@ -70,7 +70,7 @@ For reactive avatar gestures triggered by user speech keywords:
 
 **Step 1: Get Available Gesture Actions**
 
-Before setting up keyword triggers, you should first retrieve the list of available gesture actions for your agent. The available gestures are user-defined and generated based on your agent's dynamics configuration. See the [Get Dynamics endpoint](./dynamics-api.md#get-dynamics) in the Dynamics API documentation for details.
+Before setting up keyword triggers, you should first retrieve the list of available gesture actions for your agent. The available gestures are user-defined and generated based on your agent's dynamics configuration. See the [Get Dynamics endpoint](preview/dynamics-api.md#get-dynamics) in the Dynamics API documentation for details.
 
 ```python
 import requests
