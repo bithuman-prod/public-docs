@@ -94,15 +94,32 @@ api-secret: YOUR_API_SECRET
 |-----------|------|-------------|
 | `agent_id` | string | Agent ID to get dynamics for |
 
-**Response:**
+**Response (when dynamics are generated):**
 ```json
 {
   "success": true,
   "data": {
-    "dynamics": "https://storage.supabase.co/dynamics-model.imx",
+    "url": "https://storage.supabase.co/dynamics-model.imx",
     "status": "ready",
     "agent_id": "A91XMB7113",
-    "gestures": ["mini_wave_hello", "talk_head_nod_subtle", "blow_kiss_heart", "laugh_react"]
+    "gestures": {
+      "mini_wave_hello": "https://storage.supabase.co/mini_wave_hello.mp4",
+      "talk_head_nod_subtle": "https://storage.supabase.co/talk_head_nod_subtle.mp4",
+      "blow_kiss_heart": "https://storage.supabase.co/blow_kiss_heart.mp4"
+    }
+  }
+}
+```
+
+**Response (when dynamics are not generated yet):**
+```json
+{
+  "success": true,
+  "data": {
+    "url": null,
+    "status": "ready",
+    "agent_id": "A91XMB7113",
+    "gestures": {}
   }
 }
 ```
@@ -110,10 +127,11 @@ api-secret: YOUR_API_SECRET
 **Response Fields:**
 | Field | Type | Description |
 |-------|------|-------------|
-| `dynamics` | string \| null | URL to the dynamics model file, or null if not generated |
+| `url` | string \| null | URL to the dynamics model file (.imx file), or null if not generated |
 | `status` | string | Current status of dynamics generation (see Status Values below) |
 | `agent_id` | string | The agent ID |
-| `gestures` | array | List of available gesture action names that can be triggered via RPC |
+| `gestures` | object | Dictionary of available gestures, where keys are gesture action names and values are video URLs |
+| `gestures[gesture_name]` | string \| null | URL to the gesture video file for the specified gesture name |
 
 **Status Values:**
 - `"generating"` - Dynamics are currently being generated

@@ -215,7 +215,6 @@ class ModernBithumanAgent:
         self.video_generator: Optional[BithumanVideoGenerator] = None
         self.avatar_runner: Optional[AvatarRunner] = None
         self.session: Optional[AgentSession] = None
-        self.gesture_tasks = {}  # Gesture cooldown tracking
         
         # Add missing attributes for compatibility
         self.use_native_bithuman = NATIVE_BITHUMAN_AVAILABLE
@@ -302,42 +301,6 @@ class ModernBithumanAgent:
             logger.error(f"Traceback: {traceback.format_exc()}")
             raise
 
-    async def setup_intelligent_features(self) -> None:
-        """
-        Setup intelligent features including gesture triggers and context awareness.
-        Uses modern patterns for enhanced user interaction.
-        """
-        logger.info("🧠 Setting up intelligent features...")
-        
-        # Define supported gesture mappings (currently only mini_wave_hello is supported)
-        self.gesture_mappings = {
-            "mini_wave_hello": {
-                "keywords": ["hello", "hi", "hey", "goodbye", "bye", "greetings"],
-                "context": "greeting",
-                "cooldown": 3.0,
-                "description": "Friendly greeting with wave animation"
-            }
-        }
-        
-        # Log configured intelligent gestures
-        for gesture, config in self.gesture_mappings.items():
-            logger.info(f"🎭 Configured '{gesture}' ({config['context']}) - {config['description']}")
-        
-        logger.info("✅ Intelligent features configured successfully")
-
-        # Define gesture triggers with keywords
-        gesture_configs = [
-            {
-                "gesture": "mini_wave_hello",
-                "keywords": ["hello", "hi", "hey", "greetings"],
-                "description": "Friendly greeting gesture"
-            }
-        ]
-
-        # Note: Gesture triggers are handled manually in trigger_contextual_gesture method
-        # The bithuman.AvatarSession doesn't have built-in register_gesture_trigger method
-        logger.info("Gesture trigger configurations loaded (handled manually)")
-
     async def handle_conversation_events(self) -> None:
         """Handle real-time conversation events and trigger appropriate responses."""
         if not self.session:
@@ -354,12 +317,6 @@ class ModernBithumanAgent:
                 role = event.item.role
                 message = event.item.text_content or str(event.item.content)
                 logger.info(f"[Event] Conversation item added - Role: {role}, Message: {message}")
-                
-                # Only trigger gestures for user messages
-                if role == "user" and message:
-                    # Create a background task for gesture triggering
-                    loop = asyncio.get_event_loop()
-                    loop.create_task(self.trigger_contextual_gesture(message))
             except Exception as e:
                 logger.error(f"Error in conversation_item_added handler: {e}")
 
@@ -370,10 +327,6 @@ class ModernBithumanAgent:
                 if event.is_final:
                     transcript = event.transcript.replace("\n", "\\n")
                     logger.info(f"[Event] User input transcribed (final): {transcript}")
-                    
-                    # Trigger gesture based on final transcript
-                    loop = asyncio.get_event_loop()
-                    loop.create_task(self.trigger_contextual_gesture(transcript))
                 else:
                     logger.debug(f"[Event] User input transcribed (interim): {event.transcript}")
             except Exception as e:
@@ -402,45 +355,6 @@ class ModernBithumanAgent:
 
         logger.info("Conversation event listeners configured successfully")
 
-    async def trigger_contextual_gesture(self, text: str) -> None:
-        """
-        Advanced contextual gesture triggering with intelligent pattern matching.
-        Uses modern NLP-inspired keyword detection and cooldown management.
-        """
-        if not self.video_generator:
-            return
-            
-        text_lower = text.lower().strip()
-        if not text_lower:
-            return
-        
-        # Advanced gesture matching with context awareness
-        for gesture, config in getattr(self, 'gesture_mappings', {}).items():
-            keywords = config['keywords']
-            cooldown = config['cooldown']
-            context = config['context']
-            
-            # Smart keyword matching with word boundaries
-            if any(keyword in text_lower for keyword in keywords):
-                try:
-                    current_time = time.time()
-                    last_trigger = self.gesture_tasks.get(gesture, 0)
-                    
-                    # Respect individual gesture cooldowns
-                    if current_time - last_trigger > cooldown:
-                        # Trigger gesture through video generator
-                        await self.video_generator.trigger_gesture(gesture)
-                        
-                        # Update cooldown tracking
-                        self.gesture_tasks[gesture] = current_time
-                        
-                        logger.info(f"🎭 Triggered {context} gesture: {gesture} (cooldown: {cooldown}s)")
-                        break  # Only trigger one gesture per text input
-                        
-                except Exception as e:
-                    logger.error(f"❌ Failed to trigger gesture {gesture}: {e}")
-                    import traceback
-                    logger.debug(f"Gesture error traceback: {traceback.format_exc()}")
 
     async def setup_audio_interruption_handling(self) -> None:
         """
@@ -467,13 +381,6 @@ class ModernBithumanAgent:
                 
                 if self.bithuman_runtime:
                     logger.debug("🤖 BitHuman runtime is operational")
-                
-                # Clean up old gesture tasks
-                current_time = time.time()
-                self.gesture_tasks = {
-                    k: v for k, v in self.gesture_tasks.items() 
-                    if current_time - v < 300  # Keep last 5 minutes
-                }
                 
                 await asyncio.sleep(30)  # Run every 30 seconds
                 
@@ -534,9 +441,6 @@ async def entrypoint(ctx: JobContext):
     try:
         # Initialize avatar and session
         await agent.initialize_avatar(ctx)
-        
-        # Setup intelligent features
-        await agent.setup_intelligent_features()
         
         # Start the AI agent session with custom instructions
         await agent.session.start(

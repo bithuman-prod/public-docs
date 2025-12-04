@@ -39,7 +39,7 @@ async def entrypoint(ctx: JobContext):
     if not api_secret:
         raise ValueError("BITHUMAN_API_SECRET environment variable is required")
     
-    avatar_id = os.getenv("BITHUMAN_AVATAR_ID", "A33NZN6384")
+    avatar_id = os.getenv("BITHUMAN_AVATAR_ID", "A31KJC8622")
     logger.info(f"Using avatar ID: {avatar_id}")
     
     # Initialize bitHuman avatar session with avatar_id
@@ -65,17 +65,19 @@ async def entrypoint(ctx: JobContext):
             voice="coral",  # Available voices: alloy, echo, fable, onyx, nova, shimmer, coral
             model="gpt-4o-mini-realtime-preview",  # Use the realtime preview model
         ),
-        vad=silero.VAD.load()  # Voice Activity Detection for better conversation flow
+        min_interruption_words=0,
+        resume_false_interruption=False,  # Disabled because DataStreamAudioOutput doesn't support pause/resume
+        min_interruption_duration=0.1,  # Reduced to 100ms for faster interruption response
+        min_endpointing_delay=0.3,  # Reduced to 300ms for more natural conversation flow
+        vad=silero.VAD.load(),  # Voice Activity Detection now actually used for interruption
+        turn_detection="vad",  # Explicitly use VAD for turn detection
     )
 
     # Start the bitHuman avatar session
     # This connects the avatar to the LiveKit room and agent session
     try:
         logger.info("Starting BitHuman avatar session...")
-        await bithuman_avatar.start(
-            session, 
-            room=ctx.room
-        )
+        await bithuman_avatar.start(session, room=ctx.room)
         logger.info("BitHuman avatar session started successfully")
     except Exception as e:
         logger.error(f"Failed to start BitHuman avatar session: {str(e)}")
@@ -84,16 +86,39 @@ async def entrypoint(ctx: JobContext):
         logger.error("2. Insufficient resources in CPU mode")
         logger.error("3. BitHuman service temporary unavailability")
         logger.error("4. Network connectivity issues")
-        
+
         # Try to provide more specific guidance based on error message
         error_msg = str(e).lower()
         if "avatar session failed" in error_msg:
             logger.error("💡 Suggested fixes:")
-            logger.error("   - Try a different avatar ID from https://imaginex.bithuman.ai/#community")
+            logger.error(
+                "   - Try a different avatar ID from https://imaginex.bithuman.ai/#community"
+            )
             logger.error("   - Check if the avatar supports CPU mode")
             logger.error("   - Verify your account has access to this avatar")
-        
+
         raise
+
+    # Setup event handlers to monitor interruption behavior
+    @session.on("user_state_changed")
+    def on_user_state_changed(event):
+        logger.info(f"👤 [USER_STATE] {event.old_state} -> {event.new_state}")
+        if event.new_state == "speaking":
+            logger.info(
+                "🎤 [INTERRUPTION] User started speaking - interruption should trigger now"
+            )
+
+    @session.on("agent_state_changed")
+    def on_agent_state_changed(event):
+        logger.info(f"🤖 [AGENT_STATE] {event.old_state} -> {event.new_state}")
+        if event.new_state == "speaking":
+            logger.info(
+                "🔊 [INTERRUPTION] Agent started speaking - can be interrupted now"
+            )
+
+    @session.on("agent_false_interruption")
+    def on_agent_false_interruption(event):
+        logger.warning(f"⚠️  [FALSE_INTERRUPTION] Detected at {event.created_at}")
 
     # Start the AI agent session
     await session.start(
@@ -108,6 +133,8 @@ async def entrypoint(ctx: JobContext):
         room_output_options=RoomOutputOptions(audio_enabled=False),
     )
 
+    logger.info("✅ Agent session started with VAD-based interruption enabled")
+
 
 if __name__ == "__main__":
     # Configure and run the LiveKit agent worker
@@ -116,7 +143,7 @@ if __name__ == "__main__":
             entrypoint_fnc=entrypoint,
             worker_type=WorkerType.ROOM,
             job_memory_warn_mb=1500,  # Warning threshold for memory usage
-            num_idle_processes=1,     # Number of idle processes to maintain
+            num_idle_processes=1,  # Number of idle processes to maintain
             initialize_process_timeout=120,  # Timeout for process initialization
         )
     )

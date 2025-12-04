@@ -19,6 +19,7 @@
 
 - **Examples**
   - [Overview](examples/overview.md)
+  - [LiveKit Self-Hosted Plugin](examples/livekit-bithuman-plugin-self-hosted.md)
   - [Audio Clip Avatar](examples/avatar-with-audio-clip.md)
   - [Live Microphone Avatar](examples/avatar-with-microphone.md)
   - [OpenAI Conversational Agent](examples/livekit-openai-agent.md)

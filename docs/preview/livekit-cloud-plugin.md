@@ -76,7 +76,7 @@ Before setting up keyword triggers, you should first retrieve the list of availa
 import requests
 
 # Get available gestures for your agent
-agent_id = "A04MXD0151"
+agent_id = "A31KJC8622"
 url = f"https://public.api.bithuman.ai/v1/dynamics/{agent_id}"
 headers = {"api-secret": "YOUR_API_SECRET"}
 
@@ -84,10 +84,15 @@ response = requests.get(url, headers=headers)
 dynamics_data = response.json()
 
 if dynamics_data.get("success"):
-    available_gestures = dynamics_data["data"].get("gestures", [])
+    # gestures is now a dictionary: {gesture_key: video_url}
+    gestures_dict = dynamics_data["data"].get("gestures", {})
+    available_gestures = list(gestures_dict.keys())
     print(f"Available gestures: {available_gestures}")
     # Example output: ["mini_wave_hello", "talk_head_nod_subtle", "blow_kiss_heart", "laugh_react"]
     # Note: Actual gestures depend on your agent's dynamics configuration
+    
+    # You can also access video URLs directly:
+    # video_url = gestures_dict.get("mini_wave_hello")
 else:
     print("Failed to get dynamics or agent has no dynamics configured")
     available_gestures = []
@@ -170,19 +175,21 @@ async def entrypoint(ctx: JobContext):
 ```
 
 **How it works:**
-1. **Get available gestures** - Call `GET /v1/dynamics/{agent_id}` to retrieve the list of available gesture actions
-2. **Map keywords to actions** - Create a keyword-to-action mapping using the gestures from step 1
-3. **Listen for user input** - Agent listens to user speech via `user_input_transcribed` events
-4. **Detect keywords** - When keywords like "laugh" are detected, it sends RPC messages to avatar workers
-5. **Trigger gestures** - Avatar workers receive `trigger_dynamics` RPC calls and execute corresponding gestures
-6. **Debounce protection** - Gestures are triggered with debounce protection to prevent spam
+1. **Get available gestures** - Call `GET /v1/dynamics/{agent_id}` to retrieve the dictionary of available gesture actions (keys are gesture names, values are video URLs)
+2. **Extract gesture keys** - Get the list of gesture names from the `gestures` dictionary keys
+3. **Map keywords to actions** - Create a keyword-to-action mapping using the gesture names from step 2
+4. **Listen for user input** - Agent listens to user speech via `user_input_transcribed` events
+5. **Detect keywords** - When keywords like "laugh" are detected, it sends RPC messages to avatar workers
+6. **Trigger gestures** - Avatar workers receive `trigger_dynamics` RPC calls and execute corresponding gestures
+7. **Debounce protection** - Gestures are triggered with debounce protection to prevent spam
 
 **Example Flow:**
-1. Get dynamics status: `GET /v1/dynamics/A04MXD0151` → Returns `["mini_wave_hello", "talk_head_nod_subtle", "blow_kiss_heart", "laugh_react"]` (example - actual gestures depend on your agent)
-2. User says "That's funny!" → Agent detects "funny" keyword
-3. Agent sends RPC with `action: "laugh_react"` → Avatar performs laughing gesture
+1. Get dynamics status: `GET /v1/dynamics/A31KJC8622` → Returns `{"gestures": {"mini_wave_hello": "https://...", "talk_head_nod_subtle": "https://...", "blow_kiss_heart": "https://...", "laugh_react": "https://..."}}` (example - actual gestures depend on your agent)
+2. Extract gesture keys: `available_gestures = list(response["data"]["gestures"].keys())` → `["mini_wave_hello", "talk_head_nod_subtle", "blow_kiss_heart", "laugh_react"]`
+3. User says "That's funny!" → Agent detects "funny" keyword
+4. Agent sends RPC with `action: "laugh_react"` → Avatar performs laughing gesture
 
-**Important:** Always verify that the gesture action exists in the `gestures` array before using it in your keyword mapping. Using a non-existent gesture will result in the RPC call being ignored by the avatar worker.
+**Important:** Always verify that the gesture action exists in the `gestures` dictionary keys before using it in your keyword mapping. Using a non-existent gesture will result in the RPC call being ignored by the avatar worker.
 
 > **⏱️ Performance Note:** When using dynamics with RPC-based gesture triggers, the avatar worker model connection and loading typically takes approximately **20 seconds** on first initialization.
 

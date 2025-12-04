@@ -374,7 +374,7 @@ async def entrypoint(ctx: JobContext):
     if not api_secret:
         raise ValueError("BITHUMAN_API_SECRET environment variable is required")
 
-    avatar_id = os.getenv("BITHUMAN_AVATAR_ID", "A04MXD0151")
+    avatar_id = os.getenv("BITHUMAN_AVATAR_ID", "A31KJC8622")
     logger.info(f"Using avatar ID: {avatar_id}")
 
     # Initialize bitHuman avatar session with avatar_id
