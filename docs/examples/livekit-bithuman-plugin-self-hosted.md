@@ -65,7 +65,7 @@ For standard avatar interactions without dynamics:
 - High-performance streaming with VideoGenerator pattern
 - Real-time audio/video processing
 
-### **Self-Hosted Agent with Dynamics (RPC-based Gesture Triggers)**
+### **Self-Hosted Agent with Dynamics**
 
 For reactive avatar gestures triggered by user speech keywords:
 
