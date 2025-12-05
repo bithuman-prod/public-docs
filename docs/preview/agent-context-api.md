@@ -31,7 +31,7 @@ The Agent Context API allows you to interact with your imaginex platform agents 
 
 ### **Base URL**
 ```
-https://your-api-endpoint.com/v1/agent/{agent_code}
+https://public.api.bithuman.ai/v1/agent/{agent_code}
 ```
 
 > **Note**: `{agent_code}` is the unique identifier of your agent from the imaginex platform dashboard (e.g., `A12345678`)
