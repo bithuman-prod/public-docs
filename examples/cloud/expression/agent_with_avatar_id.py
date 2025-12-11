@@ -39,7 +39,7 @@ async def entrypoint(ctx: JobContext):
     bithuman_avatar = bithuman.AvatarSession(
         api_secret=os.getenv("BITHUMAN_API_SECRET"),
         avatar_id=os.getenv("BITHUMAN_AVATAR_ID", "A05XGC2284"),  # Use env var for flexibility
-        
+        model="expression",
         # Optional: Additional avatar configuration
         # avatar_voice_id="your_voice_id",  # Custom voice if available
         # avatar_motion_scale=1.0,          # Motion intensity (0.0-2.0)
