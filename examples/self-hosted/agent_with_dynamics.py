@@ -32,6 +32,7 @@ from livekit.agents import (
     Agent,
     AgentSession,
     JobContext,
+    JobProcess,
     RoomInputOptions,
     RoomOutputOptions,
     UserInputTranscribedEvent,
@@ -42,6 +43,7 @@ from livekit.agents import (
 from livekit.agents.voice.room_io import TextInputEvent
 from livekit.plugins import bithuman, openai, silero
 from bithuman.api import VideoControl
+from bithuman import AsyncBithuman
 
 # Configure logging
 logger = logging.getLogger("bithuman-selfhosted-dynamics-agent")
@@ -277,6 +279,44 @@ def create_text_input_handler(
     return handle_text_input
 
 
+def prewarm(proc: JobProcess):
+    """Prewarm shared resources for faster connection times."""
+    try:
+        # Load VAD model
+        proc.userdata["vad"] = silero.VAD.load(
+            min_speech_duration=0.1,
+            min_silence_duration=0.5,
+            prefix_padding_duration=0.1,
+        )
+        logger.info("VAD model preloaded")
+
+        # Check if runtime already prewarmed
+        if "bithuman_runtime" in proc.userdata:
+            logger.info("Runtime already prewarmed")
+            return
+
+        # Get model path
+        model_path = os.getenv("BITHUMAN_MODEL_PATH")
+        if not model_path:
+            logger.warning("BITHUMAN_MODEL_PATH not set, skipping runtime prewarm")
+            return
+
+        # Prewarm runtime
+        logger.info(f"Prewarming runtime: {model_path}")
+        runtime = AsyncBithuman(
+            model_path=model_path,
+            api_secret=os.getenv("BITHUMAN_API_SECRET"),
+            token=os.getenv("BITHUMAN_API_TOKEN"),
+            load_model=True,
+        )
+        proc.userdata["bithuman_runtime"] = runtime
+        logger.info("Runtime prewarmed successfully")
+
+    except Exception as e:
+        logger.error(f"Prewarm failed: {e}")
+        raise
+
+
 async def entrypoint(ctx: JobContext):
     """
     Main entrypoint for the self-hosted LiveKit agent with bitHuman avatar integration
@@ -308,12 +348,22 @@ async def entrypoint(ctx: JobContext):
         raise ValueError("BITHUMAN_API_SECRET environment variable is required")
     
     # Initialize bitHuman avatar session with model_path (self-hosted mode)
+    # Check if runtime was prewarmed
+    runtime = ctx.proc.userdata.get("bithuman_runtime")
+    
     try:
-        bithuman_avatar = bithuman.AvatarSession(
-            api_secret=api_secret,
-            api_token=api_token,
-            model_path=model_path,  # Use model_path for self-hosted mode
-        )
+        avatar_kwargs = {
+            "api_secret": api_secret,
+            "api_token": api_token,
+            "model_path": model_path,  # Use model_path for self-hosted mode
+        }
+        
+        # Use prewarmed runtime if available
+        if runtime:
+            logger.info("Using prewarmed runtime")
+            avatar_kwargs["runtime"] = runtime
+        
+        bithuman_avatar = bithuman.AvatarSession(**avatar_kwargs)
         logger.info("BitHuman avatar session initialized successfully")
     except Exception as e:
         logger.error(f"Failed to initialize BitHuman avatar session: {str(e)}")
@@ -324,17 +374,22 @@ async def entrypoint(ctx: JobContext):
         raise
     
     # Configure the AI agent session with OpenAI Realtime API
+    # Use prewarmed VAD if available
+    vad = ctx.proc.userdata.get("vad")
+    if not vad:
+        vad = silero.VAD.load(
+            min_speech_duration=0.1,
+            min_silence_duration=0.5,
+            prefix_padding_duration=0.1,
+        )
+    
     session = AgentSession(
         llm=openai.realtime.RealtimeModel(
             voice="coral",
             model="gpt-4o-realtime-preview-2025-06-03",
             temperature=0.7,
         ),
-        vad=silero.VAD.load(
-            min_speech_duration=0.1,
-            min_silence_duration=0.5,
-            prefix_padding_duration=0.1,
-        )
+        vad=vad,
     )
     
     # Start the bitHuman avatar session
@@ -423,5 +478,6 @@ if __name__ == "__main__":
             num_idle_processes=1,
             initialize_process_timeout=180,
             job_memory_limit_mb=8000,
+            prewarm_fnc=prewarm,
         )
     )
