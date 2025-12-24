@@ -1,7 +1,6 @@
 import asyncio
 import logging
 import os
-import time
 from collections.abc import AsyncGenerator, AsyncIterator
 from typing import Optional
 
@@ -31,7 +30,8 @@ from livekit.agents.voice.avatar import (
     QueueAudioOutput,
     VideoGenerator,
 )
-from livekit.plugins import bithuman, openai, silero
+from livekit.plugins import openai, silero
+
 from bithuman.api import VideoControl
 
 # Configure logging for better debugging
@@ -40,9 +40,11 @@ logger.setLevel(logging.INFO)
 
 # Import native BitHuman components for direct integration
 try:
+    import numpy as np
+
     from bithuman import AsyncBithuman, VideoFrame
     from bithuman.audio import float32_to_int16
-    import numpy as np
+
     NATIVE_BITHUMAN_AVAILABLE = True
     logger.info("Native BitHuman components imported successfully")
 except ImportError as e:
@@ -59,18 +61,18 @@ class BithumanVideoGenerator(VideoGenerator):
     Modern BitHuman video generator using LiveKit's VideoGenerator interface.
     Integrates native AsyncBithuman with advanced streaming capabilities.
     """
-    
+
     def __init__(self, bithuman_runtime: AsyncBithuman):
         """Initialize with an AsyncBithuman runtime instance."""
         self._runtime = bithuman_runtime
         self._first_frame_cache: Optional[np.ndarray] = None
-        
+
     @property
     def video_resolution(self) -> tuple[int, int]:
         """Get video resolution from BitHuman runtime."""
         if self._first_frame_cache is not None:
             return self._first_frame_cache.shape[1], self._first_frame_cache.shape[0]
-        
+
         # Try to get frame size from runtime
         try:
             frame_size = self._runtime.get_frame_size()
@@ -78,47 +80,52 @@ class BithumanVideoGenerator(VideoGenerator):
         except Exception:
             # Default fallback resolution
             return (512, 512)
-    
+
     @property
     def video_fps(self) -> int:
         """Get video FPS from BitHuman runtime settings."""
         try:
-            return getattr(self._runtime.settings, 'FPS', 25)
+            return getattr(self._runtime.settings, "FPS", 25)
         except AttributeError:
             return 25  # Default FPS
-    
+
     @property
     def audio_sample_rate(self) -> int:
         """Get audio sample rate from BitHuman runtime settings."""
         try:
-            return getattr(self._runtime.settings, 'INPUT_SAMPLE_RATE', 16000)
+            return getattr(self._runtime.settings, "INPUT_SAMPLE_RATE", 16000)
         except AttributeError:
             return 16000  # Default sample rate
-    
+
     @utils.log_exceptions(logger=logger)
     async def push_audio(self, frame: rtc.AudioFrame | AudioSegmentEnd) -> None:
         """Push audio frame to BitHuman runtime for processing."""
         if isinstance(frame, AudioSegmentEnd):
             await self._runtime.flush()
             return
-            
+
         await self._runtime.push_audio(
             bytes(frame.data), frame.sample_rate, last_chunk=False
         )
-    
+
     def clear_buffer(self) -> None:
         """Clear BitHuman runtime buffer (interrupt current processing)."""
         self._runtime.interrupt()
-    
-    def __aiter__(self) -> AsyncIterator[rtc.VideoFrame | rtc.AudioFrame | AudioSegmentEnd]:
+
+    def __aiter__(
+        self,
+    ) -> AsyncIterator[rtc.VideoFrame | rtc.AudioFrame | AudioSegmentEnd]:
         """Return async iterator for streaming frames."""
         return self._stream_impl()
-    
-    async def _stream_impl(self) -> AsyncGenerator[rtc.VideoFrame | rtc.AudioFrame | AudioSegmentEnd, None]:
+
+    async def _stream_impl(
+        self,
+    ) -> AsyncGenerator[rtc.VideoFrame | rtc.AudioFrame | AudioSegmentEnd, None]:
         """
         Advanced streaming implementation with optimized frame processing.
         Uses modern async generator patterns and efficient frame conversion.
         """
+
         def create_video_frame(image: np.ndarray) -> rtc.VideoFrame:
             """Create optimized video frame with RGBA conversion."""
             # Convert BGR to RGBA for better LiveKit compatibility
@@ -129,24 +136,26 @@ class BithumanVideoGenerator(VideoGenerator):
                 type=rtc.VideoBufferType.RGBA,
                 data=rgba_image.tobytes(),
             )
-        
+
         frame_count = 0
         logger.info("Starting BitHuman video generator streaming...")
-        
+
         try:
             async for frame in self._runtime.run():
                 frame_count += 1
-                
+
                 # Cache first frame for resolution detection
                 if self._first_frame_cache is None and frame.bgr_image is not None:
                     self._first_frame_cache = frame.bgr_image.copy()
-                    logger.info(f"Cached first frame with resolution: {self.video_resolution}")
-                
+                    logger.info(
+                        f"Cached first frame with resolution: {self.video_resolution}"
+                    )
+
                 # Yield video frame if available
                 if frame.bgr_image is not None:
                     video_frame = create_video_frame(frame.bgr_image)
                     yield video_frame
-                
+
                 # Yield audio frame if available
                 if frame.audio_chunk is not None:
                     audio_frame = rtc.AudioFrame(
@@ -156,22 +165,23 @@ class BithumanVideoGenerator(VideoGenerator):
                         samples_per_channel=len(frame.audio_chunk.array),
                     )
                     yield audio_frame
-                
+
                 # Yield end of speech marker
                 if frame.end_of_speech:
                     yield AudioSegmentEnd()
-                
+
                 # Periodic logging for monitoring
                 if frame_count % 500 == 0:
                     logger.debug(f"Processed {frame_count} frames in video generator")
-                    
+
         except asyncio.CancelledError:
             logger.info("BitHuman video generator streaming cancelled")
         except Exception as e:
             logger.error(f"Error in BitHuman video generator: {e}")
             import traceback
+
             logger.error(f"Traceback: {traceback.format_exc()}")
-    
+
     async def trigger_gesture(self, action: str) -> None:
         """Trigger a gesture in BitHuman runtime with advanced error handling."""
         try:
@@ -179,7 +189,7 @@ class BithumanVideoGenerator(VideoGenerator):
             logger.info(f"✅ Triggered gesture: {action}")
         except Exception as e:
             logger.error(f"❌ Failed to trigger gesture {action}: {e}")
-    
+
     async def stop(self) -> None:
         """Stop the BitHuman runtime gracefully."""
         try:
@@ -199,10 +209,12 @@ class ModernBithumanAgent:
     - High-performance audio/video processing pipeline
     """
 
-    def __init__(self, model_path: str, api_secret: str, api_token: Optional[str] = None):
+    def __init__(
+        self, model_path: str, api_secret: str, api_token: Optional[str] = None
+    ):
         """
         Initialize the modern BitHuman agent.
-        
+
         Args:
             model_path: Path to the .imx model file
             api_secret: API secret for authentication
@@ -215,11 +227,11 @@ class ModernBithumanAgent:
         self.video_generator: Optional[BithumanVideoGenerator] = None
         self.avatar_runner: Optional[AvatarRunner] = None
         self.session: Optional[AgentSession] = None
-        
+
         # Add missing attributes for compatibility
         self.use_native_bithuman = NATIVE_BITHUMAN_AVAILABLE
         self.native_video_source = None  # Will be set to video_generator when available
-        
+
         logger.info("Initialized modern BitHuman agent with native integration")
 
     async def initialize_avatar(self, ctx: JobContext) -> None:
@@ -227,38 +239,42 @@ class ModernBithumanAgent:
         Initialize the modern BitHuman avatar with advanced streaming capabilities.
         Uses the latest LiveKit patterns for optimal performance.
         """
-        logger.info(f"🚀 Initializing modern BitHuman avatar with model: {self.model_path}")
-        
+        logger.info(
+            f"🚀 Initializing modern BitHuman avatar with model: {self.model_path}"
+        )
+
         try:
             # Create native AsyncBithuman runtime
             if not NATIVE_BITHUMAN_AVAILABLE:
                 raise RuntimeError("Native BitHuman components not available")
-                
+
             # Create AsyncBithuman runtime with proper parameters
             create_params = {
                 "model_path": self.model_path,
                 "api_secret": self.api_secret,
                 "insecure": True,  # For development
             }
-            
+
             # Add token if available
-            if hasattr(self, 'api_token') and self.api_token:
+            if hasattr(self, "api_token") and self.api_token:
                 create_params["token"] = self.api_token
-                
+
             self.bithuman_runtime = await AsyncBithuman.create(**create_params)
             logger.info("✅ BitHuman runtime created successfully")
-            
+
             # Create modern video generator
             self.video_generator = BithumanVideoGenerator(self.bithuman_runtime)
             self.native_video_source = self.video_generator  # Set for compatibility
-            
+
             # Get video properties for avatar configuration
             video_width, video_height = self.video_generator.video_resolution
             video_fps = self.video_generator.video_fps
             audio_sample_rate = self.video_generator.audio_sample_rate
-            
-            logger.info(f"📺 Video config: {video_width}x{video_height}@{video_fps}fps, Audio: {audio_sample_rate}Hz")
-            
+
+            logger.info(
+                f"📺 Video config: {video_width}x{video_height}@{video_fps}fps, Audio: {audio_sample_rate}Hz"
+            )
+
             # Configure avatar options with detected properties
             avatar_options = AvatarOptions(
                 video_width=video_width,
@@ -267,7 +283,7 @@ class ModernBithumanAgent:
                 audio_sample_rate=audio_sample_rate,
                 audio_channels=1,
             )
-            
+
             # Create agent session with LLM and queue audio output for avatar runner
             self.session = AgentSession(
                 llm=openai.realtime.RealtimeModel(
@@ -280,10 +296,10 @@ class ModernBithumanAgent:
                     min_speech_duration=0.1,
                     min_silence_duration=0.5,
                     prefix_padding_duration=0.1,  # Updated parameter name
-                )
+                ),
             )
             self.session.output.audio = QueueAudioOutput()
-            
+
             # Create and start avatar runner
             self.avatar_runner = AvatarRunner(
                 room=ctx.room,
@@ -291,13 +307,14 @@ class ModernBithumanAgent:
                 audio_recv=self.session.output.audio,
                 options=avatar_options,
             )
-            
+
             await self.avatar_runner.start()
             logger.info("🎭 Avatar runner started successfully")
-            
+
         except Exception as e:
             logger.error(f"❌ Failed to initialize BitHuman avatar: {e}")
             import traceback
+
             logger.error(f"Traceback: {traceback.format_exc()}")
             raise
 
@@ -316,7 +333,9 @@ class ModernBithumanAgent:
             try:
                 role = event.item.role
                 message = event.item.text_content or str(event.item.content)
-                logger.info(f"[Event] Conversation item added - Role: {role}, Message: {message}")
+                logger.info(
+                    f"[Event] Conversation item added - Role: {role}, Message: {message}"
+                )
             except Exception as e:
                 logger.error(f"Error in conversation_item_added handler: {e}")
 
@@ -328,7 +347,9 @@ class ModernBithumanAgent:
                     transcript = event.transcript.replace("\n", "\\n")
                     logger.info(f"[Event] User input transcribed (final): {transcript}")
                 else:
-                    logger.debug(f"[Event] User input transcribed (interim): {event.transcript}")
+                    logger.debug(
+                        f"[Event] User input transcribed (interim): {event.transcript}"
+                    )
             except Exception as e:
                 logger.error(f"Error in user_input_transcribed handler: {e}")
 
@@ -355,7 +376,6 @@ class ModernBithumanAgent:
 
         logger.info("Conversation event listeners configured successfully")
 
-
     async def setup_audio_interruption_handling(self) -> None:
         """
         Setup advanced audio interruption handling for natural conversations.
@@ -365,8 +385,10 @@ class ModernBithumanAgent:
         # 1. LiveKit VAD (Voice Activity Detection) in the session
         # 2. AvatarRunner's built-in interruption management
         # 3. BitHuman runtime's interrupt() method
-        
-        logger.info("🎤 Audio interruption handling configured via modern LiveKit VAD and AvatarRunner")
+
+        logger.info(
+            "🎤 Audio interruption handling configured via modern LiveKit VAD and AvatarRunner"
+        )
 
     async def run_periodic_tasks(self) -> None:
         """Run periodic maintenance tasks."""
@@ -375,15 +397,15 @@ class ModernBithumanAgent:
                 # Periodic health check for modern components
                 if self.avatar_runner:
                     logger.debug("🔍 Avatar runner is running normally")
-                
+
                 if self.video_generator:
                     logger.debug("🎥 Video generator is streaming normally")
-                
+
                 if self.bithuman_runtime:
                     logger.debug("🤖 BitHuman runtime is operational")
-                
+
                 await asyncio.sleep(30)  # Run every 30 seconds
-                
+
             except asyncio.CancelledError:
                 break
             except Exception as e:
@@ -394,7 +416,7 @@ class ModernBithumanAgent:
 async def entrypoint(ctx: JobContext):
     """
     Modern entrypoint for the self-hosted BitHuman LiveKit agent.
-    
+
     Features:
     - Advanced connection management with exponential backoff
     - Native AsyncBithuman integration with VideoGenerator pattern
@@ -405,7 +427,9 @@ async def entrypoint(ctx: JobContext):
     max_retries = 3
     for attempt in range(max_retries):
         try:
-            logger.info(f"Attempting to connect to LiveKit room (attempt {attempt + 1}/{max_retries})")
+            logger.info(
+                f"Attempting to connect to LiveKit room (attempt {attempt + 1}/{max_retries})"
+            )
             await asyncio.wait_for(ctx.connect(), timeout=60.0)  # 60 seconds timeout
             logger.info("Connected to LiveKit room successfully")
             break
@@ -422,14 +446,16 @@ async def entrypoint(ctx: JobContext):
 
     # Wait for at least one participant to join the room with extended timeout
     logger.info("Waiting for participant to join...")
-    await asyncio.wait_for(ctx.wait_for_participant(), timeout=120.0)  # 2 minutes timeout for participant
+    await asyncio.wait_for(
+        ctx.wait_for_participant(), timeout=120.0
+    )  # 2 minutes timeout for participant
     logger.info("Participant joined, initializing agent")
 
     # Get configuration from environment variables
     model_path = os.getenv("BITHUMAN_MODEL_PATH")
     api_secret = os.getenv("BITHUMAN_API_SECRET")
     api_token = os.getenv("BITHUMAN_API_TOKEN")  # Optional token
-    
+
     if not model_path:
         raise ValueError("BITHUMAN_MODEL_PATH environment variable is required")
     if not api_secret:
@@ -437,11 +463,11 @@ async def entrypoint(ctx: JobContext):
 
     # Initialize modern BitHuman agent
     agent = ModernBithumanAgent(model_path, api_secret, api_token)
-    
+
     try:
         # Initialize avatar and session
         await agent.initialize_avatar(ctx)
-        
+
         # Start the AI agent session with custom instructions
         await agent.session.start(
             agent=Agent(
@@ -457,15 +483,15 @@ async def entrypoint(ctx: JobContext):
             # Disable room audio output since audio is handled by the avatar
             room_output_options=RoomOutputOptions(audio_enabled=False),
         )
-        
+
         # Setup conversation event listeners after session is started
         await agent.handle_conversation_events()
-        
+
         # Start periodic maintenance tasks
         periodic_task = asyncio.create_task(agent.run_periodic_tasks())
-        
+
         logger.info("Self-hosted bitHuman agent is now running")
-        
+
         # Keep the agent running
         try:
             await asyncio.Future()  # Run forever
@@ -477,7 +503,7 @@ async def entrypoint(ctx: JobContext):
             if agent.use_native_bithuman and agent.native_video_source:
                 await agent.native_video_source.stop()
                 logger.info("Native BitHuman resources cleaned up")
-            
+
     except Exception as e:
         logger.error(f"Failed to start self-hosted agent: {e}")
         # Cleanup on error as well
@@ -493,7 +519,7 @@ if __name__ == "__main__":
             entrypoint_fnc=entrypoint,
             worker_type=WorkerType.ROOM,
             job_memory_warn_mb=8000,  # Higher memory limit for self-hosted models
-            num_idle_processes=1,     # Number of idle processes to maintain
+            num_idle_processes=1,  # Number of idle processes to maintain
             initialize_process_timeout=180,  # Longer timeout for model loading (3 minutes)
             # Additional performance settings for latest version
             job_memory_limit_mb=8000,  # Hard memory limit
