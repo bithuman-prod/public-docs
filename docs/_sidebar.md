@@ -12,6 +12,9 @@
   - [Dynamics API](preview/dynamics-api.md)
   - [LiveKit Cloud Plugin](preview/livekit-cloud-plugin.md)
 
+- **🚀 Preview Features**
+  - [Self-Hosted GPU Container](preview/self-hosted-gpu-container.md)
+
 - **🔔 Integrations**
   - [Webhook Integration](integrations/webhook-integration.md)
   - [Real-time Events](integrations/event-handling.md)
