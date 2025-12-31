@@ -190,10 +190,30 @@ LIVEKIT_API_SECRET=your_api_secret
 OPENAI_API_KEY=sk-your-openai-api-key
 ```
 
-**Optional: Custom Avatar Image**
+**Optional: Avatar Selection**
+
+You can specify an avatar in two ways:
+
+**Option 1: Use Pre-configured Avatar ID (Recommended for faster startup)**
 
 ```bash
-# Use a custom avatar image
+# AVATAR_ID corresponds to a subdirectory name in PRESET_AVATARS_DIR on the worker
+# Example: If the worker has PRESET_AVATARS_DIR configured with subdirectories:
+#   /persistent-storage/preset-avatars/
+#   ├── avatar_001/
+#   │   └── face.jpg
+#   └── avatar_002/
+#       └── portrait.png
+# Then you can use AVATAR_ID=avatar_001 or AVATAR_ID=avatar_002
+# This provides ~4s startup time as avatars are pre-encoded
+AVATAR_ID=avatar_001
+```
+
+**Option 2: Use Custom Avatar Image**
+
+```bash
+# Use a custom avatar image (URL or local file path)
+# This will encode the image on first use (~6s startup time)
 BITHUMAN_AVATAR_IMAGE=/path/to/your/avatar.jpg
 # or
 BITHUMAN_AVATAR_IMAGE=https://example.com/avatar.jpg

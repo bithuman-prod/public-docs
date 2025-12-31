@@ -21,7 +21,8 @@ Required Environment Variables:
 - OPENAI_API_KEY: OpenAI API key (for realtime model)
 
 Optional Environment Variables:
-- BITHUMAN_AVATAR_IMAGE: Path to local image or URL for avatar
+- AVATAR_ID: Pre-configured avatar ID (corresponds to subdirectory in PRESET_AVATARS_DIR on worker)
+- BITHUMAN_AVATAR_IMAGE: Path to local image or URL for avatar (alternative to AVATAR_ID)
 - OPENAI_VOICE: Voice for OpenAI realtime model (default: ash)
 - AVATAR_PERSONALITY: Custom personality prompt for the avatar
 """
@@ -158,7 +159,7 @@ async def entrypoint(ctx: JobContext):
         # Avatar image - sent as file upload or URL to the worker
         avatar_image=avatar_image,
         # Optional: Pre-configured avatar ID on the worker
-        avatar_id="A82GTB4785",
+        avatar_id=os.getenv("AVATAR_ID", "A05XGC2284"),
     )
 
     # Configure the AI agent session with OpenAI Realtime
