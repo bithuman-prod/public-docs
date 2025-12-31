@@ -6,6 +6,8 @@ This directory contains advanced examples showcasing different ways to create ex
 
 - `agent_with_avatar_id.py` - Uses pre-configured avatar from bitHuman cloud
 - `agent_with_avatar_image.py` - Uses custom avatar images (local files or URLs)
+- `agent_with_custom_gpu_endpoint.py` - Uses self-hosted GPU worker (Docker, AWS, GCP)
+- `custom_gpu_endpoint.env.example` - Environment configuration for custom GPU endpoint
 - `avatar.jpg` - Sample avatar image (you can replace with your own)
 - `README.md` - This documentation
 
@@ -129,6 +131,238 @@ avatar_image = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=4
 
 # Environment variable
 avatar_image = os.getenv("BITHUMAN_AVATAR_IMAGE")
+```
+
+## 🖥️ Example 3: Custom GPU Endpoint
+
+Use a self-hosted or cloud-deployed GPU avatar worker for maximum control and customization.
+
+> **Preview Feature**: This example requires a special version of the `livekit-plugins-bithuman` package. See [Plugin Installation](#plugin-installation) below.
+
+### Features
+- **Self-hosted GPU workers** - Deploy on your own infrastructure (AWS, GCP, Azure)
+- **Cost optimization** - Pay only for the GPU resources you use
+- **Data privacy** - Avatar images and audio never leave your infrastructure
+- **Preset avatar caching** - Pre-encode avatars for ~4s startup time
+- **Full control** - Extend with custom logic and integrations
+
+### Supported Deployments
+
+| Platform | Deployment Mode | Scaling Strategy |
+|----------|----------------|------------------|
+| **Cerebrium** | Serverless GPU | 0-30 replicas, scale-to-zero |
+| **AWS ECS** | Fargate with GPU | 1-10 tasks, auto-scaling |
+| **Google Cloud Run** | GPU containers | 0-100 instances, scale-to-zero |
+| **Self-hosted** | Docker with GPU | Manual or external orchestration |
+
+### Usage
+
+```bash
+python agent_with_custom_gpu_endpoint.py dev
+```
+
+### Configuration
+
+Create a `.env` file from the example:
+
+```bash
+cp custom_gpu_endpoint.env.example .env
+```
+
+**Required Environment Variables:**
+
+```bash
+# Your custom GPU worker endpoint
+BITHUMAN_CUSTOM_GPU_URL=https://your-gpu-worker.com/launch
+
+# API token for authentication
+BITHUMAN_API_TOKEN=your_api_token_here
+
+# LiveKit configuration
+LIVEKIT_URL=wss://your-livekit-server.livekit.cloud
+LIVEKIT_API_KEY=your_api_key
+LIVEKIT_API_SECRET=your_api_secret
+
+# OpenAI for voice
+OPENAI_API_KEY=sk-your-openai-api-key
+```
+
+**Optional: Custom Avatar Image**
+
+```bash
+# Use a custom avatar image
+BITHUMAN_AVATAR_IMAGE=/path/to/your/avatar.jpg
+# or
+BITHUMAN_AVATAR_IMAGE=https://example.com/avatar.jpg
+```
+
+### Endpoint URL Formats
+
+**Cerebrium:**
+```
+https://api.aws.us-east-1.cerebrium.ai/v4/p-xxxxx/gpu-avatar-worker/launch
+```
+
+**AWS ECS (with Load Balancer):**
+```
+https://gpu-worker-elb.us-east-1.elb.amazonaws.com/launch
+```
+
+**Google Cloud Run:**
+```
+https://gpu-avatar-worker-xxxxx.a.run.app/launch
+```
+
+**Local Development:**
+```
+http://localhost:8089/launch
+```
+
+### Plugin Installation
+
+> **Important**: This example requires a special version of the `livekit-plugins-bithuman` package with custom GPU endpoint support.
+
+**Install the required version:**
+
+```bash
+# Install from the feature branch
+pip install "livekit-plugins-bithuman @ git+https://github.com/CathyL0/agents.git@feat/add-custom-bithuman-gpu-avatar-endpoint#subdirectory=livekit-plugins/livekit-plugins-bithuman"
+```
+
+**Add to your `requirements.txt`:**
+
+```txt
+# Custom GPU endpoint support (preview feature)
+livekit-plugins-bithuman @ git+https://github.com/CathyL0/agents.git@feat/add-custom-bithuman-gpu-avatar-endpoint#subdirectory=livekit-plugins/livekit-plugins-bithuman
+```
+
+### Deployment Guides
+
+#### Quick Deploy with Docker
+
+```bash
+# Pull the official image
+docker pull docker.io/bithumanhubs/gpu-avatar-worker:latest
+
+# Run with GPU support
+docker run --gpus all -p 8089:8089 \
+    -v /path/to/model-storage:/persistent-storage/avatar-model \
+    docker.io/bithumanhubs/gpu-avatar-worker:latest
+
+# Test the endpoint
+curl http://localhost:8089/health
+# Should return: {"status": "ok", "active_workers": 0}
+```
+
+#### Deploy on AWS ECS
+
+For production deployment on AWS with auto-scaling, see the [Self-Hosted GPU Container](../../../docs/preview/self-hosted-gpu-container.md) guide which includes:
+
+- Complete ECS task definition with GPU support
+- Auto-scaling policies (long-running vs cold start)
+- Recommended GPU instance types (g4dn, g5, p3)
+- Cost estimation and optimization strategies
+- Security and networking configuration
+
+### Performance Comparison
+
+| Configuration | First Frame | Notes |
+|---------------|-------------|-------|
+| **Long-running + Preset Cache** | ~4s | Avatar images pre-encoded, fastest startup |
+| **Long-running + No Cache** | ~6s | Avatar encoding on first request |
+| **Cold Start** | ~30-40s | Full avatar engine initialization |
+
+### Preset Avatar Directory
+
+For optimal performance with long-running containers, configure `PRESET_AVATARS_DIR`:
+
+```bash
+docker run --gpus all -p 8089:8089 \
+    -v /path/to/model-storage:/persistent-storage/avatar-model \
+    -v /path/to/preset-avatars:/persistent-storage/preset-avatars \
+    -e AVATAR_MODEL_DIR=/persistent-storage/avatar-model \
+    -e PRESET_AVATARS_DIR=/persistent-storage/preset-avatars \
+    docker.io/bithumanhubs/gpu-avatar-worker:latest
+```
+
+**Directory Structure:**
+```
+/persistent-storage/preset-avatars/
+├── avatar_001/
+│   └── face.jpg          # Image file (avatar_001 is the avatar_id)
+├── avatar_002/
+│   └── portrait.png      # Image file (avatar_002 is the avatar_id)
+└── avatar_003/
+    └── avatar.webp       # Image file (avatar_003 is the avatar_id)
+```
+
+Each subdirectory name becomes the `avatar_id` for that preset. The container automatically pre-encodes these images at startup for instant loading.
+
+See the [Self-Hosted GPU Container](../../../docs/preview/self-hosted-gpu-container.md) guide for more details.
+
+### Worker Options
+
+The agent is configured with optimized settings for GPU avatar processing:
+
+```python
+WorkerOptions(
+    entrypoint_fnc=entrypoint,
+    worker_type=WorkerType.ROOM,
+    # Higher memory limit for GPU avatar processing
+    job_memory_warn_mb=3000,
+    num_idle_processes=1,
+    # Longer timeout for GPU model initialization
+    initialize_process_timeout=240,
+)
+```
+
+### API Reference
+
+**Launch Endpoint:**
+
+```http
+POST /launch
+Content-Type: multipart/form-data
+
+livekit_url: wss://your-livekit-server
+livekit_token: <jwt_token>
+room_name: my-room
+avatar_image: <file>  # or avatar_image_url: https://...
+```
+
+**Response:**
+```json
+{
+  "status": "launched",
+  "worker_id": "worker_abc123"
+}
+```
+
+### Troubleshooting
+
+**Connection fails:**
+```bash
+# Verify endpoint is accessible
+curl http://your-gpu-worker:8089/health
+
+# Check authentication
+curl -H "Authorization: Bearer YOUR_TOKEN" \
+     http://your-gpu-worker:8089/health
+```
+
+**High first frame latency:**
+- Verify PRESET_AVATARS_DIR is configured (for ~4s startup)
+- Use long-running containers instead of cold start
+- Check GPU utilization: `nvidia-smi`
+
+**Plugin not found:**
+```bash
+# Verify installation
+pip show livekit-plugins-bithuman
+
+# Reinstall if needed
+pip install --force-reinstall \
+  "livekit-plugins-bithuman @ git+https://github.com/CathyL0/agents.git@feat/add-custom-bithuman-gpu-avatar-endpoint#subdirectory=livekit-plugins/livekit-plugins-bithuman"
 ```
 
 ## 🧪 Testing Your Avatars
@@ -291,6 +525,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 ## 📚 Next Steps
 
+- [Self-Hosted GPU Container Guide](../../../docs/preview/self-hosted-gpu-container.md) - Deploy GPU workers on AWS, GCP, or your own infrastructure
 - Learn about [advanced LiveKit features](https://docs.livekit.io/agents)
 - Explore [bitHuman avatar customization](https://docs.bithuman.ai)
 - Try the [basic essence example](../essence/) for simpler setup

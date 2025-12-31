@@ -33,12 +33,14 @@ async def entrypoint(ctx: JobContext):
     await ctx.wait_for_participant()
 
     logger.info("Starting bitHuman expression avatar with avatar_id")
-    
+
     # Initialize bitHuman avatar session with avatar_id
     # This uses a pre-configured avatar model from the bitHuman cloud platform
     bithuman_avatar = bithuman.AvatarSession(
         api_secret=os.getenv("BITHUMAN_API_SECRET"),
-        avatar_id=os.getenv("BITHUMAN_AVATAR_ID", "A05XGC2284"),  # Use env var for flexibility
+        avatar_id=os.getenv(
+            "BITHUMAN_AVATAR_ID", "A05XGC2284"
+        ),  # Use env var for flexibility
         model="expression",
         # Optional: Additional avatar configuration
         # avatar_voice_id="your_voice_id",  # Custom voice if available
@@ -58,28 +60,24 @@ async def entrypoint(ctx: JobContext):
             # Fine-tune voice activity detection
             # min_silence_duration=0.5,  # Minimum silence before stopping
             # min_speech_duration=0.2,   # Minimum speech duration to trigger
-        )
+        ),
     )
 
     # Start the bitHuman avatar session
-    await bithuman_avatar.start(
-        session, 
-        room=ctx.room
-    )
+    await bithuman_avatar.start(session, room=ctx.room)
 
     # Get avatar personality from environment or use default
-    avatar_personality = os.getenv("AVATAR_PERSONALITY", 
+    avatar_personality = os.getenv(
+        "AVATAR_PERSONALITY",
         "You are an expressive and engaging virtual assistant. "
         "Use natural gestures and facial expressions to communicate. "
         "Be enthusiastic and personable in your responses. "
-        "Keep conversations lively and respond with appropriate emotional tone."
+        "Keep conversations lively and respond with appropriate emotional tone.",
     )
 
     # Start the AI agent session with enhanced instructions
     await session.start(
-        agent=Agent(
-            instructions=avatar_personality
-        ),
+        agent=Agent(instructions=avatar_personality),
         room=ctx.room,
         # Audio is handled by the avatar, so disable room audio output
         room_output_options=RoomOutputOptions(audio_enabled=False),

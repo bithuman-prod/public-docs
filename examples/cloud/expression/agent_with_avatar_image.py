@@ -1,6 +1,5 @@
 import logging
 import os
-from PIL import Image
 
 from dotenv import load_dotenv
 from livekit.agents import (
@@ -13,6 +12,7 @@ from livekit.agents import (
     cli,
 )
 from livekit.plugins import bithuman, openai, silero
+from PIL import Image
 
 # Configure logging for better debugging
 logger = logging.getLogger("bithuman-expression-avatar-image")
@@ -29,10 +29,10 @@ def load_avatar_image():
     """
     # Option 1: Load from environment variable (URL or file path)
     avatar_image_source = os.getenv("BITHUMAN_AVATAR_IMAGE")
-    
+
     if avatar_image_source:
         # Check if it's a URL
-        if avatar_image_source.startswith(('http://', 'https://')):
+        if avatar_image_source.startswith(("http://", "https://")):
             logger.info(f"Using avatar image from URL: {avatar_image_source}")
             return avatar_image_source
         # Check if it's a local file path
@@ -41,13 +41,13 @@ def load_avatar_image():
             return Image.open(avatar_image_source)
         else:
             logger.warning(f"Avatar image source not found: {avatar_image_source}")
-    
+
     # Option 2: Load from local file in the same directory
     local_avatar_path = os.path.join(os.path.dirname(__file__), "avatar.jpg")
     if os.path.exists(local_avatar_path):
         logger.info(f"Using local avatar image: {local_avatar_path}")
         return Image.open(local_avatar_path)
-    
+
     # Option 3: Use a default URL image (example)
     default_avatar_url = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face"
     logger.info(f"Using default avatar image from URL: {default_avatar_url}")
@@ -66,15 +66,14 @@ async def entrypoint(ctx: JobContext):
     await ctx.wait_for_participant()
 
     logger.info("Starting bitHuman expression avatar with custom avatar_image")
-    
+
     # Load the avatar image
     avatar_image = load_avatar_image()
-    
+
     # Initialize bitHuman avatar session with custom avatar_image
     bithuman_avatar = bithuman.AvatarSession(
         api_secret=os.getenv("BITHUMAN_API_SECRET"),
         avatar_image=avatar_image,  # Can be PIL Image object or URL string
-        
         # Optional: Additional avatar configuration for custom images
         # avatar_voice_id="your_voice_id",     # Custom voice if available
         # avatar_motion_scale=1.0,             # Motion intensity (0.0-2.0)
@@ -89,28 +88,24 @@ async def entrypoint(ctx: JobContext):
             voice=os.getenv("OPENAI_VOICE", "ash"),  # Use a different default voice
             model="gpt-4o-mini-realtime-preview",
         ),
-        vad=silero.VAD.load()
+        vad=silero.VAD.load(),
     )
 
     # Start the bitHuman avatar session
-    await bithuman_avatar.start(
-        session, 
-        room=ctx.room
-    )
+    await bithuman_avatar.start(session, room=ctx.room)
 
     # Customized personality for image-based avatars
-    avatar_personality = os.getenv("AVATAR_PERSONALITY", 
+    avatar_personality = os.getenv(
+        "AVATAR_PERSONALITY",
         "You are a personalized virtual assistant with a unique appearance. "
         "Embrace your custom look and be confident in your interactions. "
         "Use expressive gestures and maintain an engaging personality. "
-        "Respond naturally and show genuine interest in conversations."
+        "Respond naturally and show genuine interest in conversations.",
     )
 
     # Start the AI agent session
     await session.start(
-        agent=Agent(
-            instructions=avatar_personality
-        ),
+        agent=Agent(instructions=avatar_personality),
         room=ctx.room,
         # Audio is handled by the avatar, so disable room audio output
         room_output_options=RoomOutputOptions(audio_enabled=False),
