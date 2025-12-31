@@ -2,6 +2,8 @@
 
 > **Preview Feature: Deploy GPU Avatar Workers on Your Infrastructure**
 > Run production-grade GPU avatar generation on your own cloud infrastructure with full control over scaling, costs, and data privacy.
+>
+> **Pricing**: 2 credits per minute while using the GPU container.
 
 ## Overview
 
@@ -502,7 +504,7 @@ az container create \
 
 ## Next Steps
 
-- **Integration Guide**: See [Custom GPU Endpoint Integration](../../examples/cloud/expression/README.md#custom-gpu-endpoint)
+- **Integration Guide**: See [Custom GPU Endpoint Integration](https://github.com/bithuman-prod/public-docs/tree/main/examples/cloud/expression#%EF%B8%8F-example-3-custom-gpu-endpoint)
 - **LiveKit Plugins**: Install required `livekit-plugins-bithuman` package
 - **Monitoring**: Set up CloudWatch dashboards and alerts
 - **Scaling**: Configure auto-scaling policies based on traffic patterns
