@@ -12,9 +12,9 @@ Custom endpoints are useful for:
 - Testing and development environments
 
 Required Environment Variables:
-- BITHUMAN_CUSTOM_GPU_URL: Your custom GPU worker endpoint URL
-- BITHUMAN_API_TOKEN: API token for Bearer authentication (preferred for custom endpoints)
-- BITHUMAN_API_SECRET: API secret (fallback if token not provided)
+- BITHUMAN_API_SECRET: BitHuman API secret for authorization and authentication
+- CUSTOM_GPU_URL: Your custom GPU worker endpoint URL
+- CUSTOM_GPU_TOKEN: API token for Bearer authentication with custom GPU endpoint
 - LIVEKIT_URL: LiveKit server URL
 - LIVEKIT_API_KEY: LiveKit API key
 - LIVEKIT_API_SECRET: LiveKit API secret
@@ -65,7 +65,7 @@ def get_custom_gpu_endpoint() -> str:
     Raises:
         ValueError: If no custom endpoint is configured
     """
-    custom_url = os.getenv("BITHUMAN_CUSTOM_GPU_URL")
+    custom_url = os.getenv("CUSTOM_GPU_URL")
 
     if not custom_url:
         # Fallback to common deployment patterns
@@ -78,7 +78,7 @@ def get_custom_gpu_endpoint() -> str:
             logger.info(f"Using Cerebrium endpoint: {custom_url}")
         else:
             raise ValueError(
-                "BITHUMAN_CUSTOM_GPU_URL environment variable is required. "
+                "CUSTOM_GPU_URL environment variable is required. "
                 "Set it to your custom GPU avatar worker endpoint URL."
             )
 
@@ -149,12 +149,12 @@ async def entrypoint(ctx: JobContext):
     # the plugin automatically uses FormData format compatible with
     # gpu-avatar-worker's /launch endpoint
     bithuman_avatar = bithuman.AvatarSession(
+        # BitHuman API secret for authorization and authentication (required)
+        api_secret=os.getenv("BITHUMAN_API_SECRET"),
         # Custom GPU endpoint URL - triggers FormData mode
         api_url=custom_gpu_url,
-        # API token for Bearer authentication (preferred for custom endpoints)
-        api_token=os.getenv("BITHUMAN_API_TOKEN"),
-        # API secret (fallback if token not provided, used for default BitHuman API)
-        api_secret=os.getenv("BITHUMAN_API_SECRET"),
+        # API token for Bearer authentication with custom GPU endpoint (required)
+        api_token=os.getenv("CUSTOM_GPU_TOKEN"),
         # Avatar image - sent as file upload or URL to the worker
         avatar_image=avatar_image,
         # Optional: Pre-configured avatar ID on the worker

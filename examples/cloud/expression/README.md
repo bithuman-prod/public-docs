@@ -172,11 +172,14 @@ cp custom_gpu_endpoint.env.example .env
 **Required Environment Variables:**
 
 ```bash
-# Your custom GPU worker endpoint
-BITHUMAN_CUSTOM_GPU_URL=https://your-gpu-worker.com/launch
+# BitHuman API secret for authorization and authentication (required)
+BITHUMAN_API_SECRET=sk_bh_your_api_secret_here
 
-# API token for authentication
-BITHUMAN_API_TOKEN=your_api_token_here
+# Your custom GPU worker endpoint
+CUSTOM_GPU_URL=https://your-gpu-worker.com/launch
+
+# API token for Bearer authentication with custom GPU endpoint (required)
+CUSTOM_GPU_TOKEN=your_api_token_here
 
 # LiveKit configuration
 LIVEKIT_URL=wss://your-livekit-server.livekit.cloud
