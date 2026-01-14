@@ -223,18 +223,9 @@ BITHUMAN_AVATAR_IMAGE=https://example.com/avatar.jpg
 
 **Cerebrium:**
 ```
-https://api.aws.us-east-1.cerebrium.ai/v4/p-xxxxx/gpu-avatar-worker/launch
+https://api.aws.us-east-1.cerebrium.ai/v4/p-xxxxx/gpu-avatar-worker/launch?async=true
 ```
 
-**AWS ECS (with Load Balancer):**
-```
-https://gpu-worker-elb.us-east-1.elb.amazonaws.com/launch
-```
-
-**Google Cloud Run:**
-```
-https://gpu-avatar-worker-xxxxx.a.run.app/launch
-```
 
 **Local Development:**
 ```
@@ -248,16 +239,14 @@ http://localhost:8089/launch
 **Install the required version:**
 
 ```bash
-# Install from the feature branch
-pip install "livekit-plugins-bithuman @ git+https://github.com/CathyL0/agents.git@feat/add-custom-bithuman-gpu-avatar-endpoint#subdirectory=livekit-plugins/livekit-plugins-bithuman"
+export LIVEKIT_COMMIT=ca532f35f600f87c8b37c166c9ffec2fea279977
+
+uv pip uninstall livekit-agents livekit-plugins-bithuman livekit-plugins-openai && \
+GIT_LFS_SKIP_SMUDGE=1 uv pip install git+https://github.com/livekit/agents@${LIVEKIT_COMMIT}#subdirectory=livekit-agents && \
+GIT_LFS_SKIP_SMUDGE=1 uv pip install git+https://github.com/livekit/agents@${LIVEKIT_COMMIT}#subdirectory=livekit-plugins/livekit-plugins-openai && \
+GIT_LFS_SKIP_SMUDGE=1 uv pip install git+https://github.com/livekit/agents@${LIVEKIT_COMMIT}#subdirectory=livekit-plugins/livekit-plugins-bithuman
 ```
 
-**Add to your `requirements.txt`:**
-
-```txt
-# Custom GPU endpoint support (preview feature)
-livekit-plugins-bithuman @ git+https://github.com/CathyL0/agents.git@feat/add-custom-bithuman-gpu-avatar-endpoint#subdirectory=livekit-plugins/livekit-plugins-bithuman
-```
 
 ### Deployment Guides
 

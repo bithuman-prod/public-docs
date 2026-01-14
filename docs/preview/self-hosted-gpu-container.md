@@ -58,13 +58,87 @@ The container includes:
 - **HTTP API Server**: RESTful API for worker management and requests
 - **Preset Avatar Cache**: Optional pre-encoded avatar storage for fast startup
 
-### API Endpoints
+## Storage Architecture
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/launch` | POST | Launch a new avatar worker |
-| `/health` | GET | Health check status |
-| `/ready` | GET | Readiness check |
+The container uses two storage directories with different purposes:
+
+### AVATAR_MODEL_DIR (Required)
+
+**Purpose**: Stores the avatar generation models required for all avatar processing.
+
+**Key Points**:
+- **Mandatory** - Required for all avatar generation (both preset and custom avatars)
+- **Automatic download** - Models are downloaded automatically on first container startup
+- **Persistent storage recommended** - Mount an external volume to avoid re-downloading on container restart
+- **100% local processing** - All avatar generation happens locally; no cloud API calls after models are loaded
+
+**Size**: Approximately 2-3 GB
+
+### PRESET_AVATARS_DIR (Optional but Recommended)
+
+**Purpose**: Stores pre-encoded avatar reference images for faster startup.
+
+**Contents**:
+```
+/persistent-storage/preset-avatars/
+├── avatar_001/
+│   └── face.jpg          # Image file (avatar_001 is the avatar_id)
+├── avatar_002/
+│   └── portrait.png      # Image file (avatar_002 is the avatar_id)
+└── avatar_003/
+    └── avatar.webp       # Image file (avatar_003 is the avatar_id)
+```
+
+**Key Points**:
+- **Optional** - Container works without it
+- **Pre-encoded at startup** - Images are processed and cached in memory
+- **Faster first frame** - ~4s vs ~6s for custom images
+- **Best for frequently used avatars** - Add your main characters/support agents
+
+### How They Work Together
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    Avatar Generation Flow                    │
+├─────────────────────────────────────────────────────────────┤
+│                                                               │
+│  1. Container Startup                                        │
+│     ├─ Load models from AVATAR_MODEL_DIR (~30s, one-time)   │
+│     └─ If PRESET_AVATARS_DIR: Pre-encode images             │
+│                                                               │
+│  2. Avatar Request (Preset Avatar)                           │
+│     └─ avatar_id="avatar_001"                                │
+│        ├─ Load pre-encoded features from memory (~4s)        │
+│        └─ Generate frames using local models                 │
+│           → NO cloud calls                                   │
+│                                                               │
+│  3. Avatar Request (Custom Image)                            │
+│     └─ avatar_image=<custom image>                           │
+│        ├─ Encode image using local models (~2s)              │
+│        └─ Generate frames using local models                 │
+│           → NO cloud calls                                   │
+│                                                               │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**Important**: Both preset and custom avatars use models from `AVATAR_MODEL_DIR`. The difference is only in whether the reference image is pre-encoded or encoded on-demand.
+
+### Storage Recommendations
+
+| Component | Size | Mount Type | Required |
+|-----------|------|------------|----------|
+| **AVATAR_MODEL_DIR** | ~2-3 GB | Persistent volume (EFS/GCS/NFS) | ✅ Yes |
+| **PRESET_AVATARS_DIR** | Varies | Persistent volume (optional) | ⚪ Recommended |
+
+**Why persistent storage for models?**
+- Models are large (2-3 GB)
+- Downloading takes time and costs bandwidth
+- Persistent storage ensures instant availability on restart
+
+**Why PRESET_AVATARS_DIR is recommended?**
+- Faster first frame for frequently used avatars
+- Better user experience with predictable performance
+- Reduces GPU processing during peak traffic
 
 ## Performance Characteristics
 
@@ -184,282 +258,283 @@ Preset avatars are automatically pre-processed at container startup for instant 
 
 ## Cloud Deployment Guides
 
-### AWS ECS with Fargate
+### Cerebrium
 
-AWS ECS (Elastic Container Service) with Fargate provides serverless GPU container hosting with automatic scaling.
+Cerebrium provides pay-per-second computing with automatic scaling and GPU support, making it ideal for production deployments with flexible request handling.
+
+**Key Advantages:**
+- ✅ **Pay-per-second billing** - Only pay when code is running, no idle costs
+- ✅ **Automatic scaling** - Scales up/down based on concurrency utilization
+- ✅ **Async API support** - Use `?async=true` URL parameter for non-blocking requests
+- ✅ **GPU support** - Full GPU acceleration available (NVIDIA A10/A100)
+- ✅ **Cost-efficient** - Perfect for variable workloads
+
+**Reference:** [Cerebrium Documentation](https://docs.cerebrium.ai/)
 
 #### Prerequisites
 
-- AWS Account with ECS and EC2 access
-- NVIDIA GPU-enabled EC2 capacity (for Fargate with GPU)
-- Application Load Balancer (for public access)
+- Cerebrium account ([Sign up here](https://www.cerebrium.ai/))
+- Cerebrium API key
+- Understanding of Cerebrium deployment concepts
 
-#### Task Definition
+**Note:** No code changes or Docker image building required. The pre-built Docker image is available at `docker.io/bithumanhubs/gpu-avatar-worker:latest` and can be deployed directly.
 
-Create `ecs-task-definition.json`:
+#### Step 1: Prepare Configuration Files
 
-```json
-{
-  "family": "gpu-avatar-worker",
-  "networkMode": "awsvpc",
-  "requiresCompatibilities": ["FARGATE"],
-  "cpu": "8192",
-  "memory": "16384",
-  "executionRoleArn": "arn:aws:iam::ACCOUNT_ID:role/ecsTaskExecutionRole",
-  "taskRoleArn": "arn:aws:iam::ACCOUNT_ID:role/ecsTaskRole",
-  "containerDefinitions": [
-    {
-      "name": "gpu-avatar-worker",
-      "image": "docker.io/bithumanhubs/gpu-avatar-worker:latest",
-      "cpu": 8192,
-      "memory": 15360,
-      "essential": true,
-      "portMappings": [
-        {
-          "containerPort": 8089,
-          "protocol": "tcp"
-        }
-      ],
-      "environment": [
-        {
-          "name": "AVATAR_MODEL_DIR",
-          "value": "/persistent-storage/avatar-model"
-        }
-      ],
-      "mountPoints": [
-        {
-          "sourceVolume": "model-storage",
-          "containerPath": "/persistent-storage/avatar-model",
-          "readOnly": true
-        },
-        {
-          "sourceVolume": "preset-avatars",
-          "containerPath": "/persistent-storage/preset-avatars",
-          "readOnly": true
-        }
-      ],
-      "logConfiguration": {
-        "logDriver": "awslogs",
-        "options": {
-          "awslogs-group": "/ecs/gpu-avatar-worker",
-          "awslogs-region": "us-east-1",
-          "awslogs-stream-prefix": "ecs",
-          "awslogs-create-group": "true"
-        }
-      },
-      "resourceRequirements": [
-        {
-          "type": "GPU",
-          "value": "1"
-        }
-      ],
-      "healthCheck": {
-        "command": [
-          "CMD-SHELL",
-          "curl -f http://localhost:8089/health || exit 1"
-        ],
-        "interval": 30,
-        "timeout": 5,
-        "retries": 3,
-        "startPeriod": 120
-      }
-    }
-  ],
-  "volumes": [
-    {
-      "name": "model-storage",
-      "efsVolumeConfiguration": {
-        "fileSystemId": "fs-xxxxxxxx",
-        "rootDirectory": "/avatar-model"
-      }
-    },
-    {
-      "name": "preset-avatars",
-      "efsVolumeConfiguration": {
-        "fileSystemId": "fs-xxxxxxxx",
-        "rootDirectory": "/preset-avatars"
-      }
-    }
-  ]
-}
+Create the following files in your project directory:
+
+**`Dockerfile.public`:**
+```dockerfile
+# Dockerfile for deploying from public Docker Hub image
+# This file is used by Cerebrium to deploy the pre-built image
+
+FROM docker.io/bithumanhubs/gpu-avatar-worker:latest
+
+# Override ENTRYPOINT and CMD to prevent Cerebrium's uvicorn auto-detection
+# Use shell form which is harder for Cerebrium to override
+ENTRYPOINT ["/usr/local/bin/dumb-init", "--"]
+CMD ["sh", "-c", "cd /app && python dispatcher_run.py --host 0.0.0.0 --port 8089"]
 ```
 
-#### Scaling Strategy
+**`cerebrium.docker.toml`:**
+```toml
+# Cerebrium deployment configuration using public Docker image
+#
+# This configuration deploys GPU Avatar Worker using the pre-built public Docker
+# image from Docker Hub, without building from source.
+#
+# Usage:
+#   uv run cerebrium deploy --config-file cerebrium.docker.toml --disable-syntax-check
 
-**For Long-Running Containers (Recommended for Production):**
+[cerebrium.deployment]
+name = "gpu-avatar-worker"
+# Only need the Dockerfile - all code is in the pre-built Docker image
+include = [
+    "Dockerfile.public"
+]
 
-```json
-{
-  "name": "gpu-avatar-worker-scaling",
-  "policyType": "TargetTrackingScaling",
-  "targetTrackingScalingPolicyConfiguration": {
-    "targetValue": 70.0,
-    "predefinedMetricSpecification": {
-      "predefinedMetricType": "ECSServiceAverageCPUUtilization"
-    },
-    "scaleOutCooldown": 300,
-    "scaleInCooldown": 300,
-    "disableScaleIn": false
-  },
-  "minCapacity": 1,
-  "maxCapacity": 10
-}
+[cerebrium.hardware]
+# Hardware requirements for FLOAT model inference
+cpu = 8                    # 8 CPU cores for audio/video processing
+memory = 12.0             # 12GB RAM for model and buffers
+compute = "AMPERE_A10"    # NVIDIA A10 GPU for fast inference
+# Alternative options:
+# compute = "AMPERE_A100"  # A100 for better performance
+# compute = "VOLTA_A100G"  # A100 80GB for large batch sizes
+region = "us-east-1"
+
+[cerebrium.scaling]
+min_replicas = 1          # Keep at least 1 replica warm (or 0 to scale to zero)
+max_replicas = 30         # Maximum concurrent instances (platform limit: 30)
+cooldown = 300            # 5 minutes before scaling down
+replica_concurrency = 1   # One request per replica (GPU intensive)
+response_grace_period = 43200  # 12 hours max request duration
+scaling_target = 100
+scaling_metric = "concurrency_utilization"
+
+[cerebrium.runtime.custom]
+port = 8089
+healthcheck_endpoint = "/health"
+# Use Dockerfile.public which pulls the pre-built image
+dockerfile_path = "./Dockerfile.public"
+# Use container command explicitly (WORKDIR is already /app)
+container_command = "python dispatcher_run.py --host 0.0.0.0 --port 8089"
 ```
 
-**For Cold Start Containers (Cost-Optimized):**
+#### Step 2: Deploy to Cerebrium
 
-```json
-{
-  "name": "gpu-avatar-worker-scaling",
-  "policyType": "StepScaling",
-  "stepScalingPolicyConfiguration": {
-    "adjustmentType": "ChangeInCapacity",
-    "stepAdjustments": [
-      {
-        "scalingAdjustment": 1,
-        "metricIntervalLowerBound": 0,
-        "metricIntervalUpperBound": 5
-      }
-    ],
-    "cooldown": 60
-  },
-  "minCapacity": 0,
-  "maxCapacity": 30
-}
+**Using Cerebrium CLI:**
+```bash
+# Install Cerebrium CLI (if not already installed)
+pip install cerebrium
+
+# Set API key
+export CEREBRIUM_API_KEY="your-api-key"
+
+# Deploy using the configuration file
+uv run cerebrium deploy --config-file cerebrium.docker.toml --disable-syntax-check
 ```
 
-#### Recommended GPU Types
+**Using Cerebrium Python SDK:**
+```python
+from cerebrium import Cerebrium
 
-| GPU Type | vCPU | Memory | Use Case | Hourly Cost (us-east-1) |
-|----------|------|--------|----------|--------------------------|
-| **g4dn.xlarge** | 4 | 16 GB | Development, testing | ~$0.53 |
-| **g4dn.2xlarge** | 8 | 32 GB | Low-traffic production | ~$0.75 |
-| **g5.xlarge** | 4 | 16 GB | Production (Ampere) | ~$1.01 |
-| **g5.2xlarge** | 8 | 32 GB | High-traffic production | ~$1.51 |
-| **g5.4xlarge** | 16 | 64 GB | High-concurrency | ~$2.20 |
-| **p3.2xlarge** | 8 | 61 GB | Maximum performance | ~$3.82 |
+# Initialize Cerebrium client
+cerebrium = Cerebrium(api_key="your-api-key")
 
-**Recommendation:** Use `g5.xlarge` for production. It provides an NVIDIA A10G GPU with excellent performance/cost ratio.
+# Deploy using configuration file
+deployment = cerebrium.deploy_from_config(
+    config_file="cerebrium.docker.toml",
+    disable_syntax_check=True
+)
 
-#### Deploy Task
+print(f"Deployment ID: {deployment['id']}")
+print(f"Endpoint URL: {deployment['endpoint_url']}")
+```
+
+#### Step 3: Verify Deployment
+
+Once deployed, verify it's working:
 
 ```bash
-# Register task definition
-aws ecs register-task-definition --cli-input-json file://ecs-task-definition.json
+# Get deployment status
+cerebrium get deployment gpu-avatar-worker
 
-# Create service
-aws ecs create-service \
-    --cluster gpu-avatar-cluster \
-    --service-name gpu-avatar-worker \
-    --task-definition gpu-avatar-worker \
-    --desired-count 1 \
-    --launch-type FARGATE \
-    --platform-version LATEST \
-    --network-configuration "awsvpcConfiguration={subnets=[subnet-xxx,subnet-yyy],securityGroups=[sg-xxx],assignPublicIp=ENABLED}" \
-    --load-balancers targetGroupArn=arn:aws:elasticloadbalancing:region:account-id:targetgroup/name,id,containerName=gpu-avatar-worker,containerPort=8089
+# Test health endpoint
+curl https://api.aws.us-east-1.cerebrium.ai/v4/{project}/gpu-avatar-worker/health
 
-# Configure auto scaling
-aws application-autoscaling register-scalable-target \
-    --service-namespace ecs \
-    --resource-id service/gpu-avatar-cluster/gpu-avatar-worker \
-    --scalable-dimension ecs:service:DesiredCount \
-    --min-capacity 1 \
-    --max-capacity 10
-
-aws application-autoscaling put-scaling-policy \
-    --service-namespace ecs \
-    --resource-id service/gpu-avatar-cluster/gpu-avatar-worker \
-    --scalable-dimension ecs:service:DesiredCount \
-    --policy-name gpu-avatar-scaling \
-    --policy-type TargetTrackingScaling \
-    --target-tracking-scaling-policy-configuration file://scaling-policy.json
+# Should return: {"status": "ok", "active_workers": 0, "available_slots": 1}
 ```
 
-### AWS Lambda with Container Image (Cold Start Strategy)
+The endpoint is now ready to accept requests. No additional code or configuration is needed - the pre-built image contains everything required.
 
-For true serverless scaling, use AWS Lambda with container image support.
+#### Scaling Configuration
 
-**Limitations:**
-- Maximum 15 minutes execution time
-- No GPU support currently (CPU only for non-GPU workloads)
-- 10 GB container image size limit
+Cerebrium scaling is based on `concurrency_utilization` metric. When all replicas are busy (each handling 1 request), Cerebrium automatically launches new replicas. Scaling decisions are made automatically by Cerebrium based on concurrency metrics.
 
-**Note:** GPU avatar generation requires GPU support, so Lambda is not recommended for this workload.
+**Key Configuration Parameters:**
 
-### Alternative Cloud Platforms
+| Parameter | Description | Recommended Value |
+|-----------|-------------|-------------------|
+| **min_replicas** | Minimum replicas to keep running | 0 (scale to zero) or 1 (always warm) |
+| **max_replicas** | Maximum concurrent instances | 30 (platform limit: 30) |
+| **cooldown** | Seconds before scaling down | 300 (5 minutes) |
+| **replica_concurrency** | Requests per replica | 1 (GPU intensive) |
+| **scaling_target** | Target concurrency utilization | 100 |
+| **scaling_metric** | Metric for scaling decisions | `concurrency_utilization` |
 
-#### Google Cloud Run (GPU)
+**Important:** Cerebrium platform supports a maximum of **30 replicas** per deployment. This is a platform limitation and cannot be exceeded.
 
-```yaml
-# cloud-run-service.yaml
-apiVersion: serving.knative.dev/v1
-kind: Service
-metadata:
-  name: gpu-avatar-worker
-spec:
-  template:
-    spec:
-      containers:
-      - image: docker.io/bithumanhubs/gpu-avatar-worker:latest
-        ports:
-        - containerPort: 8089
-        resources:
-          limits:
-            nvidia.com/gpu: 1
-          requests:
-            cpu: "8"
-            memory: "12Gi"
-        env:
-        - name: AVATAR_MODEL_DIR
-          value: "/persistent-storage/avatar-model"
-        volumeMounts:
-        - name: model-storage
-          mountPath: /persistent-storage/avatar-model
-      volumes:
-      - name: model-storage
-        persistentVolumeClaim:
-          claimName: model-storage-pvc
+#### Cost-Optimized Configuration (Scale to Zero)
+
+**Best for:** Variable workloads, cost optimization
+
+```toml
+[cerebrium.scaling]
+min_replicas = 0          # Scale to zero when idle
+max_replicas = 30         # Platform limit: 30
+cooldown = 300            # 5 minutes
+replica_concurrency = 1
+scaling_target = 100
+scaling_metric = "concurrency_utilization"
 ```
 
-**Scaling:**
+**Behavior:**
+- Replicas scale to zero when no requests
+- New replicas start on first request (~30-40s cold start)
+- Replicas scale down after 5 minutes of idle time
+- **Cost:** Only pay for actual compute time
 
-```bash
-# Deploy with minimum instances (for long-running)
-gcloud run deploy gpu-avatar-worker \
-    --image docker.io/bithumanhubs/gpu-avatar-worker:latest \
-    --platform managed \
-    --region us-central1 \
-    --cpu 8 \
-    --memory 12Gi \
-    --accelerator nvidia.com/gpu=1 \
-    --min-instances 1 \
-    --max-instances 10 \
-    --timeout 3600
+**Trade-offs:**
+- ✅ Lowest cost (no idle charges)
+- ❌ Cold start latency (~30-40 seconds)
+- ❌ First request slower
 
-# Or scale to zero (for cold start)
-gcloud run deploy gpu-avatar-worker \
-    --min-instances 0 \
-    --max-instances 100
+#### Fast Response Configuration (Always Warm)
+
+**Best for:** Production with consistent traffic
+
+```toml
+[cerebrium.scaling]
+min_replicas = 1          # Always keep 1 replica running
+max_replicas = 30         # Platform limit: 30
+cooldown = 600            # 10 minutes (longer for warm replicas)
+replica_concurrency = 1
+scaling_target = 100
+scaling_metric = "concurrency_utilization"
 ```
 
-#### Azure Container Instances
+**Behavior:**
+- At least 1 replica always running
+- New replicas start when existing replicas are busy
+- Replicas scale down after 10 minutes of idle (if count > min)
+- **Cost:** Pay for at least 1 replica continuously
 
-```bash
-az container create \
-    --resource-group gpu-avatar-rg \
-    --name gpu-avatar-worker \
-    --image docker.io/bithumanhubs/gpu-avatar-worker:latest \
-    --cpu 8 \
-    --memory 12 \
-    --gpu-count 1 \
-    --gpu-sku K80 \
-    --ports 8089 \
-    --environment-variables \
-        AVATAR_MODEL_DIR=/persistent-storage/avatar-model \
-    --azure-file-volume-account-name mystorageaccount \
-    --azure-file-volume-share-name model-storage \
-    --azure-file-volume-mount-path /persistent-storage/avatar-model
+**Trade-offs:**
+- ✅ Fast response (~4-6 seconds)
+- ✅ No cold start for first request
+- ❌ Higher cost (always paying for 1 replica)
+
+#### Hybrid Configuration (Recommended)
+
+**Best for:** Production with variable traffic
+
+```toml
+[cerebrium.scaling]
+min_replicas = 1          # Keep 1 warm during business hours
+max_replicas = 30         # Platform limit: 30
+cooldown = 300            # 5 minutes
+replica_concurrency = 1
+scaling_target = 100
+scaling_metric = "concurrency_utilization"
 ```
+
+**Behavior:**
+- 1 replica always running (fast first response)
+- Additional replicas scale based on demand
+- Extra replicas scale down after 5 minutes idle
+- **Cost:** Moderate (pay for 1 replica + actual usage)
+
+#### Resource Requirements
+
+**Per Replica:**
+- **CPU:** 8 vCPU cores (recommended for model loading and I/O operations)
+- **Memory:** 12 GB RAM (sufficient for model caching and preset avatar features)
+- **GPU:** 1 GPU (A10 or A100 recommended)
+- **VRAM:** 16 GB minimum (A10), 24 GB recommended (A100)
+
+**Resource Usage Analysis:**
+
+When using prewarm (recommended), avatar loading is **primarily memory-intensive**:
+
+- **GPU VRAM:** ~6 GB (model weights loaded during prewarm, stays in GPU)
+- **CPU Memory:**
+  - Model file cache: ~2-3 GB (if using shared model state)
+  - Preset avatar features: ~50-100 MB per avatar (encoded features cached in CPU memory)
+  - Runtime buffers: ~1-2 GB
+  - Python runtime: ~500 MB-1 GB
+  - **Total: ~4-6 GB for base + ~100 MB per preset avatar**
+
+- **CPU Usage:**
+  - Model loading (one-time at startup): Moderate CPU usage for I/O and initialization
+  - Avatar loading (with prewarm): Low CPU usage (mainly memory reads)
+  - Inference: Low CPU usage (GPU handles computation, CPU handles data transfer)
+
+**Why 8 CPU cores?**
+- Faster model loading at startup (parallel I/O operations)
+- Better handling of concurrent operations (model loading, avatar encoding, data preprocessing)
+- Sufficient headroom for system processes and overhead
+
+**Why 12 GB Memory?**
+- Sufficient for model caching (~2-3 GB)
+- Room for preset avatar features (~100 MB per avatar, scales with number of avatars)
+- Runtime buffers and Python overhead (~2-3 GB)
+- Safety margin for peak usage
+
+#### Best Practices
+
+1. **Use Async Requests for Long-Running Tasks**
+   - All requests should use `?async=true` parameter for non-blocking behavior
+   - API returns immediately with `task_id` for status tracking
+
+2. **Configure Appropriate Cooldown**
+   - Set `cooldown` based on your traffic patterns
+   - High traffic, consistent load: `cooldown = 600` (10 minutes)
+   - Variable traffic: `cooldown = 300` (5 minutes)
+   - Low traffic, cost-sensitive: `cooldown = 180` (3 minutes)
+
+3. **Monitor Replica Health**
+   - Regularly check `/health` endpoint
+   - Monitor concurrency utilization metrics
+   - Track replica count and cold start frequency
+
+4. **Handle Rate Limits**
+   - Implement retry logic for rate-limited requests
+   - Use exponential backoff for retries
+
+### Other Cloud Platforms
+
+> **Note:** Integration guides for other cloud platforms (AWS ECS, Google Cloud Run, Azure Container Instances, etc.) will be added in future updates. Please check back for additional deployment options.
 
 ## Troubleshooting
 
@@ -506,21 +581,11 @@ az container create \
 
 - **Integration Guide**: See [Custom GPU Endpoint Integration](https://github.com/bithuman-prod/public-docs/tree/main/examples/cloud/expression#%EF%B8%8F-example-3-custom-gpu-endpoint)
 - **LiveKit Plugins**: Install required `livekit-plugins-bithuman` package
-- **Monitoring**: Set up CloudWatch dashboards and alerts
+- **Monitoring**: Set up monitoring dashboards and alerts for your deployment
 - **Scaling**: Configure auto-scaling policies based on traffic patterns
 
 ## Additional Resources
 
 - [Docker Hub Image](https://hub.docker.com/r/bithumanhubs/gpu-avatar-worker)
 - [LiveKit Agents Documentation](https://docs.livekit.io/agents)
-- [AWS ECS GPU Documentation](https://docs.aws.amazon.com/ecs/latest/userguide/task_definition_parameters.html)
-- [GPU Instance Pricing](https://aws.amazon.com/ec2/instance-types/)
-
-## Changelog
-
-### Version 1.0.0 (Latest)
-- Initial public release
-- Real-time avatar generation from single images
-- Preset avatar caching for fast startup
-- WebRTC streaming support
-- Multi-cloud deployment support (AWS, GCP, Azure)
+- [Cerebrium Documentation](https://docs.cerebrium.ai/)
