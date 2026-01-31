@@ -1,5 +1,5 @@
 # Core bitHuman SDK
-bithuman>=0.5.25
+bithuman>=0.7.0
 
 # Environment management
 python-dotenv~=1.1

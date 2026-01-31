@@ -1,0 +1,34 @@
+# Requirements for Pipecat BitHuman Agents
+# This supports both Daily.co and LiveKit transports
+
+# Pipecat framework with Daily.co, LiveKit, OpenAI, and Deepgram integrations
+# Includes: LiveKitTransport for WebRTC communication
+pipecat-ai[daily,livekit,openai,deepgram]>=0.0.40
+
+# LiveKit SDK for token generation (used by agent_pipecat_livekit.py)
+# Note: Pipecat's LiveKitTransport handles WebRTC, but we need livekit API for token generation
+livekit>=0.11.0
+
+# BitHuman runtime SDK (included in livekit-plugin-bithuman, but we use it directly)
+# Note: If you install livekit-agents[openai,bithuman,silero], bithuman will be included
+# For pure Pipecat, you can install bithuman separately or use livekit-plugin-bithuman
+bithuman>=0.7.0
+
+# Environment and configuration
+python-dotenv>=1.1.1
+
+# HTTP client for Daily.co API (only needed for agent_pipecat_daily.py)
+aiohttp>=3.9.0
+
+# Required for Deepgram WebSocket connections (SOCKS proxy support)
+python-socks[asyncio]>=2.4.3
+
+# Image processing
+opencv-python>=4.8.0
+numpy>=1.24.0
+
+# Audio resampling
+scipy>=1.11.0
+
+# Logging and utilities
+loguru>=0.7.3

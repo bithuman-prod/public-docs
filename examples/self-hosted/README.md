@@ -1,10 +1,19 @@
-# Self-Hosted bitHuman Agent with LiveKit
+# Self-Hosted bitHuman Agent Examples
 
-This example demonstrates how to run a self-hosted bitHuman agent using LiveKit with advanced features including custom gesture triggers, real-time conversation handling, and audio interruption management.
+This directory contains examples demonstrating how to run self-hosted bitHuman agents with different frameworks and transport layers.
+
+## Available Examples
+
+| Example | Transport | Framework | Description |
+|---------|-----------|-----------|-------------|
+| `agent.py` | LiveKit | LiveKit Agents | Basic self-hosted agent with native BitHuman integration |
+| `agent_with_dynamics.py` | LiveKit | LiveKit Agents | Agent with dynamic gesture triggering based on keywords |
+| `pipecat/` | Daily.co / LiveKit | Pipecat | Pipecat-based agents with Daily.co or LiveKit transport (see [pipecat/README.md](pipecat/README.md)) |
 
 ## Features
 
 - **Self-hosted model deployment**: Run bitHuman avatars using your own model files
+- **Multiple transport options**: Choose between LiveKit or Daily.co/Pipecat Cloud
 - **Custom gesture triggers**: Automatically trigger gestures based on conversation keywords
 - **Real-time conversation handling**: Advanced speech recognition and response management
 - **Audio interruption support**: Natural conversation flow with interruption handling
@@ -221,6 +230,8 @@ async def on_custom_event(data):
     logger.info(f"Custom event received: {data}")
     # Handle custom logic here
 ```
+
+---
 
 ## Support
 
