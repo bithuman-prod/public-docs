@@ -150,9 +150,9 @@ Use a self-hosted or cloud-deployed GPU avatar worker for maximum control and cu
 
 | Platform | Deployment Mode | Scaling Strategy |
 |----------|----------------|------------------|
-| **Cerebrium** | Serverless GPU | 0-30 replicas, scale-to-zero |
 | **AWS ECS** | Fargate with GPU | 1-10 tasks, auto-scaling |
 | **Google Cloud Run** | GPU containers | 0-100 instances, scale-to-zero |
+| **Kubernetes** | GPU nodes | HPA, auto-scaling |
 | **Self-hosted** | Docker with GPU | Manual or external orchestration |
 
 ### Usage
@@ -221,15 +221,14 @@ BITHUMAN_AVATAR_IMAGE=https://example.com/avatar.jpg
 
 ### Endpoint URL Formats
 
-**Cerebrium:**
-```
-https://api.aws.us-east-1.cerebrium.ai/v4/p-xxxxx/gpu-avatar-worker/launch?async=true
-```
-
-
 **Local Development:**
 ```
 http://localhost:8089/launch
+```
+
+**Cloud Deployment (example):**
+```
+https://your-gpu-worker.example.com/launch
 ```
 
 ### Plugin Installation
